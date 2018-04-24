@@ -1,0 +1,23 @@
+{
+  "name": "opiskelijakeskus",
+  "version": "1.0.0",
+  "description": "Opiskelijakeskuksen sivut",
+  "main": "index.js",
+  "dependencies": {
+    "shufflejs": "^5.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zentryn/Opiskelijakeskus.git"
+  },
+  "author": "Zentryn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zentryn/Opiskelijakeskus/issues"
+  },
+  "homepage": "https://github.com/Zentryn/Opiskelijakeskus#readme"
+}
