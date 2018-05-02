@@ -3,8 +3,13 @@
     padding: 0;
 }
 
+@font-face {
+    font-family: 'Value';
+    src: url('../fonts/value-regular.otf');
+}
+
 h1, h2 {
-    font-weight: 300;
+    font-weight: 100;
 }
 
 h2 {
