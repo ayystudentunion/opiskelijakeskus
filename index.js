@@ -79,11 +79,21 @@ function initGrid(jsonData) {
         // Add new elements to shuffle
         gridBlocks.push(gridBlock);
         shuffleInstance.element.insertBefore(gridBlock, shuffleInstance.element.firstChild);
+
+        ellipsizeElement(gridBlock, gridBlockDescriptionText);
     }
 
     // Update shuffle
     shuffleInstance.add(gridBlocks);
     shuffleInstance.update();
+}
+
+function ellipsizeElement(container, textElement) {
+    var wordArray = textElement.innerHTML.split(' ');
+    while(container.clientHeight < container.scrollHeight) {
+        wordArray.pop();
+        textElement.innerHTML = wordArray.join(' ') + '...';
+     }
 }
 
 function updateGridBlocks() {
@@ -100,6 +110,8 @@ function updateGridBlock(gridBlock) {
     gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
 
     // Expand the block first in height and then in width if its content is overflowing
+
+    /*
     if (gridBlock.clientHeight < gridBlock.scrollHeight) {
         gridBlock.classList.add('grid-block-tall');
 
@@ -108,4 +120,5 @@ function updateGridBlock(gridBlock) {
             gridBlock.classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
         }
     }
+    */
 }
