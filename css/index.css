@@ -27,10 +27,6 @@ body {
 #site-nav {
     width: 100vw;
     height: 5vh;
-
-    /*
-    border-bottom: 2px solid #553180;
-    */
 }
 
 #content-container {
@@ -38,11 +34,12 @@ body {
 }
 
 .grid-block {
-    margin-top: 24px;
+    margin-top: 62px;
     padding-left: 1em;
     padding-right: 1em;
 
-    height: 220px;
+    height: 160px;
+    
 }
 
 .grid-block-tall {
@@ -51,7 +48,10 @@ body {
 
 .grid-block-content {
     height: 100%;
-    /*border: 2px solid #553180;*/
+    width: 100%;
+
+    display: table;
+    border-collapse: collapse;
     box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
@@ -63,13 +63,86 @@ body {
 }
 
 .grid-block-description-container {
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     font-size: 0.95em;
+
+    height: 100px;
 }
 
 .grid-block-description-header {
     font-weight: 650;
     margin-bottom: 2px;
+}
+
+.grid-block-footer {
+    display: table-row;
+    vertical-align: bottom;
+
+    width: 100%;
+    height: 1px;
+}
+
+.grid-block-icons-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid-block-icons-container > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.grid-block-icon {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url('../images/icon6.png');
+    background-size: cover;
+}
+
+.grid-block-heart-container {
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-block-likes {
+    display: inline-block;
+    margin-right: 5px;
+    
+    text-align: right;
+    font-weight: 500;
+
+    pointer-events: none;
+}
+
+.grid-block-heart {
+    display: inline-block;
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    width: 22px;
+    height: 22px;
+
+    background-image: url('../images/heart_empty.png');
+    background-size: cover;
+
+    cursor: pointer;
+
+    transition: background-image 0.05s;
+}
+
+.grid-block-heart-selected {
+    background-image: url('../images/heart_filled.png') !important;
 }
 
 #bottom-spacetaker {
