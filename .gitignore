@@ -1,2 +1,4 @@
 node_modules/
 fonts/
+./bundle.js
+js/addNewBundle.js
