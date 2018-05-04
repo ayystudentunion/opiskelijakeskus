@@ -1,8 +1,6 @@
 # Opiskelijakeskus
 
-Source of opiskelijakeskus.fi
-
-Using watchify (browserify) to bundle dependecies with source.
+Source of opiskelijakeskus.fi; using watchify (browserify) to bundle dependecies with source.
 
 Run the following commands for development:
   ```bash
