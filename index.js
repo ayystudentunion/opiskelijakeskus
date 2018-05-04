@@ -13,15 +13,24 @@ var shuffleInstance = new shuffle(element, {
 });
 
 var jsonData = null;
+var nrColumns = -1;
+
+var lastMouseX = -1, lastMouseY = -1;
+var mouseX = -1, mouseY = -1;
+
+window.onmousemove = function(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+}
 
 // Load data from JSON
 window.onload = function() {
+    updateColumnAmount();
+
     $.getJSON("data/data.json", function(result) {
         jsonData = result;
         initGrid();
     });
-
-    //ellipsizeElement(document.getElementsByClassName('grid-block-description-container')[0], document.getElementsByClassName('grid-block-description-text')[0]);
 };
 
 //Desc container 222px
@@ -29,6 +38,20 @@ window.onload = function() {
 
 window.onresize = function() {
     updateGridBlocks();
+
+    updateColumnAmount();    
+}
+
+function updateColumnAmount() {
+    if (window.clientWidth < 768) {
+        nrColumns = 1;
+    } else if (window.clientWidth < 992) {
+        nrColumns = 2;
+    } else if (window.clientWidth < 1200) {
+        nrColumns = 3;
+    } else {
+        nrColumns = 4;
+    }
 }
 
 // Store grid blocks because might have to be resized
@@ -43,7 +66,7 @@ function initGrid() {
     // Container for grid items
     var shuffleContainer = document.getElementById('shuffle-container');
 
-    for (var i = 0; i < jsonData.length; i++) {
+    for (var i = jsonData.length - 1; i >= 0; i--) {
         var title = null;
         var description = null;
         var icon = null;
@@ -117,33 +140,72 @@ function initGrid() {
         //     that make sure that the bottom of the grid looks good.
         shuffleContainer.insertBefore(gridBlock, shuffleContainer.firstChild);
 
-        /*
-        <div class="grid-block-description-container">
-                        
-            <p class="grid-block-description-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <!--
-            <p class="grid-block-description-text">Hello WOrld</p>-->
-        </div>
-
-        <div class="grid-block-footer">
-            <div class="grid-block-icons-container">
-                <div class="grid-block-icon"></div>
-                
-                <div class="grid-block-heart-container">
-                    <div class="grid-block-likes">12</div>
-                    <div class="grid-block-heart"></div>
-                </div>
-            </div>
-        </div>
-        */
-
-        updateGridBlock(gridBlock);
+        // Flip the index since we're iterating from end to start
+        updateGridBlock(Math.abs(i + 1 - jsonData.length));
 
         // Add new elements to shuffle
-        gridBlocks.push(gridBlock);
+        gridBlocks.unshift(gridBlock);
         shuffleInstance.element.insertBefore(gridBlock, shuffleInstance.element.firstChild);
 
         ellipsizeElement(gridBlockDescriptionContainer, gridBlockDescriptionText);
+
+        (function() {
+            var idx = i;
+            var contentBlock = gridBlockContent;
+
+            contentBlock.onmouseenter = function() {
+                for (var j = 0; j < gridBlocks.length; j++) {
+                    if (gridBlocks[j].classList.contains('grid-block-tall')) {
+                        console.log("returning"); return;;
+                    }
+                }
+
+                // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
+                setTimeout(() => {
+                    if (!isMouseInElement(contentBlock)) return;
+                    
+                    gridBlocks[idx].classList.add('grid-block-tall');
+
+                    /*
+                    if ((idx + 1) % nrColumns == 0) {
+                        console.log("Is last");
+                    }
+                    gridBlocks[idx].classList.remove('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
+                    gridBlocks[idx].classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
+                    */
+
+                    document.getElementsByClassName('grid-block-description-container')[idx].classList.add('grid-block-description-container-tall');
+
+                    updateGridBlocks();
+
+                    // Fade out all other grid blocks
+                    for (var j = 0; j < gridBlocks.length; j++) {
+                        if (j == idx) continue;
+
+                        gridBlocks[j].style.opacity = 0.2;
+                    }
+                }, 500);
+            }
+
+            contentBlock.onmouseleave = function() {
+                for (var j = 0; j < gridBlocks.length; j++) {
+                    if (j != idx && gridBlocks[j].classList.contains('grid-block-tall')) {
+                        return;
+                    }
+                }
+
+                document.getElementsByClassName('grid-block')[idx].classList.remove('grid-block-tall');
+
+                /*
+                gridBlocks[idx].classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
+                gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
+                */
+
+                document.getElementsByClassName('grid-block-description-container')[idx].classList.remove('grid-block-description-container-tall');
+                
+                updateGridBlocks();
+            }
+        }());
     }
 
     // Update shuffle
@@ -178,37 +240,23 @@ function ellipsizeElement(container, textElement) {
 }
 
 function updateGridBlocks() {
-    /*
     for (var i = 0; i < gridBlocks.length; i++) {
-        updateGridBlock(gridBlocks[i]);
-    }
-    */
-
-    var descriptionContainers = document.getElementsByClassName('grid-block-description-container');
-    var descriptionTexts = document.getElementsByClassName('grid-block-description-text');
-    for (var i = 0; i < descriptionContainers.length; i++) {
-        descriptionTexts[i].innerHTML = jsonData[i][Object.keys(jsonData[i])[0]].description;
-        ellipsizeElement(descriptionContainers[i], document.getElementsByClassName('grid-block-description-text')[i]);
+        updateGridBlock(i);
     }
     
     shuffleInstance.update();
 }
 
-function updateGridBlock(gridBlock) {
-    //gridBlock.classList.remove('grid-block-tall');
-    //gridBlock.classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
-    //gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
+function updateGridBlock(idx) {
+    document.getElementsByClassName('grid-block-description-text')[idx].innerHTML = jsonData[idx][Object.keys(jsonData[idx])[0]].description;
+    ellipsizeElement(document.getElementsByClassName('grid-block-description-container')[idx], document.getElementsByClassName('grid-block-description-text')[idx]);
+}
 
-    // Expand the block first in height and then in width if its content is overflowing
+function isMouseInElement(el) {
+    var elX = el.getBoundingClientRect().left;
+    var elY = el.getBoundingClientRect().top;
+    var xDiff = mouseX - elX;
+    var yDiff = mouseY - elY;
 
-    /*
-    if (gridBlock.clientHeight < gridBlock.scrollHeight) {
-        gridBlock.classList.add('grid-block-tall');
-
-        if (gridBlock.clientHeight < gridBlock.scrollHeight) {
-            gridBlock.classList.remove('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
-            gridBlock.classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
-        }
-    }
-    */
+    return (yDiff >= 0 && xDiff >= 0 && xDiff < el.clientWidth - 5 && yDiff < el.clientHeight - 5);
 }
