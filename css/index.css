@@ -8,6 +8,11 @@
     src: url('../fonts/value-regular.otf');
 }
 
+:root {
+    --grid-block-height: 160px;
+    --grid-block-description-container-height: 100px;
+}
+
 h1, h2 {
     font-weight: 100;
 }
@@ -38,12 +43,17 @@ body {
     padding-left: 1em;
     padding-right: 1em;
 
-    height: 160px;
+    height: var(--grid-block-height);
+
+    /*
+    transition-property: transform, opacity, height !important;
+    transition-timing-function: ease-in-out;
     
+    transition: height 0.5s ease-in-out;*/
 }
 
 .grid-block-tall {
-    height: 464px !important;
+    height: calc(var(--grid-block-height) + 222px) !important;
 }
 
 .grid-block-content {
@@ -66,7 +76,13 @@ body {
     padding: 10px 10px 0 10px;
     font-size: 0.95em;
 
-    height: 100px;
+    height: var(--grid-block-description-container-height);
+
+    transition-property: transform, opacity, height !important;
+}
+
+.grid-block-description-container-tall {
+    height: calc(var(--grid-block-description-container-height) + 222px) !important;
 }
 
 .grid-block-description-header {
