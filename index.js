@@ -70,12 +70,14 @@ function initGrid() {
         var title = null;
         var description = null;
         var icon = null;
+        var likes = 0;
 
         // Get data
         for (var key in jsonData[i]) {
             title = key;
             description = jsonData[i][key].description;
             icon = jsonData[i][key].icon;
+            likes = jsonData[i][key].likes;
         }
 
         // Create elements
@@ -99,6 +101,10 @@ function initGrid() {
         gridBlockDescriptionText.classList.add('grid-block-description-text');
         gridBlockDescriptionText.innerHTML = description;
 
+        var gridBlockReasonsTitle = document.createElement('p');
+        gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
+        gridBlockReasonsTitle.innerHTML = "Perustelut";
+
         var gridBlockFooter = document.createElement('div');
         gridBlockFooter.classList.add('grid-block-footer');
         
@@ -114,7 +120,7 @@ function initGrid() {
 
         var gridBlockLikes = document.createElement('div');
         gridBlockLikes.classList.add('grid-block-likes');
-        gridBlockLikes.innerHTML = "0";
+        gridBlockLikes.innerHTML = String(likes);
 
         var gridBlockHeart = document.createElement('div');
         gridBlockHeart.classList.add('grid-block-heart');
@@ -132,6 +138,7 @@ function initGrid() {
         gridBlockDescriptionContainer.appendChild(gridBlockDescriptionText);
         gridBlockContent.appendChild(gridBlockHeaderContainer);
         gridBlockContent.appendChild(gridBlockDescriptionContainer);
+        gridBlockContent.appendChild(gridBlockReasonsTitle);
         gridBlockContent.appendChild(gridBlockFooter);
         gridBlock.appendChild(gridBlockContent);
         
@@ -163,8 +170,6 @@ function initGrid() {
                 // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
                 setTimeout(() => {
                     if (!isMouseInElement(contentBlock)) return;
-                    
-                    gridBlocks[idx].classList.add('grid-block-tall');
 
                     /*
                     if ((idx + 1) % nrColumns == 0) {
@@ -174,7 +179,8 @@ function initGrid() {
                     gridBlocks[idx].classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
                     */
 
-                    document.getElementsByClassName('grid-block-description-container')[idx].classList.add('grid-block-description-container-tall');
+                    gridBlocks[idx].classList.add('grid-block-tall');
+                    //document.getElementsByClassName('grid-block-description-container')[idx].classList.add('grid-block-description-container-tall');
 
                     updateGridBlocks();
 
@@ -184,7 +190,7 @@ function initGrid() {
 
                         gridBlocks[j].style.opacity = 0.2;
                     }
-                }, 500);
+                }, 150);
             }
 
             contentBlock.onmouseleave = function() {
@@ -194,14 +200,13 @@ function initGrid() {
                     }
                 }
 
-                document.getElementsByClassName('grid-block')[idx].classList.remove('grid-block-tall');
-
                 /*
                 gridBlocks[idx].classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
                 gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
                 */
 
-                document.getElementsByClassName('grid-block-description-container')[idx].classList.remove('grid-block-description-container-tall');
+                document.getElementsByClassName('grid-block')[idx].classList.remove('grid-block-tall');
+                //document.getElementsByClassName('grid-block-description-container')[idx].classList.remove('grid-block-description-container-tall');
                 
                 updateGridBlocks();
             }
@@ -219,6 +224,37 @@ function initGrid() {
 
             gridHearts[idx].onclick = function() {
                 gridHearts[idx].classList.toggle('grid-block-heart-selected');
+
+                var likesText = document.getElementsByClassName('grid-block-likes')[idx];
+                var likesCount = parseInt(likesText.innerHTML);
+
+                if (gridHearts[idx].classList.contains('grid-block-heart-selected')) {
+                    likesCount++;
+                } else {
+                    likesCount--;
+                }
+
+                // Update HTML and data file
+                likesText.innerHTML = String(likesCount);
+                $.getJSON("data/data.json", function(result) {
+                    var ideaName = document.getElementsByClassName('grid-block-header-text')[idx].innerHTML;
+
+                    // Update likes (there might be better way to do this..)
+                    for (var i = 0; i < result.length; i++) {
+                        if (Object.keys(result[i])[0] == ideaName) {
+                            result[i][ideaName]["likes"] = String(likesCount);
+                            break;
+                        }
+                    }
+            
+                    // Save to file
+                    $.ajax({
+                        url: 'php/save_data.php',
+                        type: 'POST',     // ../data/data.json because php file is located one dir up
+                        data: {"file_path": "../data/data.json", "data": JSON.stringify(result)},
+                        success: function(data) {}
+                    });
+                });
             }
         }());
     }
@@ -236,7 +272,7 @@ function ellipsizeElement(container, textElement) {
             alert("you are stupidddd");
             break;
         }
-     }
+    }
 }
 
 function updateGridBlocks() {
