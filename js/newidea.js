@@ -89,16 +89,22 @@ generateIdeas.onclick = function() {
         var name = randWord();
         name = name.charAt(0).toUpperCase() + name.slice(1);
         var desc = "";
-        for (var j = 0; j < Math.random() * 500; j++) {
+        for (var j = 0; j < Math.random() * 800; j++) {
             var word = randWord();
             if (j == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
             desc += word + " ";
         }
 
-        desc.charAt(0)
+        var reasons = "";
+        for (var j = 0; j < Math.random() * 800; j++) {
+            var word = randWord();
+            if (j == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
+            reasons += word + " ";
+        }
 
         idea[name] = {};
         idea[name].description = desc;
+        idea[name].reasons = reasons;
         idea[name].likes = String(Math.floor(Math.random() * 200));
         idea[name].icon = "icon" + String(Math.floor(Math.random() * 6) + 1) + ".png";
 
