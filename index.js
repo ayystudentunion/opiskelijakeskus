@@ -33,9 +33,6 @@ window.onload = function() {
     });
 };
 
-//Desc container 222px
-//block 251
-
 window.onresize = function() {
     updateGridBlocks();
 
@@ -69,6 +66,7 @@ function initGrid() {
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var title = null;
         var description = null;
+        var reasons = null;
         var icon = null;
         var likes = 0;
 
@@ -76,6 +74,7 @@ function initGrid() {
         for (var key in jsonData[i]) {
             title = key;
             description = jsonData[i][key].description;
+            reasons = jsonData[i][key].reasons;
             icon = jsonData[i][key].icon;
             likes = jsonData[i][key].likes;
         }
@@ -94,6 +93,9 @@ function initGrid() {
         gridBlockHeaderText.classList.add('grid-block-header-text');
         gridBlockHeaderText.innerHTML = title;
 
+        var gridBlockBodyContainer = document.createElement('div');
+        gridBlockBodyContainer.classList.add('grid-block-body-container');
+
         var gridBlockDescriptionContainer = document.createElement('div');
         gridBlockDescriptionContainer.classList.add('grid-block-description-container');
 
@@ -101,9 +103,19 @@ function initGrid() {
         gridBlockDescriptionText.classList.add('grid-block-description-text');
         gridBlockDescriptionText.innerHTML = description;
 
+        var gridBlockReasonsContainer = document.createElement('div');
+        gridBlockReasonsContainer.classList.add('grid-block-reasons-container', 'no-display', 'faded-out');
+
         var gridBlockReasonsTitle = document.createElement('p');
         gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
         gridBlockReasonsTitle.innerHTML = "Perustelut";
+
+        var gridBlockReasonsText = document.createElement('p');
+        gridBlockReasonsText.classList.add('grid-block-reasons-text');
+        gridBlockReasonsText.innerHTML = reasons;
+
+        gridBlockReasonsContainer.appendChild(gridBlockReasonsTitle);
+        gridBlockReasonsContainer.appendChild(gridBlockReasonsText);
 
         var gridBlockFooter = document.createElement('div');
         gridBlockFooter.classList.add('grid-block-footer');
@@ -136,9 +148,11 @@ function initGrid() {
         // Add elements to DOM
         gridBlockHeaderContainer.appendChild(gridBlockHeaderText);
         gridBlockDescriptionContainer.appendChild(gridBlockDescriptionText);
+        gridBlockBodyContainer.appendChild(gridBlockDescriptionContainer);
+        gridBlockBodyContainer.appendChild(gridBlockReasonsContainer);
+
         gridBlockContent.appendChild(gridBlockHeaderContainer);
-        gridBlockContent.appendChild(gridBlockDescriptionContainer);
-        gridBlockContent.appendChild(gridBlockReasonsTitle);
+        gridBlockContent.appendChild(gridBlockBodyContainer);
         gridBlockContent.appendChild(gridBlockFooter);
         gridBlock.appendChild(gridBlockContent);
         
@@ -154,16 +168,18 @@ function initGrid() {
         gridBlocks.unshift(gridBlock);
         shuffleInstance.element.insertBefore(gridBlock, shuffleInstance.element.firstChild);
 
-        ellipsizeElement(gridBlockDescriptionContainer, gridBlockDescriptionText);
+        ellipsizeElement(gridBlockBodyContainer, gridBlockDescriptionText);
 
         (function() {
             var idx = i;
             var contentBlock = gridBlockContent;
 
             contentBlock.onmouseenter = function() {
-                for (var j = 0; j < gridBlocks.length; j++) {
-                    if (gridBlocks[j].classList.contains('grid-block-tall')) {
-                        console.log("returning"); return;;
+                var bodyContainers = document.getElementsByClassName('grid-block-body-container');
+
+                for (var j = 0; j < bodyContainers.length; j++) {
+                    if (bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
+                        console.log("returning"); return;
                     }
                 }
 
@@ -179,10 +195,7 @@ function initGrid() {
                     gridBlocks[idx].classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
                     */
 
-                    gridBlocks[idx].classList.add('grid-block-tall');
-                    //document.getElementsByClassName('grid-block-description-container')[idx].classList.add('grid-block-description-container-tall');
-
-                    updateGridBlocks();
+                    bodyContainers[idx].classList.add('grid-block-body-container-tall');
 
                     // Fade out all other grid blocks
                     for (var j = 0; j < gridBlocks.length; j++) {
@@ -190,12 +203,41 @@ function initGrid() {
 
                         gridBlocks[j].style.opacity = 0.2;
                     }
+
+                    // Update grid block smoothly to avoid clunky animation
+                    for (var i = 0; i < 150; i += 2) {
+                        setTimeout(() => {
+                            updateGridBlock(idx);
+                        }, i);
+                    }
+
+                    setTimeout(() => {
+                        if (!isMouseInElement(contentBlock)) return;
+
+                        document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
+                        setTimeout(() => {
+                            document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
+                        });
+                        updateGridBlocks();
+
+                        // Fade out all other grid blocks
+                        for (var j = 0; j < gridBlocks.length; j++) {
+                            if (j == idx) continue;
+
+                            gridBlocks[j].style.opacity = 0.2;
+                        }
+                    }, 150);
                 }, 150);
             }
 
             contentBlock.onmouseleave = function() {
-                for (var j = 0; j < gridBlocks.length; j++) {
-                    if (j != idx && gridBlocks[j].classList.contains('grid-block-tall')) {
+                console.log("Left");
+                var bodyContainers = document.getElementsByClassName('grid-block-body-container');
+                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('faded-out');
+                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
+
+                for (var j = 0; j < bodyContainers.length; j++) {
+                    if (j != idx && bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
                         return;
                     }
                 }
@@ -205,10 +247,18 @@ function initGrid() {
                 gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
                 */
 
-                document.getElementsByClassName('grid-block')[idx].classList.remove('grid-block-tall');
-                //document.getElementsByClassName('grid-block-description-container')[idx].classList.remove('grid-block-description-container-tall');
-                
-                updateGridBlocks();
+                bodyContainers[idx].classList.remove('grid-block-body-container-tall');
+
+                // Update grid block smoothly to avoid clunky animation
+                for (var i = 0; i < 150; i += 2) {
+                    setTimeout(() => {
+                        updateGridBlock(idx);
+                    }, i);
+                }
+
+                setTimeout(() => {
+                    updateGridBlocks();
+                }, 150);
             }
         }());
     }
@@ -258,6 +308,12 @@ function initGrid() {
             }
         }());
     }
+
+    updateGridBlocks();
+    return;
+    setTimeout(() => {
+        updateGridBlocks();
+    }, 100);
 }
 
 function ellipsizeElement(container, textElement) {
@@ -285,7 +341,7 @@ function updateGridBlocks() {
 
 function updateGridBlock(idx) {
     document.getElementsByClassName('grid-block-description-text')[idx].innerHTML = jsonData[idx][Object.keys(jsonData[idx])[0]].description;
-    ellipsizeElement(document.getElementsByClassName('grid-block-description-container')[idx], document.getElementsByClassName('grid-block-description-text')[idx]);
+    ellipsizeElement(document.getElementsByClassName('grid-block-body-container')[idx], document.getElementsByClassName('grid-block-description-text')[idx]);
 }
 
 function isMouseInElement(el) {
