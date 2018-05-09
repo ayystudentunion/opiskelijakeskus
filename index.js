@@ -1,6 +1,9 @@
 var shuffle = require('shufflejs');
 var $ = require('jquery');
 
+// Container for grid items
+var shuffleContainer = document.getElementById('shuffle-container');
+
 // ShuffleJS initialization
 var element = document.querySelector('#shuffle-container');
 var sizer = element.querySelector('.sizer');
@@ -29,9 +32,33 @@ window.onload = function() {
 
     $.getJSON("data/data.json", function(result) {
         jsonData = result;
+
+        // Initialize main grid
         initGrid();
+
+        // Initialize Materialize (has to be after grid init)
+        M.AutoInit();
+
+        // Initialize events for materialize collapsibles
+        initEvents();
     });
 };
+
+var sortOptions = {
+    reverse: false,
+    randomize: true,
+    by: function(el) {
+        return el.getAttribute('grid-position');
+    }
+}
+
+document.getElementById('sort_btn').onclick = function() {
+    console.log("fuck");
+    shuffle.prototype.addSorting = function() {
+        document.querySelector('.grid-block').addEventListener('change', this.sort.bind(this));
+    }
+    shuffle.prototype.sort(sortOptions);
+}
 
 window.onresize = function() {
     updateGridBlocks();
@@ -60,9 +87,6 @@ document.getElementById('magicbutton').onclick = function() {
 
 // Initialize HTML grid
 function initGrid() {
-    // Container for grid items
-    var shuffleContainer = document.getElementById('shuffle-container');
-
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var title = null;
         var description = null;
@@ -81,7 +105,9 @@ function initGrid() {
 
         // Create elements
         var gridBlock = document.createElement('div');
-        gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-xs-12', 'grid-block');
+        //gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-xs-12', 'grid-block');
+        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl3');
+        gridBlock.setAttribute('grid-position', i);
 
         var gridBlockContent = document.createElement('div');
         gridBlockContent.classList.add('grid-block-content');
@@ -109,13 +135,40 @@ function initGrid() {
         var gridBlockReasonsTitle = document.createElement('p');
         gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
         gridBlockReasonsTitle.innerHTML = "Perustelut";
-
-        var gridBlockReasonsText = document.createElement('p');
-        gridBlockReasonsText.classList.add('grid-block-reasons-text');
-        gridBlockReasonsText.innerHTML = reasons;
-
         gridBlockReasonsContainer.appendChild(gridBlockReasonsTitle);
-        gridBlockReasonsContainer.appendChild(gridBlockReasonsText);
+
+        var gridBlockReasonsCollapsible = document.createElement('ul');
+        gridBlockReasonsCollapsible.classList.add('collapsible');
+
+        for (var j = 0; j < reasons.length; j++) {
+            var reasonBlock = document.createElement('li');
+
+            // Open first block by default
+            if (j == 0) reasonBlock.classList.add('active');
+
+            var reasonBlockHeader = document.createElement('div');
+            reasonBlockHeader.classList.add('collapsible-header', 'waves-effect', 'waves-light');
+
+            // Also add icon accordingly
+            // See https://materializecss.com/icons.html for information about icons
+            var reasonBlockIcon = document.createElement('i');
+            reasonBlockIcon.classList.add('material-icons');
+            reasonBlockIcon.innerHTML = (j == 0) ? "remove" : "add";
+            reasonBlockHeader.appendChild(reasonBlockIcon);
+            reasonBlock.appendChild(reasonBlockHeader);
+
+            var reasonBlockBody = document.createElement('div');
+            reasonBlockBody.classList.add('collapsible-body');
+
+            var reasonBlockBodyText = document.createElement('span');
+            reasonBlockBodyText.innerHTML = reasons[j];
+            reasonBlockBody.appendChild(reasonBlockBodyText);
+            reasonBlock.appendChild(reasonBlockBody);
+
+            gridBlockReasonsCollapsible.appendChild(reasonBlock);
+        }
+
+        gridBlockReasonsContainer.appendChild(gridBlockReasonsCollapsible);
 
         var gridBlockFooter = document.createElement('div');
         gridBlockFooter.classList.add('grid-block-footer');
@@ -177,15 +230,17 @@ function initGrid() {
             contentBlock.onmouseenter = function() {
                 var bodyContainers = document.getElementsByClassName('grid-block-body-container');
 
-                for (var j = 0; j < bodyContainers.length; j++) {
-                    if (bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
-                        console.log("returning"); return;
-                    }
-                }
-
                 // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
                 setTimeout(() => {
                     if (!isMouseInElement(contentBlock)) return;
+
+                    /*
+                    for (var j = 0; j < bodyContainers.length; j++) {
+                        if (bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
+                            console.log("returning"); return;
+                        }
+                    }
+                    */
 
                     /*
                     if ((idx + 1) % nrColumns == 0) {
@@ -193,7 +248,11 @@ function initGrid() {
                     }
                     gridBlocks[idx].classList.remove('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
                     gridBlocks[idx].classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
+                    's12', 'm6', 'l4', 'xl3'
                     */
+
+                    gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
+                    gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
 
                     bodyContainers[idx].classList.add('grid-block-body-container-tall');
 
@@ -205,14 +264,18 @@ function initGrid() {
                     }
 
                     // Update grid block smoothly to avoid clunky animation
-                    for (var i = 0; i < 150; i += 2) {
+                    /*
+                    for (var i = 0; i < 150; i += 5) {
                         setTimeout(() => {
                             updateGridBlock(idx);
                         }, i);
-                    }
+                    }*/
 
                     setTimeout(() => {
-                        if (!isMouseInElement(contentBlock)) return;
+                        if (!isMouseInElement(contentBlock)) {
+                            bodyContainers[idx].classList.remove('grid-block-body-container-tall');
+                            return;
+                        }
 
                         document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
                         setTimeout(() => {
@@ -227,38 +290,54 @@ function initGrid() {
                             gridBlocks[j].style.opacity = 0.2;
                         }
                     }, 150);
-                }, 150);
+                }, 200);
             }
 
             contentBlock.onmouseleave = function() {
-                console.log("Left");
-                var bodyContainers = document.getElementsByClassName('grid-block-body-container');
-                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('faded-out');
-                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
-
-                for (var j = 0; j < bodyContainers.length; j++) {
-                    if (j != idx && bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
-                        return;
-                    }
-                }
-
-                /*
-                gridBlocks[idx].classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
-                gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
-                */
-
-                bodyContainers[idx].classList.remove('grid-block-body-container-tall');
-
-                // Update grid block smoothly to avoid clunky animation
-                for (var i = 0; i < 150; i += 2) {
-                    setTimeout(() => {
-                        updateGridBlock(idx);
-                    }, i);
-                }
-
                 setTimeout(() => {
-                    updateGridBlocks();
-                }, 150);
+                    // The timeout and this check is done because sometimes the
+                    //   mouseleave event fires when opening other elements inside the grid block
+                    if (isMouseInElement(document.getElementsByClassName('grid-block-content')[idx])) return;
+
+                    var bodyContainers = document.getElementsByClassName('grid-block-body-container');
+                    document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('faded-out');
+
+                    setTimeout(() => {
+                        document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
+
+                        /*
+                        for (var j = 0; j < bodyContainers.length; j++) {
+                            if (j != idx && bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
+                                console.log("fuck");
+                                return;
+                            }
+                        }
+                        */
+    
+                        /*
+                        gridBlocks[idx].classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
+                        gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
+                        */
+
+                       gridBlocks[idx].classList.add('m6', 'l4', 'xl3');
+                       gridBlocks[idx].classList.remove('m12', 'l8', 'xl6');
+    
+                        bodyContainers[idx].classList.remove('grid-block-body-container-tall');
+    
+                        // Update grid block smoothly to avoid clunky animation
+                        /*
+                        for (var i = 0; i < 150; i += 5) {
+                            setTimeout(() => {
+                                updateGridBlock(idx);
+                            }, i);
+                        }
+                        */
+    
+                        setTimeout(() => {
+                            updateGridBlocks();
+                        }, 150);
+                    }, 200);
+                });
             }
         }());
     }
@@ -314,6 +393,28 @@ function initGrid() {
     setTimeout(() => {
         updateGridBlocks();
     }, 100);
+}
+
+function initEvents() {
+    var collapsibleHeaders = document.getElementsByClassName('collapsible-header');
+
+    for (var i = 0; i < collapsibleHeaders.length; i++) {
+        (function() {
+            var idx = i;
+
+            collapsibleHeaders[idx].onclick = function() {
+                setTimeout(() => {
+                    for (var i = 0; i < collapsibleHeaders.length; i++) {
+                        if (collapsibleHeaders[i].parentElement.classList.contains('active')) {
+                            collapsibleHeaders[i].firstChild.innerHTML = "remove";
+                        } else {
+                            collapsibleHeaders[i].firstChild.innerHTML = "add";
+                        }
+                    }
+                });
+            }
+        }());
+    }
 }
 
 function ellipsizeElement(container, textElement) {
