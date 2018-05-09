@@ -8,6 +8,70 @@
     src: url('../fonts/value-regular.otf');
 }
 
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url("../fonts/materialize-icons.woff2") format('woff2'),
+      url("../fonts/materialize-icons.woff") format('woff'),
+      url("../fonts/materialize-icons.ttf") format('truetype');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 18px !important; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.collapsible * {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.collapsible {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    border-left: none;
+    border-right: none;
+}
+
+.collapsible-header {
+    padding: 0.5rem !important;
+}
+
+.collapsible-body {
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.waves-effect.waves-light .waves-ripple {
+     background-color: rgba(200, 200, 200, 0.25);
+}
+
 :root {
     --grid-block-margin: 35px;
     --grid-block-body-container-height: 145px;
@@ -23,6 +87,10 @@ h2 {
 
 p {
     margin-bottom: 0;
+}
+
+div:focus {
+    outline: none;
 }
 
 .no-display {
@@ -48,30 +116,7 @@ body {
 
 #shuffle-container {
     width: 100%;
-
-    display: inline-grid;
-    grid-gap: 20px 20px;
-    grid-template-columns: 100fr;
-    grid-template-rows: auto;
     /*col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12*/
-}
-
-@media screen and (min-width: 576px) {
-    #shuffle-container {
-        grid-template-columns: 50fr 50fr;
-    }
-}
-
-@media screen and (min-width: 992px) {
-    #shuffle-container {
-        grid-template-columns: 33.33fr 33.33fr 33.33fr;
-    }
-}
-
-@media screen and (min-width: 1200px) {
-    #shuffle-container {
-        grid-template-columns: 25fr 25fr 25fr 25fr;
-    }
 }
 
 .grid-block {
@@ -129,13 +174,73 @@ body {
 }
 
 .grid-block-reasons-container {
-    padding: 10px;
-
+    margin-top: 40px;
     transition: opacity 0.2s ease-in-out;
 }
 
 .grid-block-reasons-title {
-    font-weight: 450;
+    font-weight: 350;
+    font-size: 0.95rem;
+    padding-left: 1.05rem;
+}
+
+.reason-toggle-btn {
+    width: 100%;
+    height: 30px;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    padding: 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+
+    cursor: pointer;
+}
+
+.icon-plus {
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    top: 0;
+    left: 0;
+
+    margin-left: 3px;
+}
+
+.icon-plus:after {
+    background-color: black;
+    width: 12px;
+    height: 2px;
+    position: absolute;
+    top: 11px;
+    left: 6px;
+    content: "";
+}
+
+.icon-plus:before {
+    background-color: black;
+    width: 2px;
+    height: 12px;
+    position: absolute;
+    top: 6px;
+    left: 11px;
+    content: "";
+}
+
+.reason-container {
+    width: 100%;
+
+    border-left: 1px solid #553180;
+    border-right: 1px solid #553180;
+    border-bottom: 1px solid #553180;
 }
 
 .grid-block-footer {
