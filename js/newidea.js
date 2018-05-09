@@ -38,7 +38,9 @@ sendIdeaBtn.onclick = function() {
     // Get values from input fields
     var ideaName = document.getElementById('idea_name').value;
     var ideaDesc = document.getElementById('idea_description').value;
-    var ideaReasons = document.getElementById('idea_reasons').value;
+    var ideaReason1 = document.getElementById('reason1').value;
+    var ideaReason2 = document.getElementById('reason2').value;
+    var ideaReason3 = document.getElementById('reason3').value;
 
     var iconPath = iconsContainer.children[selectedIcon].getAttribute('src');
     var iconFile = iconPath.substring(iconPath.indexOf(imagesFolderName) + imagesFolderName.length, iconPath.length);
@@ -65,9 +67,13 @@ sendIdeaBtn.onclick = function() {
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
         newIdeaObj[ideaName]["description"] = ideaDesc;
-        newIdeaObj[ideaName]["reasons"] = ideaReasons;
+        newIdeaObj[ideaName]["reasons"] = [];
         newIdeaObj[ideaName]["icon"] = iconFile;
         newIdeaObj[ideaName]["likes"] = "0";
+
+        if (ideaReason1 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason1);
+        if (ideaReason2 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason2);
+        if (ideaReason3 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason3);
 
         result.push(newIdeaObj);
 
@@ -95,11 +101,16 @@ generateIdeas.onclick = function() {
             desc += word + " ";
         }
 
-        var reasons = "";
-        for (var j = 0; j < Math.random() * 800; j++) {
-            var word = randWord();
-            if (j == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
-            reasons += word + " ";
+        var reasons = [];
+        for (var k = 0; k < 3; k++) {
+            var reason = "";
+            for (var j = 0; j < Math.random() * 600; j++) {
+                var word = randWord();
+                if (j == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
+                reason += word + " ";
+            }
+            
+            reasons.push(reason);
         }
 
         idea[name] = {};
