@@ -17,6 +17,7 @@ var shuffleInstance = new shuffle(element, {
 
 var jsonData = null;
 var nrColumns = -1;
+var disableEvents = false;
 
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
@@ -44,20 +45,8 @@ window.onload = function() {
     });
 };
 
-var sortOptions = {
-    reverse: false,
-    randomize: true,
-    by: function(el) {
-        return el.getAttribute('grid-position');
-    }
-}
-
-document.getElementById('sort_btn').onclick = function() {
-    console.log("fuck");
-    shuffle.prototype.addSorting = function() {
-        document.querySelector('.grid-block').addEventListener('change', this.sort.bind(this));
-    }
-    shuffle.prototype.sort(sortOptions);
+function sortGridByPosition(a, b) {
+    return a.element.getAttribute('grid-position') - b.element.getAttribute('grid-position');
 }
 
 window.onresize = function() {
@@ -67,11 +56,11 @@ window.onresize = function() {
 }
 
 function updateColumnAmount() {
-    if (window.clientWidth < 768) {
+    if (window.clientWidth < 600) {
         nrColumns = 1;
-    } else if (window.clientWidth < 992) {
+    } else if (window.clientWidth <= 992) {
         nrColumns = 2;
-    } else if (window.clientWidth < 1200) {
+    } else if (window.clientWidth <= 1200) {
         nrColumns = 3;
     } else {
         nrColumns = 4;
@@ -232,27 +221,28 @@ function initGrid() {
 
                 // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
                 setTimeout(() => {
-                    if (!isMouseInElement(contentBlock)) return;
+                    if (!isMouseInElement(contentBlock) || disableEvents) return;
 
-                    /*
-                    for (var j = 0; j < bodyContainers.length; j++) {
-                        if (bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
-                            console.log("returning"); return;
-                        }
+                    var isOnEdge = false;
+                    var colNr = parseInt(gridBlocks[idx].getAttribute('grid-position'));
+                    if ((colNr + 1) % nrColumns == 0) {
+                        isOnEdge = true;
+                        gridBlocks[idx - 1].setAttribute('grid-position', colNr);
+                        gridBlocks[idx].setAttribute('grid-position', colNr - 1);
+                        shuffleInstance.sort({compare: sortGridByPosition});
+                        disableEvents = true;
+
+                        setTimeout(() => {
+                            updateGridBlocks();
+                            disableEvents = false;
+                        }, 250);
                     }
-                    */
 
-                    /*
-                    if ((idx + 1) % nrColumns == 0) {
-                        console.log("Is last");
-                    }
-                    gridBlocks[idx].classList.remove('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
-                    gridBlocks[idx].classList.add('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
-                    's12', 'm6', 'l4', 'xl3'
-                    */
-
-                    gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
-                    gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
+                    // Timeout so that the edge cases (above) get to update the sorting before they expand
+                    setTimeout(() => {
+                        gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
+                        gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
+                    });
 
                     bodyContainers[idx].classList.add('grid-block-body-container-tall');
 
@@ -263,24 +253,21 @@ function initGrid() {
                         gridBlocks[j].style.opacity = 0.2;
                     }
 
-                    // Update grid block smoothly to avoid clunky animation
-                    /*
-                    for (var i = 0; i < 150; i += 5) {
-                        setTimeout(() => {
-                            updateGridBlock(idx);
-                        }, i);
-                    }*/
-
                     setTimeout(() => {
+                        if (!disableEvents || (disableEvents && isOnEdge)) {
+                            document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
+                            setTimeout(() => {
+                                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
+                            });
+                        }
+
+                        if (disableEvents) return;
+
                         if (!isMouseInElement(contentBlock)) {
                             bodyContainers[idx].classList.remove('grid-block-body-container-tall');
                             return;
                         }
 
-                        document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
-                        setTimeout(() => {
-                            document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
-                        });
                         updateGridBlocks();
 
                         // Fade out all other grid blocks
@@ -294,9 +281,12 @@ function initGrid() {
             }
 
             contentBlock.onmouseleave = function() {
+                if (disableEvents) return;
+
+                // The timeout is here because sometimes when leaving the grid block,
+                //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
                 setTimeout(() => {
-                    // The timeout and this check is done because sometimes the
-                    //   mouseleave event fires when opening other elements inside the grid block
+                    // The mouseleave event sometimes fires when opening other elements inside the grid block
                     if (isMouseInElement(document.getElementsByClassName('grid-block-content')[idx])) return;
 
                     var bodyContainers = document.getElementsByClassName('grid-block-body-container');
@@ -305,36 +295,21 @@ function initGrid() {
                     setTimeout(() => {
                         document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
 
-                        /*
-                        for (var j = 0; j < bodyContainers.length; j++) {
-                            if (j != idx && bodyContainers[j].classList.contains('grid-block-body-container-tall')) {
-                                console.log("fuck");
-                                return;
-                            }
-                        }
-                        */
-    
-                        /*
-                        gridBlocks[idx].classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6');
-                        gridBlocks[idx].classList.remove('col-xl-6', 'col-lg-8', 'col-md-12', 'col-sm-12');
-                        */
-
-                       gridBlocks[idx].classList.add('m6', 'l4', 'xl3');
-                       gridBlocks[idx].classList.remove('m12', 'l8', 'xl6');
+                        gridBlocks[idx].classList.add('m6', 'l4', 'xl3');
+                        gridBlocks[idx].classList.remove('m12', 'l8', 'xl6');
     
                         bodyContainers[idx].classList.remove('grid-block-body-container-tall');
     
-                        // Update grid block smoothly to avoid clunky animation
-                        /*
-                        for (var i = 0; i < 150; i += 5) {
-                            setTimeout(() => {
-                                updateGridBlock(idx);
-                            }, i);
-                        }
-                        */
-    
                         setTimeout(() => {
                             updateGridBlocks();
+
+                            var gridPos = parseInt(gridBlocks[idx].getAttribute('grid-position'));
+                            
+                            if ((gridPos + 2) % nrColumns == 0 && (idx + 2) % nrColumns != 0) {
+                                gridBlocks[idx - 1].setAttribute('grid-position', gridPos);
+                                gridBlocks[idx].setAttribute('grid-position', gridPos + 1);
+                                shuffleInstance.sort({compare: sortGridByPosition});
+                            }
                         }, 150);
                     }, 200);
                 });
