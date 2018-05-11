@@ -150,7 +150,7 @@ body {
     height: var(--grid-block-body-container-height);
     overflow-y: hidden;
 
-    transition: height 0.15s ease-in-out;
+    transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
     /*
     145px normal
     379px tall
