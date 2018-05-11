@@ -95,7 +95,7 @@ generateIdeas.onclick = function() {
         var name = randWord();
         name = name.charAt(0).toUpperCase() + name.slice(1);
         var desc = "";
-        for (var j = 0; j < Math.random() * 800; j++) {
+        while (desc.length < 450) {
             var word = randWord();
             if (j == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
             desc += word + " ";
