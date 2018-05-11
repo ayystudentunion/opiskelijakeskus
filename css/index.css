@@ -157,6 +157,10 @@ body {
     */
 }
 
+.grid-block-content > * {
+    transition: opacity 0.3s;
+}
+
 .grid-block-body-container-tall {
     height: calc(var(--grid-block-margin) + 379px) !important;
 }
