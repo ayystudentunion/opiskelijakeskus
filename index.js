@@ -19,12 +19,21 @@ var jsonData = null;
 var nrColumns = -1;
 var disableEvents = false;
 
+var lastBlockEnterTime = 0;
+var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
 
 window.onmousemove = function(event) {
     mouseX = event.clientX;
     mouseY = event.clientY;
+
+    var contentBlocks = document.getElementsByClassName('grid-block-content');
+    for (var i = 0; i < contentBlocks.length; i++) {
+        if (isMouseInElement(contentBlocks[i]) && !document.getElementsByClassName('grid-block-body-container')[i].classList.contains('grid-block-body-container-tall')) {
+            onBlockMouseEnter(contentBlocks[i], i);
+        }
+    }
 }
 
 // Load data from JSON
@@ -52,7 +61,7 @@ function sortGridByPosition(a, b) {
 window.onresize = function() {
     updateGridBlocks();
 
-    updateColumnAmount();    
+    updateColumnAmount();
 }
 
 function updateColumnAmount() {
@@ -96,6 +105,8 @@ function initGrid() {
         var gridBlock = document.createElement('div');
         //gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-xs-12', 'grid-block');
         gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl3');
+
+        // Set grid position for sorting
         gridBlock.setAttribute('grid-position', i);
 
         var gridBlockContent = document.createElement('div');
@@ -217,67 +228,7 @@ function initGrid() {
             var contentBlock = gridBlockContent;
 
             contentBlock.onmouseenter = function() {
-                var bodyContainers = document.getElementsByClassName('grid-block-body-container');
-
-                // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
-                setTimeout(() => {
-                    if (!isMouseInElement(contentBlock) || disableEvents) return;
-
-                    var isOnEdge = false;
-                    var colNr = parseInt(gridBlocks[idx].getAttribute('grid-position'));
-                    if ((colNr + 1) % nrColumns == 0) {
-                        isOnEdge = true;
-                        gridBlocks[idx - 1].setAttribute('grid-position', colNr);
-                        gridBlocks[idx].setAttribute('grid-position', colNr - 1);
-                        shuffleInstance.sort({compare: sortGridByPosition});
-                        disableEvents = true;
-
-                        setTimeout(() => {
-                            updateGridBlocks();
-                            disableEvents = false;
-                        }, 250);
-                    }
-
-                    // Timeout so that the edge cases (above) get to update the sorting before they expand
-                    setTimeout(() => {
-                        gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
-                        gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
-                    });
-
-                    bodyContainers[idx].classList.add('grid-block-body-container-tall');
-
-                    // Fade out all other grid blocks
-                    for (var j = 0; j < gridBlocks.length; j++) {
-                        if (j == idx) continue;
-
-                        gridBlocks[j].style.opacity = 0.2;
-                    }
-
-                    setTimeout(() => {
-                        if (!disableEvents || (disableEvents && isOnEdge)) {
-                            document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
-                            setTimeout(() => {
-                                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
-                            });
-                        }
-
-                        if (disableEvents) return;
-
-                        if (!isMouseInElement(contentBlock)) {
-                            bodyContainers[idx].classList.remove('grid-block-body-container-tall');
-                            return;
-                        }
-
-                        updateGridBlocks();
-
-                        // Fade out all other grid blocks
-                        for (var j = 0; j < gridBlocks.length; j++) {
-                            if (j == idx) continue;
-
-                            gridBlocks[j].style.opacity = 0.2;
-                        }
-                    }, 150);
-                }, 200);
+                onBlockMouseEnter(contentBlock, idx);
             }
 
             contentBlock.onmouseleave = function() {
@@ -292,6 +243,10 @@ function initGrid() {
                     var bodyContainers = document.getElementsByClassName('grid-block-body-container');
                     document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('faded-out');
 
+                    if (bodyContainer[idx].classList.contains('grid-block-body-container-tall')) {
+                        lastBlockLeaveTime = performance.now();
+                    }
+
                     setTimeout(() => {
                         document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
 
@@ -302,6 +257,13 @@ function initGrid() {
     
                         setTimeout(() => {
                             updateGridBlocks();
+
+                            // Fade out all other grid blocks
+                            for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
+                                for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
+                                    document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 1;
+                                }
+                            }
 
                             var gridPos = parseInt(gridBlocks[idx].getAttribute('grid-position'));
                             
@@ -368,6 +330,89 @@ function initGrid() {
     setTimeout(() => {
         updateGridBlocks();
     }, 100);
+}
+
+function onBlockMouseEnter(contentBlock, idx) {
+    var currTime = performance.now();
+    if (currTime - lastBlockEnterTime < 450) {
+        return;
+    }
+    lastBlockEnterTime = currTime;
+
+    var bodyContainers = document.getElementsByClassName('grid-block-body-container');
+
+    // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
+    setTimeout(() => {
+        if (!isMouseInElement(contentBlock) || disableEvents || performance.now() - lastBlockLeaveTime < 550) return;
+
+        var isOnEdge = false;
+        var colNr = parseInt(gridBlocks[idx].getAttribute('grid-position'));
+        if ((colNr + 1) % nrColumns == 0) {
+            isOnEdge = true;
+            gridBlocks[idx - 1].setAttribute('grid-position', colNr);
+            gridBlocks[idx].setAttribute('grid-position', colNr - 1);
+            shuffleInstance.sort({compare: sortGridByPosition});
+            disableEvents = true;
+
+            setTimeout(() => {
+                updateGridBlocks();
+                disableEvents = false;
+
+                // Fade out all other grid blocks
+                for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
+                    if (j == idx) continue;
+
+                    for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
+                        document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
+                    }
+                }
+            }, 250);
+        }
+
+        // Timeout so that the edge cases (above) get to update the sorting before they expand
+        setTimeout(() => {
+            gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
+            gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
+        });
+
+        bodyContainers[idx].classList.add('grid-block-body-container-tall');
+
+        // Fade out all other grid blocks
+        for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
+            if (j == idx) continue;
+
+            for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
+                document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
+            }
+        }
+
+        setTimeout(() => {
+            if (!disableEvents || (disableEvents && isOnEdge)) {
+                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
+                setTimeout(() => {
+                    document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
+                });
+            }
+
+            if (disableEvents) return;
+
+            if (!isMouseInElement(contentBlock)) {
+                bodyContainers[idx].classList.remove('grid-block-body-container-tall');
+                return;
+            }
+
+            updateGridBlocks();
+
+            // Fade out all other grid blocks
+            for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
+                if (j == idx) continue;
+
+                for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
+                    document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
+                }
+            }
+        }, 150);
+    }, 150);
 }
 
 function initEvents() {
