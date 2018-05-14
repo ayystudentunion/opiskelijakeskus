@@ -18,21 +18,28 @@ var shuffleInstance = new shuffle(element, {
 var jsonData = null;
 var nrColumns = -1;
 var disableEvents = false;
+var pageButtonsDisabled = false;
 
 var currentPage = 0;
+var currentPageCols = 0;
 var lastBlockEnterTime = 0;
 var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
+
+var prevPageBtn = document.getElementById('previous_page');
+var nextPageBtn = document.getElementById('next_page');
 
 // Store grid blocks because might have to be resized
 var gridBlocks = [];
 var descriptionTexts = [];
 var bodyContainers = [];
 var reasonContainers = [];
+var gridBlockContents = [];
 var hearts = [];
 var likesTexts = [];
 var headerTexts = [];
+var collapsibleHeaders = [];
 
 var maxBlocksInPage = null;
 
@@ -40,10 +47,10 @@ window.onmousemove = function(event) {
     mouseX = event.clientX;
     mouseY = event.clientY;
 
-    var contentBlocks = document.getElementsByClassName('grid-block-content');
-    for (var i = 0; i < contentBlocks.length; i++) {
-        if (isMouseInElement(contentBlocks[i]) && !document.getElementsByClassName('grid-block-body-container')[i].classList.contains('grid-block-body-container-tall')) {
-            onBlockMouseEnter(contentBlocks[i], i);
+    var startIdx = currentPage * maxBlocksInPage;
+    for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlockContents.length); i++) {
+        if (isMouseInElement(gridBlockContents[i]) && !gridBlockContents[i].classList.contains('grid-block-body-container-tall')) {
+            onBlockMouseEnter(gridBlockContents[i], i);
         }
     }
 }
@@ -51,6 +58,8 @@ window.onmousemove = function(event) {
 // Load data from JSON
 window.onload = function() {
     updateColumnAmount();
+
+    currentPageCols = nrColumns;
 
     $.getJSON("data/data.json", function(result) {
         jsonData = result;
@@ -62,7 +71,9 @@ window.onload = function() {
         M.AutoInit();
 
         // Initialize events for materialize collapsibles
-        initEvents();
+        setTimeout(() => {
+            initMaterializeEvents();
+        }, 1000)
     });
 };
 
@@ -87,10 +98,8 @@ function updateColumnAmount() {
         nrColumns = 4;
     }
 
-    console.log(nrColumns);
-
     // Update max block amount according to the column amount
-    maxBlocksInPage = 16;
+    maxBlocksInPage = 12;
     maxBlocksInPage -= maxBlocksInPage % nrColumns;
 }
 
@@ -98,7 +107,61 @@ document.getElementById('magicbutton').onclick = function() {
     updateGridBlocks();
 }
 
-// Initialize HTML grid
+prevPageBtn.onclick = function() {
+    moveToPage(currentPage - 1, function(err) {
+        // Handle error if needed
+    });
+}
+
+nextPageBtn.onclick = function() {
+    moveToPage(currentPage + 1, function(err) {
+        // Handle error if needed
+    });
+}
+
+function moveToPage(wantedIdx, errorCB) {
+    if (pageButtonsDisabled) return errorCB("Already switching pages");
+
+    if (wantedIdx < 0) {
+        return errorCB("Already at the first page");
+    }
+
+    if (((wantedIdx + 1) * maxBlocksInPage) - gridBlocks.length > maxBlocksInPage) {
+        return errorCB("Reached the end of pages");
+    }
+
+    pageButtonsDisabled = true;
+
+    var startRemoveIdx = currentPage * maxBlocksInPage;
+    shuffleInstance.remove(gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length)));
+
+    // Wait for animation to finish (and add some extra timeout for nicer animation)
+    setTimeout(() => {
+        var startIdx = wantedIdx * maxBlocksInPage;
+
+        // Add new items to the page and shuffle
+        for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
+            shuffleContainer.appendChild(gridBlocks[i], shuffleContainer.firstChild);
+            shuffleInstance.element.appendChild(gridBlocks[i], shuffleInstance.element.firstChild);
+        }
+
+        shuffleInstance.add(gridBlocks.slice(startIdx, startIdx + maxBlocksInPage));
+
+        setTimeout(() => {
+            currentPage = wantedIdx;
+
+            updateGridBlocks();
+
+            pageButtonsDisabled = false;
+
+            M.AutoInit();
+            initMaterializeEvents();
+        }, 150);
+    }, 400);
+}
+
+// Initializes the grid system. Creates all HTML elements for the grid
+//   and adds the first page to the DOM and ShuffleJS. All other grid elements are stored.
 function initGrid() {
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var flippedIdx = Math.abs((i + 1) - jsonData.length);
@@ -120,14 +183,14 @@ function initGrid() {
 
         // Create elements
         var gridBlock = document.createElement('div');
-        //gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-xs-12', 'grid-block');
         gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3');
 
         // Set grid position for sorting
         gridBlock.setAttribute('grid-position', flippedIdx);
 
         var gridBlockContent = document.createElement('div');
-        gridBlockContent.classList.add('grid-block-content');
+        gridBlockContent.classList.add('grid-block-content', 'hoverable');
+        gridBlockContents.push(gridBlockContent);
 
         var gridBlockHeaderContainer = document.createElement('div');
         gridBlockHeaderContainer.classList.add('grid-block-header-container');
@@ -160,7 +223,11 @@ function initGrid() {
         var gridBlockReasonsCollapsible = document.createElement('ul');
         gridBlockReasonsCollapsible.classList.add('collapsible');
 
-        for (var j = 0; j < reasons.length; j++) {
+        if (reasons == null) {
+            console.log("Index " + flippedIdx + " has no reasons");
+        }
+
+        for (var j = 0; reasons != null && j < reasons.length; j++) {
             var reasonBlock = document.createElement('li');
 
             // Open first block by default
@@ -176,6 +243,7 @@ function initGrid() {
             reasonBlockIcon.innerHTML = (j == 0) ? "remove" : "add";
             reasonBlockHeader.appendChild(reasonBlockIcon);
             reasonBlock.appendChild(reasonBlockHeader);
+            collapsibleHeaders.push(reasonBlockHeader);
 
             var reasonBlockBody = document.createElement('div');
             reasonBlockBody.classList.add('collapsible-body');
@@ -231,16 +299,12 @@ function initGrid() {
         gridBlockContent.appendChild(gridBlockFooter);
         gridBlock.appendChild(gridBlockContent);
         descriptionTexts.push(gridBlockDescriptionText);
-
         gridBlocks.push(gridBlock);
         
         if (flippedIdx < maxBlocksInPage) {
-            // Insert at the beginning because there are a couple
-            //     of empty grid blocks inside the shuffle container
-            //     that make sure that the bottom of the grid looks good.
             shuffleContainer.appendChild(gridBlock, shuffleContainer.firstChild);
 
-            // Add new elements to shuffle
+            // Add new element to shuffle
             shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
         }
 
@@ -261,12 +325,7 @@ function initGrid() {
                 //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
                 setTimeout(() => {
                     // The mouseleave event sometimes fires when opening other elements inside the grid block
-                    if (isMouseInElement(contentBlock) || !bodyContainers[idx].classList.contains('grid-block-body-container-tall')) {
-                        if (isMouseInElement(contentBlock)) {
-                            console.log("in it");
-                        }
-                        return;
-                    }
+                    if (isMouseInElement(contentBlock) || !bodyContainers[idx].classList.contains('grid-block-body-container-tall')) return;
 
                     reasonContainers[idx].classList.add('faded-out');
 
@@ -301,7 +360,7 @@ function initGrid() {
     }
 
     // Update shuffle
-    shuffleInstance.add(gridBlocks);
+    shuffleInstance.add(gridBlocks.slice(0, maxBlocksInPage));
     shuffleInstance.update();
 
     for (var i = 0; i < hearts.length; i++) {
@@ -347,7 +406,7 @@ function initGrid() {
 
     setTimeout(() => {
         updateGridBlocks();
-    }, 200);
+    }, 150);
 }
 
 function onBlockMouseEnter(contentBlock, idx) {
@@ -426,7 +485,7 @@ function onBlockMouseEnter(contentBlock, idx) {
     }, 150);
 }
 
-function initEvents() {
+function initMaterializeEvents() {
     var collapsibleHeaders = document.getElementsByClassName('collapsible-header');
 
     for (var i = 0; i < collapsibleHeaders.length; i++) {
@@ -449,11 +508,13 @@ function initEvents() {
 }
 
 function fadeGridBlockContent(opacity, idx) {
-    for (var i = 0; i < document.getElementsByClassName('grid-block-content').length; i++) {
+    var startIdx = currentPage * maxBlocksInPage;
+    
+    for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == idx) continue;
 
-        for (var j = 0; j < document.getElementsByClassName('grid-block-content')[i].childElementCount; j++) {
-            document.getElementsByClassName('grid-block-content')[i].children[j].style.opacity = opacity;
+        for (var j = 0; j < gridBlockContents[i].childElementCount; j++) {
+            gridBlockContents[i].children[j].style.opacity = opacity;
         }
     }
 }
@@ -476,7 +537,8 @@ function ellipsizeElement(container, textElement) {
 }
 
 function updateGridBlocks() {
-    for (var i = 0; i < gridBlocks.length; i++) {
+    var startIdx = currentPage * maxBlocksInPage;
+    for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
         updateGridBlock(i);
     }
     
@@ -485,7 +547,7 @@ function updateGridBlocks() {
 
 function updateGridBlock(idx) {
     descriptionTexts[idx].innerHTML = jsonData[idx][Object.keys(jsonData[idx])[0]].description;
-    ellipsizeElement(document.getElementsByClassName('grid-block-body-container')[idx], document.getElementsByClassName('grid-block-description-text')[idx]);
+    ellipsizeElement(bodyContainers[idx], descriptionTexts[idx]);
 }
 
 function isMouseInElement(el) {
