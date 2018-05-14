@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>new idea page yes haha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/materialize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/new_idea.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../images/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <h2>Idean nimi</h2>
+    <div class="row">
+        <input id="idea_name" class="col s2 offset-s5" type="text" placeholder="Idean nimi..." required />
+    </div>
+
+    <h2>Idean kuvaus</h2>
+    <div class="row">
+        <input id="idea_description" class="col s2 offset-s5" type="text" placeholder="Idean kuvaus..." />
+    </div>
+
+    <h2>Idean perustelut</h2>
+    <div class="row">
+        <input id="reason1" class="col s2 offset-s5" type="text" placeholder="Anna perustelu..." />
+        <input id="reason2" class="col s2 offset-s5" type="text" placeholder="Anna perustelu..." />
+        <input id="reason3" class="col s2 offset-s5" type="text" placeholder="Anna perustelu..." />
+    </div>
+
+    <h2>Kuvake</h2>
+    <div id="icons">
+        <img src="../images/icon1.png" />
+        <img src="../images/icon2.png" />
+        <img src="../images/icon3.png" />
+        <img src="../images/icon4.png" />
+        <img src="../images/icon5.png" />
+        <img src="../images/icon6.png" />
+        <img src="../images/icon7.png" />
+    </div>
+
+    <h2>Lähetä idea</h2>
+    <button id="send_idea_btn" type="button" class="button btn">Lähetä</button>
+
+    <button id="generate_ideas" type="button" class="button btn">or just generate some ideas randomly</button>
+    
+    <div class="row">
+        <input id="how_many_random_ideas" class="col s2 offset-s5" type="text" placeholder="how mayn random diesa?" value="30" />
+    </div>
+
+    <script src="../js/new_idea_bundle.js"></script>
+</body>
+</html>
