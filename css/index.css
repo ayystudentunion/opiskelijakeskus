@@ -42,6 +42,19 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.brand-logo {
+    background-image: url('../images/favicon/android-chrome-384x384.png');
+    background-size: cover;
+
+    width: 65px;
+    height: 65px;
+    margin-left: 1.25rem;
+}
+
+ul.right {
+    margin-right: 1.25rem;
+}
+
 .collapsible * {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -73,7 +86,7 @@
 }
 
 :root {
-    --grid-block-margin: 35px;
+    --grid-block-margin: 25px;
     --grid-block-body-container-height: 145px;
 }
 
@@ -101,6 +114,10 @@ div:focus {
     opacity: 0 !important;
 }
 
+.no-events {
+    pointer-events: none !important;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -122,10 +139,16 @@ body {
 }
 
 .grid-block {
-    padding-left: 1.15em;
-    padding-right: 1.15em;
+    padding-left: 1.25em !important;
+    padding-right: 1.25em !important;
 
     margin-top: var(--grid-block-margin);
+    margin-bottom: var(--grid-block-margin);
+}
+
+.extra-block {
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 .grid-block-tall {
@@ -164,7 +187,7 @@ body {
 }
 
 .grid-block-body-container-tall {
-    height: calc(var(--grid-block-margin) + 379px) !important;
+    height: calc(var(--grid-block-margin) * 2 + 379px) !important;
 }
 
 .grid-block-description-container {
