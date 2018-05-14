@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    text-align: center;
+}
+
+h1, h2 {
+    font-weight: 300;
+}
+
+input, textarea {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+#icons img {
+    margin: 10px;
+    cursor: pointer;
+}
