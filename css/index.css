@@ -112,6 +112,8 @@ body {
 
 #content-container {
     margin-top: 10vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 #shuffle-container {
