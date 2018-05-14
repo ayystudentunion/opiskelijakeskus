@@ -19,10 +19,22 @@ var jsonData = null;
 var nrColumns = -1;
 var disableEvents = false;
 
+var currentPage = 0;
 var lastBlockEnterTime = 0;
 var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
+
+// Store grid blocks because might have to be resized
+var gridBlocks = [];
+var descriptionTexts = [];
+var bodyContainers = [];
+var reasonContainers = [];
+var hearts = [];
+var likesTexts = [];
+var headerTexts = [];
+
+var maxBlocksInPage = null;
 
 window.onmousemove = function(event) {
     mouseX = event.clientX;
@@ -65,19 +77,22 @@ window.onresize = function() {
 }
 
 function updateColumnAmount() {
-    if (window.clientWidth < 600) {
+    if (window.innerWidth < 600) {
         nrColumns = 1;
-    } else if (window.clientWidth <= 992) {
+    } else if (window.innerWidth <= 992) {
         nrColumns = 2;
-    } else if (window.clientWidth <= 1200) {
+    } else if (window.innerWidth <= 1550) {
         nrColumns = 3;
     } else {
         nrColumns = 4;
     }
-}
 
-// Store grid blocks because might have to be resized
-var gridBlocks = [];
+    console.log(nrColumns);
+
+    // Update max block amount according to the column amount
+    maxBlocksInPage = 16;
+    maxBlocksInPage -= maxBlocksInPage % nrColumns;
+}
 
 document.getElementById('magicbutton').onclick = function() {
     updateGridBlocks();
@@ -86,6 +101,8 @@ document.getElementById('magicbutton').onclick = function() {
 // Initialize HTML grid
 function initGrid() {
     for (var i = jsonData.length - 1; i >= 0; i--) {
+        var flippedIdx = Math.abs((i + 1) - jsonData.length);
+
         var title = null;
         var description = null;
         var reasons = null;
@@ -104,10 +121,10 @@ function initGrid() {
         // Create elements
         var gridBlock = document.createElement('div');
         //gridBlock.classList.add('col-xl-3', 'col-lg-4', 'col-md-6', 'col-sm-6', 'col-xs-12', 'grid-block');
-        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl3');
+        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3');
 
         // Set grid position for sorting
-        gridBlock.setAttribute('grid-position', i);
+        gridBlock.setAttribute('grid-position', flippedIdx);
 
         var gridBlockContent = document.createElement('div');
         gridBlockContent.classList.add('grid-block-content');
@@ -118,9 +135,11 @@ function initGrid() {
         var gridBlockHeaderText = document.createElement('p');
         gridBlockHeaderText.classList.add('grid-block-header-text');
         gridBlockHeaderText.innerHTML = title;
+        headerTexts.push(gridBlockHeaderText);
 
         var gridBlockBodyContainer = document.createElement('div');
         gridBlockBodyContainer.classList.add('grid-block-body-container');
+        bodyContainers.push(gridBlockBodyContainer);
 
         var gridBlockDescriptionContainer = document.createElement('div');
         gridBlockDescriptionContainer.classList.add('grid-block-description-container');
@@ -131,6 +150,7 @@ function initGrid() {
 
         var gridBlockReasonsContainer = document.createElement('div');
         gridBlockReasonsContainer.classList.add('grid-block-reasons-container', 'no-display', 'faded-out');
+        reasonContainers.push(gridBlockReasonsContainer);
 
         var gridBlockReasonsTitle = document.createElement('p');
         gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
@@ -186,9 +206,11 @@ function initGrid() {
         var gridBlockLikes = document.createElement('div');
         gridBlockLikes.classList.add('grid-block-likes');
         gridBlockLikes.innerHTML = String(likes);
+        likesTexts.push(gridBlockLikes);
 
         var gridBlockHeart = document.createElement('div');
         gridBlockHeart.classList.add('grid-block-heart');
+        hearts.push(gridBlockHeart);
 
         gridBlockHeartContainer.appendChild(gridBlockLikes);
         gridBlockHeartContainer.appendChild(gridBlockHeart);
@@ -208,23 +230,22 @@ function initGrid() {
         gridBlockContent.appendChild(gridBlockBodyContainer);
         gridBlockContent.appendChild(gridBlockFooter);
         gridBlock.appendChild(gridBlockContent);
+        descriptionTexts.push(gridBlockDescriptionText);
+
+        gridBlocks.push(gridBlock);
         
-        // Insert at the beginning because there are a couple
-        //     of empty grid blocks inside the shuffle container
-        //     that make sure that the bottom of the grid looks good.
-        shuffleContainer.insertBefore(gridBlock, shuffleContainer.firstChild);
+        if (flippedIdx < maxBlocksInPage) {
+            // Insert at the beginning because there are a couple
+            //     of empty grid blocks inside the shuffle container
+            //     that make sure that the bottom of the grid looks good.
+            shuffleContainer.appendChild(gridBlock, shuffleContainer.firstChild);
 
-        // Flip the index since we're iterating from end to start
-        updateGridBlock(Math.abs(i + 1 - jsonData.length));
-
-        // Add new elements to shuffle
-        gridBlocks.unshift(gridBlock);
-        shuffleInstance.element.insertBefore(gridBlock, shuffleInstance.element.firstChild);
-
-        ellipsizeElement(gridBlockBodyContainer, gridBlockDescriptionText);
+            // Add new elements to shuffle
+            shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
+        }
 
         (function() {
-            var idx = i;
+            var idx = flippedIdx;
             var contentBlock = gridBlockContent;
 
             contentBlock.onmouseenter = function() {
@@ -232,42 +253,42 @@ function initGrid() {
             }
 
             contentBlock.onmouseleave = function() {
-                if (disableEvents) return;
+                var gridPos = parseInt(gridBlocks[idx].getAttribute('grid-position'));
+
+                if (disableEvents && !((gridPos + 2) % nrColumns == 0 && (idx + 2) % nrColumns != 0)) return;
 
                 // The timeout is here because sometimes when leaving the grid block,
                 //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
                 setTimeout(() => {
                     // The mouseleave event sometimes fires when opening other elements inside the grid block
-                    if (isMouseInElement(document.getElementsByClassName('grid-block-content')[idx])) return;
+                    if (isMouseInElement(contentBlock) || !bodyContainers[idx].classList.contains('grid-block-body-container-tall')) {
+                        if (isMouseInElement(contentBlock)) {
+                            console.log("in it");
+                        }
+                        return;
+                    }
 
-                    var bodyContainers = document.getElementsByClassName('grid-block-body-container');
-                    document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('faded-out');
+                    reasonContainers[idx].classList.add('faded-out');
 
-                    if (bodyContainer[idx].classList.contains('grid-block-body-container-tall')) {
+                    if (bodyContainers[idx].classList.contains('grid-block-body-container-tall')) {
                         lastBlockLeaveTime = performance.now();
                     }
 
                     setTimeout(() => {
-                        document.getElementsByClassName('grid-block-reasons-container')[idx].classList.add('no-display');
+                        reasonContainers[idx].classList.add('no-display');
 
-                        gridBlocks[idx].classList.add('m6', 'l4', 'xl3');
-                        gridBlocks[idx].classList.remove('m12', 'l8', 'xl6');
+                        gridBlocks[idx].classList.add('m12', 'l8', 'xl8', 'xxl6');
+                        gridBlocks[idx].classList.remove('m12', 'l8', 'xl8', 'xxl6');
     
                         bodyContainers[idx].classList.remove('grid-block-body-container-tall');
     
                         setTimeout(() => {
                             updateGridBlocks();
 
-                            // Fade out all other grid blocks
-                            for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
-                                for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
-                                    document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 1;
-                                }
-                            }
-
-                            var gridPos = parseInt(gridBlocks[idx].getAttribute('grid-position'));
+                            // Fade in all other grid blocks
+                            fadeGridBlockContent(1.0, idx);
                             
-                            if ((gridPos + 2) % nrColumns == 0 && (idx + 2) % nrColumns != 0) {
+                            if (nrColumns > 1 && (gridPos + 2) % nrColumns == 0 && (idx + 2) % nrColumns != 0) {
                                 gridBlocks[idx - 1].setAttribute('grid-position', gridPos);
                                 gridBlocks[idx].setAttribute('grid-position', gridPos + 1);
                                 shuffleInstance.sort({compare: sortGridByPosition});
@@ -283,18 +304,17 @@ function initGrid() {
     shuffleInstance.add(gridBlocks);
     shuffleInstance.update();
 
-    var gridHearts = document.getElementsByClassName('grid-block-heart');
-    for (var i = 0; i < gridHearts.length; i++) {
+    for (var i = 0; i < hearts.length; i++) {
         (function() {
             var idx = i;
 
-            gridHearts[idx].onclick = function() {
-                gridHearts[idx].classList.toggle('grid-block-heart-selected');
+            hearts[idx].onclick = function() {
+                hearts[idx].classList.toggle('grid-block-heart-selected');
 
-                var likesText = document.getElementsByClassName('grid-block-likes')[idx];
+                var likesText = likesTexts[idx];
                 var likesCount = parseInt(likesText.innerHTML);
 
-                if (gridHearts[idx].classList.contains('grid-block-heart-selected')) {
+                if (hearts[idx].classList.contains('grid-block-heart-selected')) {
                     likesCount++;
                 } else {
                     likesCount--;
@@ -303,7 +323,7 @@ function initGrid() {
                 // Update HTML and data file
                 likesText.innerHTML = String(likesCount);
                 $.getJSON("data/data.json", function(result) {
-                    var ideaName = document.getElementsByClassName('grid-block-header-text')[idx].innerHTML;
+                    var ideaName = headerTexts[idx].innerHTML;
 
                     // Update likes (there might be better way to do this..)
                     for (var i = 0; i < result.length; i++) {
@@ -325,92 +345,83 @@ function initGrid() {
         }());
     }
 
-    updateGridBlocks();
-    return;
     setTimeout(() => {
         updateGridBlocks();
-    }, 100);
+    }, 200);
 }
 
 function onBlockMouseEnter(contentBlock, idx) {
     var currTime = performance.now();
-    if (currTime - lastBlockEnterTime < 450) {
+
+    // Add 
+    if (currTime - lastBlockEnterTime < 500) {
         return;
     }
-    lastBlockEnterTime = currTime;
 
-    var bodyContainers = document.getElementsByClassName('grid-block-body-container');
+    lastBlockEnterTime = currTime;
 
     // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
     setTimeout(() => {
+        // Check that the mouse is still inside the block.
+        //   The timing check is here to allow all animations to finish before new ones start.
         if (!isMouseInElement(contentBlock) || disableEvents || performance.now() - lastBlockLeaveTime < 550) return;
 
         var isOnEdge = false;
         var colNr = parseInt(gridBlocks[idx].getAttribute('grid-position'));
-        if ((colNr + 1) % nrColumns == 0) {
+
+        // Check if block is on the edge. If it is, it needs to be pushed
+        //   one position to the left so it doesn't jump to the next row when it expands
+        if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
             isOnEdge = true;
+
+            // Swap edge block and the one before it and resort all blocks
             gridBlocks[idx - 1].setAttribute('grid-position', colNr);
             gridBlocks[idx].setAttribute('grid-position', colNr - 1);
             shuffleInstance.sort({compare: sortGridByPosition});
             disableEvents = true;
 
+            // Wait for transform animation
             setTimeout(() => {
                 updateGridBlocks();
                 disableEvents = false;
 
                 // Fade out all other grid blocks
-                for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
-                    if (j == idx) continue;
-
-                    for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
-                        document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
-                    }
-                }
+                fadeGridBlockContent(0.0, idx);
             }, 250);
         }
 
         // Timeout so that the edge cases (above) get to update the sorting before they expand
         setTimeout(() => {
-            gridBlocks[idx].classList.remove('m6', 'l4', 'xl3');
-            gridBlocks[idx].classList.add('m12', 'l8', 'xl6');
+            gridBlocks[idx].classList.remove('m12', 'l8', 'xl8', 'xxl6');
+            gridBlocks[idx].classList.add('m12', 'l8', 'xl8', 'xxl6');
         });
 
         bodyContainers[idx].classList.add('grid-block-body-container-tall');
 
         // Fade out all other grid blocks
-        for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
-            if (j == idx) continue;
-
-            for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
-                document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
-            }
-        }
+        fadeGridBlockContent(0.0, idx);
 
         setTimeout(() => {
+            // Update edge block (events are disabled only on edge block cases)
             if (!disableEvents || (disableEvents && isOnEdge)) {
-                document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('no-display');
+                reasonContainers[idx].classList.remove('no-display');
                 setTimeout(() => {
-                    document.getElementsByClassName('grid-block-reasons-container')[idx].classList.remove('faded-out');
+                    reasonContainers[idx].classList.remove('faded-out');
                 });
             }
 
             if (disableEvents) return;
 
+            // Mouse is no longer inside the block; revert
             if (!isMouseInElement(contentBlock)) {
                 bodyContainers[idx].classList.remove('grid-block-body-container-tall');
                 return;
             }
 
-            updateGridBlocks();
-
             // Fade out all other grid blocks
-            for (var j = 0; j < document.getElementsByClassName('grid-block-content').length; j++) {
-                if (j == idx) continue;
+            fadeGridBlockContent(0.0, idx);
 
-                for (var k = 0; k < document.getElementsByClassName('grid-block-content')[j].childElementCount; k++) {
-                    document.getElementsByClassName('grid-block-content')[j].children[k].style.opacity = 0.0;
-                }
-            }
+            updateGridBlocks();
         }, 150);
     }, 150);
 }
@@ -437,7 +448,19 @@ function initEvents() {
     }
 }
 
+function fadeGridBlockContent(opacity, idx) {
+    for (var i = 0; i < document.getElementsByClassName('grid-block-content').length; i++) {
+        if (i == idx) continue;
+
+        for (var j = 0; j < document.getElementsByClassName('grid-block-content')[i].childElementCount; j++) {
+            document.getElementsByClassName('grid-block-content')[i].children[j].style.opacity = opacity;
+        }
+    }
+}
+
 function ellipsizeElement(container, textElement) {
+    if (container == undefined || textElement == undefined) return;
+
     var wordArray = textElement.innerHTML.split(' ');
 
     var iters = 0;
@@ -461,7 +484,7 @@ function updateGridBlocks() {
 }
 
 function updateGridBlock(idx) {
-    document.getElementsByClassName('grid-block-description-text')[idx].innerHTML = jsonData[idx][Object.keys(jsonData[idx])[0]].description;
+    descriptionTexts[idx].innerHTML = jsonData[idx][Object.keys(jsonData[idx])[0]].description;
     ellipsizeElement(document.getElementsByClassName('grid-block-body-container')[idx], document.getElementsByClassName('grid-block-description-text')[idx]);
 }
 
@@ -471,5 +494,14 @@ function isMouseInElement(el) {
     var xDiff = mouseX - elX;
     var yDiff = mouseY - elY;
 
-    return (yDiff >= 0 && xDiff >= 0 && xDiff < el.clientWidth - 5 && yDiff < el.clientHeight - 5);
+    return (yDiff >= 0 && xDiff >= 0 && xDiff < el.clientWidth - 5 && yDiff < el.clientHeight - 5) && isMouseInShuffleContainer();
+}
+
+function isMouseInShuffleContainer() {
+    var elX = shuffleContainer.getBoundingClientRect().left;
+    var elY = shuffleContainer.getBoundingClientRect().top;
+    var xDiff = mouseX - elX;
+    var yDiff = mouseY - elY;
+
+    return (yDiff >= 0 && xDiff >= 0 && xDiff < shuffleContainer.clientWidth - 5 && yDiff < shuffleContainer.clientHeight - 5);
 }
