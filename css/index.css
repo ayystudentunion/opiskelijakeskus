@@ -90,6 +90,20 @@ ul.right {
     --grid-block-body-container-height: 145px;
 }
 
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+a#site-title {
+    padding-left: 100px;
+    font-size: 0.98em;
+}
+
+#content-title {
+    font-size: 2.5em;
+    font-weight: 350;
+}
+
 h1, h2 {
     font-weight: 100;
 }
@@ -120,6 +134,25 @@ div:focus {
 
 body {
     overflow-x: hidden;
+    min-height: 1200px;
+
+    background-image: url('../images/fabric_of_squares_gray.png');
+    background-repeat: repeat;
+}
+
+.page-footer {
+    padding-top: 0 !important;
+    width: 100vw;
+}
+
+.page-footer .row {
+    margin-bottom: 0;
+}
+
+#copyright_text {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 #site-nav {
@@ -151,10 +184,6 @@ body {
     pointer-events: none;
 }
 
-.grid-block-tall {
-    height: calc(var(--grid-block-height) + 237px) !important;
-}
-
 .grid-block-content {
     height: 100%;
     width: 100%;
@@ -162,6 +191,19 @@ body {
     display: table;
     border-collapse: collapse;
     box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.3);
+
+    background-color: white;
+}
+
+#black-site-cover {
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.30);
 }
 
 .grid-block-header-container {
@@ -345,5 +387,5 @@ body {
 
 #bottom-spacetaker {
     width: 100vw;
-    height: 20vh;
+    height: calc(var(--grid-block-body-container-height) + var(--grid-block-margin) * 2);
 }
