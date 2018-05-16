@@ -57,6 +57,8 @@ window.onmousemove = function(event) {
 
 // Load data from JSON
 window.onload = function() {
+    setCopyrightText();
+
     updateColumnAmount();
 
     currentPageCols = nrColumns;
@@ -566,4 +568,10 @@ function isMouseInShuffleContainer() {
     var yDiff = mouseY - elY;
 
     return (yDiff >= 0 && xDiff >= 0 && xDiff < shuffleContainer.clientWidth - 5 && yDiff < shuffleContainer.clientHeight - 5);
+}
+
+function setCopyrightText() {
+    var copyrightTextEl = document.getElementById('copyright_text');
+
+    copyrightTextEl.innerHTML = "Copyright © " + String(new Date().getFullYear()) + " Aalto University Student Union unless otherwise noted."
 }
