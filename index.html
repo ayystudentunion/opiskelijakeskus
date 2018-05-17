@@ -18,15 +18,20 @@
 </head>
 <body>
     <!-- A cover for the site background to make it nicer for the eyes -->
-    <div id="black-site-cover"></div>
+    <!--<div id="black-site-cover"></div>-->
 
-    <nav class="blue-grey darken-4">
+    <nav id="navbar">
         <div class="nav-wrapper row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <a href="#" class="brand-logo"></a>
-                <!--<a href="#" id="site-title">Opiskelijakeskus</a>-->
+                <ul class="left">
+                    <li>
+                        <a href="https://opiskelijakeskus.fi">Opiskelijakeskus</a>
+                    </li>
+                </ul>
                 <ul id="nav-mobile" class="right">
-                    <li><a href="new_idea/new_idea.html">Lisää Idea</a></li>
+                    <li>
+                        <a href="new_idea/new_idea.html">Lisää Idea</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -39,8 +44,8 @@
 
     <div class="row">
         <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-            <div>
-                <h1 id="content-title">Opiskelijakeskus</h1>
+            <div id="content-title-container">
+                <h1 id="content-title">AYY:n Kehitysideat</h1>
             </div>
     
             <div id="shuffle-container" class="row">
@@ -51,7 +56,7 @@
 
     <div id="bottom-spacetaker"></div>
     
-    <footer class="page-footer pink darken-4">
+    <footer id="page-footer" class="page-footer">
         <div class="row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                 <p id="copyright_text"></p>
