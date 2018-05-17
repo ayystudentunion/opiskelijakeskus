@@ -157,10 +157,21 @@ body {
     margin-bottom: 0;
 }
 
-#copyright_text {
+#page-buttons-container {
+    margin: auto;
+}
+
+#copyright_text, #source_link {
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+#copyright_text {
     margin-left: 10px;
+}
+
+#source_link {
+    padding-right: 1.25rem;
 }
 
 #navbar {
@@ -175,6 +186,7 @@ body {
 
 #shuffle-container {
     width: 100%;
+    min-height: calc((var(--grid-block-body-container-height) + var(--grid-block-margin)) * 5);
     /*col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12*/
 }
 
