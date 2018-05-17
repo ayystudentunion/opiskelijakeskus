@@ -37,11 +37,6 @@
         </div>
     </nav>
 
-<!--
-<button id="previous_page" class="button btn pink darken-3" style="margin-left: 50px;">Previous page</button>
-<button id="next_page" class="button btn pink darken-3">Next page</button>
--->
-
     <div class="row">
         <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
             <div id="content-title-container">
@@ -54,12 +49,18 @@
         </div>
     </div>
 
+    <div id="page-buttons-container">
+        <button id="previous_page" class="button btn">Edellinen Sivu</button>
+        <button id="next_page" class="button btn">Seuraava Sivu</button>
+    </div>
+
     <div id="bottom-spacetaker"></div>
     
-    <footer id="page-footer" class="page-footer">
+    <footer id="page-footer" class="page-footer no-display">
         <div class="row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <p id="copyright_text"></p>
+                <p id="copyright_text" class="left"></p>
+                <a href="https://github.com/Zentryn/Opiskelijakeskus" target="_blank" id="source_link" class="right">Source</a>
             </div>
         </div>
     </footer>
