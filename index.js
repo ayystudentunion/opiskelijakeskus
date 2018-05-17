@@ -105,10 +105,6 @@ function updateColumnAmount() {
     maxBlocksInPage -= maxBlocksInPage % nrColumns;
 }
 
-document.getElementById('magicbutton').onclick = function() {
-    updateGridBlocks();
-}
-
 prevPageBtn.onclick = function() {
     moveToPage(currentPage - 1, function(err) {
         // Handle error if needed
@@ -577,5 +573,5 @@ function isMouseInShuffleContainer() {
 function setCopyrightText() {
     var copyrightTextEl = document.getElementById('copyright_text');
 
-    copyrightTextEl.innerHTML = "Copyright © " + String(new Date().getFullYear()) + " Aalto University Student Union unless otherwise noted."
+    copyrightTextEl.innerHTML = "Copyright © " + String(new Date().getFullYear()) + " Aalto University Student Union."
 }
