@@ -43,12 +43,10 @@
 }
 
 .brand-logo {
-    background-image: url('../images/favicon/android-chrome-384x384.png');
-    background-size: cover;
-
-    width: 65px;
-    height: 65px;
     margin-left: 1.25rem;
+    font-size: 1.15em !important;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 ul.right {
@@ -99,9 +97,21 @@ a#site-title {
     font-size: 0.98em;
 }
 
+#content-title-container {
+    text-align: center;
+    width: 400px;
+
+    margin: 0 auto 1.5rem;
+    padding: 1rem;
+
+    border-bottom: 1px solid black;
+}
+
 #content-title {
+    font-family: 'Value';
     font-size: 2.5em;
-    font-weight: 350;
+    font-weight: lighter;
+    margin: 0;
 }
 
 h1, h2 {
@@ -135,12 +145,10 @@ div:focus {
 body {
     overflow-x: hidden;
     min-height: 1200px;
-
-    background-image: url('../images/fabric_of_squares_gray.png');
-    background-repeat: repeat;
 }
 
 .page-footer {
+    background-color: #031634;
     padding-top: 0 !important;
     width: 100vw;
 }
@@ -155,9 +163,8 @@ body {
     margin-left: 10px;
 }
 
-#site-nav {
-    width: 100vw;
-    height: 5vh;
+#navbar {
+    background-color: #033649;
 }
 
 #content-container {
