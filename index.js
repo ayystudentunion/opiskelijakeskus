@@ -408,6 +408,10 @@ function initGrid() {
 
     setTimeout(() => {
         updateGridBlocks();
+
+        // Setting the footer visible here because if it would load before the grid,
+        //   it would show in the wrong place after page load
+        document.getElementById('page-footer').classList.remove('no-display');
     }, 150);
 }
 
