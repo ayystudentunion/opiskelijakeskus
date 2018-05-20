@@ -17,9 +17,6 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    <!-- A cover for the site background to make it nicer for the eyes -->
-    <!--<div id="black-site-cover"></div>-->
-
     <nav id="navbar">
         <div class="nav-wrapper row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
@@ -42,6 +39,26 @@
             <div id="content-title-container">
                 <h1 id="content-title">AYY:n Kehitysideat</h1>
             </div>
+
+            <div id="options-container">
+                <div id="filters-container">
+                    <p id="filters-title">Kategoriafiltterit</p>
+
+                    <div id="filter-buttons-container">
+                        <button class="filter-btn btn waves-effect waves-light">Burgers</button>
+                        <button class="filter-btn btn waves-effect waves-light">Fish</button>
+                        <button class="filter-btn btn waves-effect waves-light">Ice Cream</button>
+                        <button class="filter-btn btn waves-effect waves-light">Donuts</button>
+                        <button class="filter-btn btn waves-effect waves-light">Eggs</button>
+                        <button class="filter-btn btn waves-effect waves-light">Apples</button>
+                    </div>
+                </div>
+
+                <div id="sorts-container">
+                    <div id="sorts-title">Tykätyimmät ensin</div>
+                    <input type="checkbox" id="sort-by-likes-btn" /><label class="settings-label" for="sort-by-likes-btn">Toggle</label>
+                </div>
+            </div>
     
             <div id="shuffle-container" class="row">
                 <div class="col s12 m6 l4 xl4 xxl3 sizer" style="pointer-events: none; position: absolute; top: -10000px;"></div>
@@ -50,8 +67,8 @@
     </div>
 
     <div id="page-buttons-container">
-        <button id="previous_page" class="button btn">Edellinen Sivu</button>
-        <button id="next_page" class="button btn">Seuraava Sivu</button>
+        <button id="prev-page-btn" class="button btn">Edellinen Sivu</button>
+        <button id="next-page-btn" class="button btn">Seuraava Sivu</button>
     </div>
 
     <div id="bottom-spacetaker"></div>
@@ -59,8 +76,7 @@
     <footer id="page-footer" class="page-footer no-display">
         <div class="row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <p id="copyright_text" class="left"></p>
-                <a href="https://github.com/Zentryn/Opiskelijakeskus" target="_blank" id="source_link" class="right">Source</a>
+                <p id="copyright_text" class="center"></p>
             </div>
         </div>
     </footer>
