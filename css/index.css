@@ -148,9 +148,105 @@ body {
 }
 
 .page-footer {
-    background-color: #031634;
+    background-color: #033649;
     padding-top: 0 !important;
     width: 100vw;
+}
+
+#options-container {
+    padding-left: 6px;
+    padding-right: 1.75rem;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#filters-title, #sorts-title {
+    font-family: 'Value';
+    font-size: 1.3em;
+    margin-bottom: 0.25rem;
+    color: #666666;
+}
+
+#sorts-title {
+    text-align: right;
+}
+
+.filter-btn {
+    background-color: white !important;
+    border: 1px solid #033649;
+    border-radius: 0;
+    box-shadow: none;
+
+    color: black;
+    cursor: pointer;
+
+    transition-duration: 0.1s !important;
+    
+    margin: 0 0.1rem 0.6rem;
+}
+
+.filter-btn:hover {
+    box-shadow: none;
+    background-color: #033649 !important;
+    color: white;
+}
+
+.filter-btn.selected {
+    background-color: #033649 !important;
+    color: white !important;
+}
+
+.filter-btn.selected:hover {
+    background-color: #355E6D !important;
+}
+
+label {
+    display: inline-block;
+}
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.settings-label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 50px;
+	height: 25px;
+    background: grey;
+    margin-top: 5px;
+	border-radius: 50px;
+    position: relative;
+    float: right;
+}
+
+.settings-label:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	border-radius: 15px;
+	transition: 0.3s;
+}
+
+input:checked + .settings-label {
+	background: #033649;
+}
+
+input:checked + .settings-label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+.settings-label:active:after {
+	width: 40px;
 }
 
 .page-footer .row {
