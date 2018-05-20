@@ -86,6 +86,16 @@ sendIdeaBtn.onclick = function() {
     });
 }
 
+var categories = {
+    1: "Eggs",
+    2: "Fish",
+    3: "Burgers",
+    4: "Burgers",
+    5: "Donuts",
+    6: "Ice Cream",
+    7: "Apples"
+};
+
 generateIdeas.onclick = function() {
     var ideasCount = parseInt(document.getElementById('how_many_random_ideas').value);
 
@@ -119,11 +129,14 @@ generateIdeas.onclick = function() {
 
         console.log(reasons.length);
 
+        var iconNr = Math.floor(Math.random() * 7 + 1);
+
         idea[name] = {};
         idea[name].description = desc;
         idea[name].reasons = reasons;
         idea[name].likes = String(Math.floor(Math.random() * 200));
-        idea[name].icon = "icon" + String(Math.floor(Math.random() * 6) + 1) + ".png";
+        idea[name].icon = "icon" + String(iconNr) + ".png";
+        idea[name].category = categories[iconNr];
 
         ideas.push(idea);
     }
