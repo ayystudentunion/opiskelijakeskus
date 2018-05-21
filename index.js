@@ -9,10 +9,10 @@ var element = document.querySelector('#shuffle-container');
 var sizer = element.querySelector('.sizer');
 
 var shuffleInstance = new shuffle(element, {
-  itemSelector: '.grid-block',
-  sizer: sizer,
-  staggerAmount: 0,
-  staggerAmountMax: 0
+    itemSelector: '.grid-block',
+    sizer: sizer,
+    staggerAmount: 0,
+    staggerAmountMax: 0
 });
 
 var jsonData = null;
@@ -32,9 +32,12 @@ var prevPageBtn = document.getElementById('prev-page-btn');
 var nextPageBtn = document.getElementById('next-page-btn');
 var sortByLikesBtn = document.getElementById('sort-by-likes-btn');
 var filterButtonsContainer = document.getElementById('filter-buttons-container');
+var currentPageText = document.getElementById('current-page-text');
+var totalPagesText = document.getElementById('total-pages-text');
 
 // Store all grid blocks for event handling
 var gridBlocks = [];
+var originalGridBlocks = [];
 var currentFilters = [];
 
 var maxBlocksInPage = null;
@@ -74,6 +77,8 @@ window.onload = function() {
         }, 1000)
 
         setupFilterButtons();
+
+        updatePageTexts();
     });
 };
 
@@ -109,7 +114,12 @@ function setupFilterButtons() {
             var btn = filterButtonsContainer.children[i];
             var category = btn.innerHTML;
 
-            btn.onclick = function() {
+            btn.onclick = function(event) {
+                if (pageButtonsDisabled) {
+                    event.preventDefault();
+                    return;
+                }
+
                 btn.classList.toggle('selected');
 
                 if (currentFilters.indexOf(category) != -1) {
@@ -118,15 +128,28 @@ function setupFilterButtons() {
                     currentFilters.push(category);
                 }
 
-                if (currentFilters.length > 0) {
-                    shuffleInstance.filter(currentFilters);
-                } else {
-                    shuffleInstance.filter();
-                }
-
-                setTimeout(() => {
-                    
-                });
+                // Reset pages when filters change 
+                moveToPage(
+                    0,
+                    function() {
+                        // Handle Error
+                    },
+                    // Update grid items with new filters
+                    function() {
+                        updateGridOnFilterChange();
+                    },
+                    // After finished
+                    function() {
+                        console.log(gridBlocks);
+                        /*
+                        if (currentFilters.length > 0) {
+                            shuffleInstance.filter(currentFilters);
+                        } else {
+                            shuffleInstance.filter();
+                        }
+                        */
+                    }
+                )
             }
         }());
     }
@@ -160,41 +183,28 @@ sortByLikesBtn.onclick = function(event) {
 
     sortByLikes = !sortByLikes;
 
-   if (sortByLikes) {
-        moveToPage(0, function(err) {
-            alert("What the hell?");
+    moveToPage(
+        0,
+        
+        function(err) {
+            // Handle error
         },
+
         // Sort blocks after old ones were removed
         function() {
-            gridBlocks.sort(sortByLikesFunc);
-            for (var i = 0; i < gridBlocks.length; i++) {
-                gridBlocks[i].block.setAttribute('grid-position', i);
-                gridBlocks[i].index = i;
-            }
-        });
-    } else {
-        moveToPage(0, function(err) {
-            alert("What the hell?");
-        },
-        // Sort blocks after old ones were removed
-        function() {
-            gridBlocks.sort(sortByOriginalIndexFunc);
-            for (var i = 0; i < gridBlocks.length; i++) {
-                gridBlocks[i].block.setAttribute('grid-position', i);
-                gridBlocks[i].index = i;
-            }
-        });
-    }
+            sortGridBlocksByLikes();
+        }
+    );
 }
 
-function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}) {
+function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = function() {}) {
     if (pageButtonsDisabled) return errorCB("Already switching pages");
 
     if (wantedIdx < 0) {
         return errorCB("Already at the first page");
     }
 
-    if (((wantedIdx + 1) * maxBlocksInPage) - gridBlocks.length > maxBlocksInPage) {
+    if (((wantedIdx + 1) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
         return errorCB("Reached the end of pages");
     }
 
@@ -214,6 +224,8 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}) {
     setTimeout(() => {
         afterRemoveFunc();
 
+        console.log(gridBlocks);
+
         var startIdx = wantedIdx * maxBlocksInPage;
 
         // Add new items to the page and shuffle
@@ -226,6 +238,20 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}) {
 
         shuffleInstance.add(blocksToAdd);
 
+        if (wantedIdx == 0) {
+            prevPageBtn.classList.add('faded-out', 'no-events');
+        } else {
+            prevPageBtn.classList.remove('faded-out', 'no-events');
+        }
+
+        if (((wantedIdx + 2) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
+            nextPageBtn.classList.add('faded-out', 'no-events');
+        } else {
+            nextPageBtn.classList.remove('faded-out', 'no-events');
+        }
+
+        updatePageTexts(wantedIdx);
+
         setTimeout(() => {
             currentPage = wantedIdx;
 
@@ -235,6 +261,8 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}) {
 
             M.AutoInit();
             initMaterializeEvents();
+
+            cb();
         }, 150);
     }, 400);
 }
@@ -394,6 +422,7 @@ function initGrid() {
         blockObject.block = gridBlock;
         blockObject.index = flippedIdx;
         blockObject.originalIndex = flippedIdx;
+        originalGridBlocks.push(blockObject);
         gridBlocks.push(blockObject);
         
         if (flippedIdx < maxBlocksInPage) {
@@ -405,23 +434,23 @@ function initGrid() {
 
         (function() {
             var idx = flippedIdx;
-            var contentBlock = gridBlockContent;
             var blockObj = blockObject;
 
-            contentBlock.onmouseenter = function() {
+            blockObj.blockContent.onmouseenter = function() {
                 onBlockMouseEnter(blockObj);
             }
 
-            contentBlock.onmouseleave = function() {
+            blockObj.blockContent.onmouseleave = function() {
                 var gridPos = blockObj.index;
-
-                if (disableEvents) return;
 
                 // The timeout is here because sometimes when leaving the grid block,
                 //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
                 setTimeout(() => {
                     // The mouseleave event sometimes fires when opening other elements inside the grid block
-                    if (isMouseInElement(contentBlock) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
+                    if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
+                        console.log("Was still in ");
+                        return;
+                    }
 
                     blockObj.reasonContainer.classList.add('faded-out');
 
@@ -676,5 +705,46 @@ function setCopyrightText() {
     // Update copyright text year span according to the current year
     var yearText = String(createdYear) + ((currentYear != createdYear) ? ("-" + String(currentYear)) : "");
 
-    copyrightTextEl.innerHTML = "Copyright © " + yearText + " Aalto University Student Union"
+    copyrightTextEl.innerHTML = "Copyright © " + yearText + " <a href='https://ayy.fi' target='_blank'>Aalto University Student Union</a>";
+}
+
+function updateGridOnFilterChange() {
+    if (currentFilters.length == 0) {
+        gridBlocks = originalGridBlocks;
+    } else {
+        gridBlocks = [];
+
+        for (var i = 0; i < originalGridBlocks.length; i++) {
+            // Get category from grid block to determine if it fits the current filters
+            var categories = JSON.parse(originalGridBlocks[i].block.getAttribute('data-groups'));
+            
+            for (var j = 0; j < categories.length; j++) {
+                if (currentFilters.indexOf(categories[j]) != -1) {
+                    gridBlocks.push(originalGridBlocks[i]);
+
+                    var blockIdx = gridBlocks.length - 1;
+                    gridBlocks[blockIdx].block.setAttribute('grid-position', blockIdx);
+                    gridBlocks[blockIdx].index = blockIdx;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Sort
+    sortGridBlocksByLikes();
+}
+
+function sortGridBlocksByLikes() {
+    var sortFuncToUse = (sortByLikes) ? sortByLikesFunc : sortByOriginalIndexFunc;
+    gridBlocks.sort(sortFuncToUse);
+    for (var i = 0; i < gridBlocks.length; i++) {
+        gridBlocks[i].block.setAttribute('grid-position', i);
+        gridBlocks[i].index = i;
+    }
+}
+
+function updatePageTexts(currPageIdx = currentPage) {
+    currentPageText.innerHTML = currPageIdx + 1;
+    totalPagesText.innerHTML = Math.floor(gridBlocks.length / maxBlocksInPage + 1);
 }
