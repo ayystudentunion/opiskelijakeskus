@@ -396,6 +396,23 @@ input:checked + .settings-label:after {
     transition-property: transform, opacity, height !important;
 }
 
+.grid-block-description-text {
+    line-clamp: 3;
+    box-orient: vertical;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+}
+
+.grid-block-icon-big {
+    background-size: cover;
+
+    width: 70px;
+    min-height: 70px;
+    margin: 1rem auto 0;
+
+    transition: opacity 0.15s;
+}
+
 .grid-block-description-header {
     font-weight: 650;
     margin-bottom: 2px;
@@ -502,6 +519,9 @@ input:checked + .settings-label:after {
 
     background-image: url('../images/icon6.png');
     background-size: cover;
+
+    display: inline-block;
+    transition: opacity 0.2s;
 }
 
 .grid-block-heart-container {
