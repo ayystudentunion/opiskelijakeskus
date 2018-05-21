@@ -127,16 +127,36 @@ generateIdeas.onclick = function() {
             reasons.push(reason);
         }
 
-        console.log(reasons.length);
+        var secondaryCategories = [];
+        var usedCategories = [];
 
-        var iconNr = Math.floor(Math.random() * 7 + 1);
+        for (var j = 0; j < Math.random() * 2; j++) {
+            var num = Math.floor(Math.random() * 7 + 1);
+            var newCategory = categories[num];
+            if (secondaryCategories.indexOf(newCategory) != -1) {
+                j--;
+                continue;
+            }
+
+            usedCategories.push(num);
+            secondaryCategories.push(newCategory);
+        }
+
+        var iconNr = null;
+        while (iconNr == null) {
+            var nr = Math.floor(Math.random() * 7 + 1);
+            if (usedCategories.indexOf(nr) == -1) {
+                iconNr = nr;
+            }
+        }
 
         idea[name] = {};
         idea[name].description = desc;
         idea[name].reasons = reasons;
         idea[name].likes = String(Math.floor(Math.random() * 200));
         idea[name].icon = "icon" + String(iconNr) + ".png";
-        idea[name].category = categories[iconNr];
+        idea[name].primaryCategory = categories[iconNr];
+        idea[name].secondaryCategories = secondaryCategories;
 
         ideas.push(idea);
     }
