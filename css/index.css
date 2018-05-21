@@ -99,9 +99,7 @@ a#site-title {
 
 #content-title-container {
     text-align: center;
-    width: 400px;
 
-    margin: 0 auto 1.5rem;
     padding: 1rem;
 
     border-bottom: 1px solid black;
@@ -153,6 +151,12 @@ body {
     width: 100vw;
 }
 
+#content-title-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #options-container {
     padding-left: 6px;
     padding-right: 1.75rem;
@@ -162,18 +166,24 @@ body {
     justify-content: space-between;
 }
 
-#filters-title, #sorts-title {
+#filters-title, #sorts-title, #page-title {
     font-family: 'Value';
     font-size: 1.3em;
     margin-bottom: 0.25rem;
     color: #666666;
 }
 
+#page-title {
+    text-align: center;
+    font-family: inherit;
+    font-size: 1.2em;
+}
+
 #sorts-title {
     text-align: right;
 }
 
-.filter-btn {
+.filter-btn, .page-btn {
     background-color: white !important;
     border: 1px solid #033649;
     border-radius: 0;
@@ -187,7 +197,27 @@ body {
     margin: 0 0.1rem 0.6rem;
 }
 
-.filter-btn:hover {
+.page-btn {
+    line-height: 40px;
+}
+
+#prev-page-btn {
+    padding: 0 8px 0 8px;
+    float: right;
+}
+
+#next-page-btn {
+    padding: 0 8px 0 8px;
+    float: left;
+}
+
+.page-btn i.material-icons {
+    vertical-align: middle;
+    font-size: 22px !important;
+    padding: 0 0 3px;
+}
+
+.filter-btn:hover, .page-btn:hover {
     box-shadow: none;
     background-color: #033649 !important;
     color: white;
@@ -253,21 +283,31 @@ input:checked + .settings-label:after {
     margin-bottom: 0;
 }
 
-#page-buttons-container {
-    margin: auto;
-}
-
-#copyright_text, #source_link {
-    margin-bottom: 20px;
-    margin-top: 20px;
+#copyright_text, #submit-bugs {
+    height: 64px;
+    line-height: 64px;
 }
 
 #copyright_text {
     margin-left: 10px;
 }
 
-#source_link {
-    padding-right: 1.25rem;
+#copyright_text a {
+    color: lightskyblue;
+}
+
+#submit-bugs {
+    padding: 0 15px;
+    margin-right: 2.75rem;
+
+    color: lightcoral;
+
+    transition: background-color 0.3s;
+    display: block;
+}
+
+#submit-bugs:hover {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 #navbar {
@@ -283,7 +323,8 @@ input:checked + .settings-label:after {
 #shuffle-container {
     width: 100%;
     min-height: calc((var(--grid-block-body-container-height) + var(--grid-block-margin)) * 5);
-    /*col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-12*/
+
+    margin-bottom: 0 !important;
 }
 
 .grid-block {
