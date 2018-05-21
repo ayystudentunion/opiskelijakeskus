@@ -36,12 +36,14 @@
 
     <div class="row">
         <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-            <div id="content-title-container">
-                <h1 id="content-title">AYY:n Kehitysideat</h1>
+            <div id="content-title-roww" class="row">
+                <div id="content-title-container" class="col m4 offset-m4">
+                    <h1 id="content-title">AYY:n Kehitysideat</h1>
+                </div>
             </div>
 
             <div id="options-container">
-                <div id="filters-container">
+                <div id="filters-container" class="col m5">
                     <p id="filters-title">Kategoriafiltterit</p>
 
                     <div id="filter-buttons-container">
@@ -54,7 +56,21 @@
                     </div>
                 </div>
 
-                <div id="sorts-container">
+                <div id="page-buttons-container" class="col m2">
+                    <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text"></span></p>
+
+                    <div class="row">
+                        <div id="prev-page-btn-container" class="col m6">
+                            <div id="prev-page-btn" class="page-btn waves-effect waves-light faded-out"><i class="material-icons">chevron_left</i></div>
+                        </div>
+                
+                        <div id="next-page-btn-container" class="col m6">
+                            <div id="next-page-btn" class="page-btn waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sorts-container" class="col m5">
                     <div id="sorts-title">Tykätyimmät ensin</div>
                     <input type="checkbox" id="sort-by-likes-btn" /><label class="settings-label" for="sort-by-likes-btn">Toggle</label>
                 </div>
@@ -66,17 +82,13 @@
         </div>
     </div>
 
-    <div id="page-buttons-container">
-        <button id="prev-page-btn" class="button btn">Edellinen Sivu</button>
-        <button id="next-page-btn" class="button btn">Seuraava Sivu</button>
-    </div>
-
     <div id="bottom-spacetaker"></div>
     
     <footer id="page-footer" class="page-footer no-display">
         <div class="row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <p id="copyright_text" class="center"></p>
+                <p id="copyright_text" class="left"></p>
+                <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
             </div>
         </div>
     </footer>
