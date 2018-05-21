@@ -35,6 +35,15 @@ var filterButtonsContainer = document.getElementById('filter-buttons-container')
 var currentPageText = document.getElementById('current-page-text');
 var totalPagesText = document.getElementById('total-pages-text');
 
+var categoryIcons = {
+    "Burgers": 3,
+    "Eggs": 1,
+    "Fish": 2,
+    "Donuts": 5,
+    "Ice Cream": 6,
+    "Apples": 7
+}
+
 // Store all grid blocks for event handling
 var gridBlocks = [];
 var originalGridBlocks = [];
@@ -280,7 +289,8 @@ function initGrid() {
         var reasons = null;
         var icon = null;
         var likes = 0;
-        var category = null;
+        var primaryCategory = null;
+        var secondaryCategories = [];
 
         var blockObject = {};
 
@@ -291,11 +301,16 @@ function initGrid() {
             reasons = jsonData[i][key].reasons;
             icon = jsonData[i][key].icon;
             likes = jsonData[i][key].likes;
-            category = jsonData[i][key].category;
+            primaryCategory = jsonData[i][key].primaryCategory;
+            secondaryCategories = jsonData[i][key].secondaryCategories;
         }
 
         blockObject.likes = likes;
         blockObject.description = description;
+        var categoriesText = String(primaryCategory + "," + secondaryCategories);
+
+        // Convert to JSON format
+        categoriesText = categoriesText.replaceAll(",", "\",\"");
 
         // Create elements
         var gridBlock = document.createElement('div');
@@ -303,7 +318,7 @@ function initGrid() {
 
         // Set grid position for sorting
         gridBlock.setAttribute('grid-position', flippedIdx);
-        gridBlock.setAttribute('data-groups', '["' + category + '"]');
+        gridBlock.setAttribute('data-groups', '["' + categoriesText + '"]');
 
         var gridBlockContent = document.createElement('div');
         gridBlockContent.classList.add('grid-block-content', 'hoverable');
@@ -327,6 +342,11 @@ function initGrid() {
         var gridBlockDescriptionText = document.createElement('p');
         gridBlockDescriptionText.classList.add('grid-block-description-text');
         gridBlockDescriptionText.innerHTML = description;
+
+        var gridBlockBigIcon = document.createElement('div');
+        gridBlockBigIcon.classList.add('grid-block-icon-big');
+        gridBlockBigIcon.style.backgroundImage = "url('images/" + icon + "')";
+        blockObject.bigIcon = gridBlockBigIcon;
 
         var gridBlockReasonsContainer = document.createElement('div');
         gridBlockReasonsContainer.classList.add('grid-block-reasons-container', 'no-display', 'faded-out');
@@ -383,9 +403,21 @@ function initGrid() {
         var gridBlockIconsContainer = document.createElement('div');
         gridBlockIconsContainer.classList.add('grid-block-icons-container');
 
-        var gridBlockIcon = document.createElement('div');
-        gridBlockIcon.classList.add('grid-block-icon');
-        gridBlockIcon.style.backgroundImage = "url('images/" + icon + "')";
+        var gridBlockCategoryIconsContainer = document.createElement('div');
+        gridBlockCategoryIconsContainer.classList.add('grid-block-category-icons-container');
+
+        var mainIcon = document.createElement('div');
+        mainIcon.classList.add('grid-block-icon', 'no-display', 'faded-out');
+        mainIcon.style.backgroundImage = "url('images/icon" + categoryIcons[primaryCategory] + ".png')";
+        gridBlockCategoryIconsContainer.appendChild(mainIcon);
+        blockObject.mainIcon = mainIcon;
+
+        for (var j = 0; j < secondaryCategories.length; j++) {
+            var icon = document.createElement('div');
+            icon.classList.add('grid-block-icon');
+            icon.style.backgroundImage = "url('images/icon" + categoryIcons[secondaryCategories[j]] + ".png')";
+            gridBlockCategoryIconsContainer.appendChild(icon);
+        }
 
         var gridBlockHeartContainer = document.createElement('div');
         gridBlockHeartContainer.classList.add('grid-block-heart-container');
@@ -402,7 +434,7 @@ function initGrid() {
         gridBlockHeartContainer.appendChild(gridBlockLikes);
         gridBlockHeartContainer.appendChild(gridBlockHeart);
 
-        gridBlockIconsContainer.appendChild(gridBlockIcon);
+        gridBlockIconsContainer.appendChild(gridBlockCategoryIconsContainer);
         gridBlockIconsContainer.appendChild(gridBlockHeartContainer);
 
         gridBlockFooter.appendChild(gridBlockIconsContainer);
@@ -411,6 +443,7 @@ function initGrid() {
         gridBlockHeaderContainer.appendChild(gridBlockHeaderText);
         gridBlockDescriptionContainer.appendChild(gridBlockDescriptionText);
         gridBlockBodyContainer.appendChild(gridBlockDescriptionContainer);
+        gridBlockBodyContainer.appendChild(gridBlockBigIcon);
         gridBlockBodyContainer.appendChild(gridBlockReasonsContainer);
 
         gridBlockContent.appendChild(gridBlockHeaderContainer);
@@ -452,6 +485,7 @@ function initGrid() {
                         return;
                     }
 
+                    blockObj.mainIcon.classList.add('faded-out');
                     blockObj.reasonContainer.classList.add('faded-out');
 
                     if (blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
@@ -459,6 +493,7 @@ function initGrid() {
                     }
 
                     setTimeout(() => {
+                        blockObj.mainIcon.classList.add('no-display');
                         blockObj.reasonContainer.classList.add('no-display');
 
                         blockObj.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
@@ -477,6 +512,9 @@ function initGrid() {
                                 blockObj.block.setAttribute('grid-position', gridPos);
                                 shuffleInstance.sort({compare: sortGridByPosition});
                             }
+
+                            blockObj.bigIcon.classList.remove('no-display');
+                            blockObj.bigIcon.classList.remove('faded-out');
                         }, 150);
                     }, 200);
                 });
@@ -553,14 +591,22 @@ function onBlockMouseEnter(blockObject) {
 
     lastBlockEnterTime = currTime;
 
+    blockObject.bigIcon.classList.add('faded-out');
+
     // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
     setTimeout(() => {
         // Check that the mouse is still inside the block.
         //   The timing check is here to allow all animations to finish before new ones start.
-        if (!isMouseInElement(blockObject.blockContent) || disableEvents || performance.now() - lastBlockLeaveTime < 550) return;
+        if (!isMouseInElement(blockObject.blockContent) || disableEvents || performance.now() - lastBlockLeaveTime < 550) {
+            blockObject.bigIcon.classList.remove('faded-out');
+            return;
+        }
 
         var isOnEdge = false;
         var colNr = blockObject.index;
+        blockObject.bigIcon.classList.add('no-display');
+        blockObject.mainIcon.classList.remove('no-display');
+        blockObject.mainIcon.classList.remove('faded-out');
 
         // Check if block is on the edge. If it is, it needs to be pushed
         //   one position to the left so it doesn't jump to the next row when it expands
@@ -647,19 +693,32 @@ function fadeGridBlockContent(opacity, blockObject) {
     }
 }
 
-function ellipsizeElement(container, textElement) {
+function ellipsizeElement(container, textElement, restrictTwoLines = true) {
     if (container == undefined || textElement == undefined) return;
 
     var wordArray = textElement.innerHTML.split(' ');
 
     var iters = 0;
-    while(container.clientHeight < container.scrollHeight) {
-        wordArray.pop();
-        textElement.innerHTML = wordArray.join(' ') + '...';
 
-        if (iters++ >= 100) {
-            alert("you are stupidddd");
-            break;
+    if (restrictTwoLines) {
+        while(textElement.clientHeight > 50) {
+            wordArray.pop();
+            textElement.innerHTML = wordArray.join(' ') + '...';
+    
+            if (iters++ >= 100) {
+                alert("you are stupidddd");
+                break;
+            }
+        }
+    } else {
+        while(container.clientHeight < container.scrollHeight) {
+            wordArray.pop();
+            textElement.innerHTML = wordArray.join(' ') + '...';
+    
+            if (iters++ >= 100) {
+                alert("you are stupidddd");
+                break;
+            }
         }
     }
 }
@@ -676,7 +735,10 @@ function updateGridBlocks() {
 
 function updateGridBlock(idx) {
     gridBlocks[idx].descriptionText.innerHTML = gridBlocks[idx].description;
-    ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText);
+
+    setTimeout(() => {
+        ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText, gridBlocks[idx].blockContent.classList.contains('grid-block-body-container-tall'));
+    });
 }
 
 function isMouseInElement(el) {
@@ -748,3 +810,8 @@ function updatePageTexts(currPageIdx = currentPage) {
     currentPageText.innerHTML = currPageIdx + 1;
     totalPagesText.innerHTML = Math.floor(gridBlocks.length / maxBlocksInPage + 1);
 }
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
