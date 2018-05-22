@@ -333,6 +333,11 @@ input:checked + .settings-label:after {
 
     margin-top: var(--grid-block-margin);
     margin-bottom: var(--grid-block-margin);
+/*
+    transition-property: transform, opacity, width !important;
+    transition-duration: 200ms !important;
+*/
+    transition: transform 0.2s, opacity 0.2s, width 0.15s !important;
 }
 
 .extra-block {
@@ -374,7 +379,7 @@ input:checked + .settings-label:after {
     height: var(--grid-block-body-container-height);
     overflow-y: hidden;
 
-    transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
+    transition: height 0.15s !important;
     /*
     145px normal
     379px tall
