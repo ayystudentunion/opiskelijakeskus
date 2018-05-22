@@ -95,8 +95,13 @@ function sortGridByPosition(a, b) {
     return a.element.getAttribute('grid-position') - b.element.getAttribute('grid-position');
 }
 
+var resizeEndCheck;
 window.onresize = function() {
-    updateGridBlocks();
+    clearTimeout(resizeEndCheck);
+    resizeEndCheck = setTimeout(() => {
+        updateAllGridBlockTexts();
+        shuffleInstance.update();
+    }, 150);
 
     updateColumnAmount();
 }
@@ -233,8 +238,6 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
     setTimeout(() => {
         afterRemoveFunc();
 
-        console.log(gridBlocks);
-
         var startIdx = wantedIdx * maxBlocksInPage;
 
         // Add new items to the page and shuffle
@@ -243,6 +246,8 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
             shuffleContainer.appendChild(gridBlocks[i].block, shuffleContainer.firstChild);
             shuffleInstance.element.appendChild(gridBlocks[i].block, shuffleInstance.element.firstChild);
             blocksToAdd.push(gridBlocks[i].block);
+
+            ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, true);
         }
 
         shuffleInstance.add(blocksToAdd);
@@ -264,7 +269,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
         setTimeout(() => {
             currentPage = wantedIdx;
 
-            updateGridBlocks();
+            shuffleInstance.update();
 
             pageButtonsDisabled = false;
 
@@ -465,6 +470,8 @@ function initGrid() {
             shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
         }
 
+        ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, true);
+
         (function() {
             var idx = flippedIdx;
             var blockObj = blockObject;
@@ -480,10 +487,7 @@ function initGrid() {
                 //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
                 setTimeout(() => {
                     // The mouseleave event sometimes fires when opening other elements inside the grid block
-                    if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
-                        console.log("Was still in ");
-                        return;
-                    }
+                    if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
 
                     blockObj.mainIcon.classList.add('faded-out');
                     blockObj.reasonContainer.classList.add('faded-out');
@@ -500,12 +504,13 @@ function initGrid() {
                         blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
     
                         blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
-    
+                        updateGridBlockText(blockObj.index);
+
                         setTimeout(() => {
-                            updateGridBlocks();
+                            shuffleInstance.update();
 
                             // Fade in all other grid blocks
-                            fadeGridBlockContent(1.0, blockObj);
+                            fadeGridBlockContent(1.0, blockObj, true);
                             
                             if (nrColumns > 1 && (gridPos + 1) % nrColumns == 0) {
                                 gridBlocks[gridPos - 1].block.setAttribute('grid-position', gridPos - 1);
@@ -572,11 +577,9 @@ function initGrid() {
         }());
     }
 
+    // Set the footer visible after a timeout because if it would
+    //   load before the grid, it would show in the wrong place after page load
     setTimeout(() => {
-        updateGridBlocks();
-
-        // Setting the footer visible here because if it would load before the grid,
-        //   it would show in the wrong place after page load
         document.getElementById('page-footer').classList.remove('no-display');
     }, 150);
 }
@@ -621,7 +624,7 @@ function onBlockMouseEnter(blockObject) {
 
             // Wait for transform animation
             setTimeout(() => {
-                updateGridBlocks();
+                shuffleInstance.update();
                 disableEvents = false;
             }, 250);
         }
@@ -654,7 +657,8 @@ function onBlockMouseEnter(blockObject) {
                 return;
             }
 
-            updateGridBlocks();
+            shuffleInstance.update();
+            updateGridBlockText(blockObject.index);
         }, 150);
     }, 150);
 }
@@ -681,8 +685,16 @@ function initMaterializeEvents() {
     }
 }
 
-function fadeGridBlockContent(opacity, blockObject) {
+function fadeGridBlockContent(opacity, blockObject, ellipsize = false) {
     var startIdx = currentPage * maxBlocksInPage;
+
+    if (ellipsize) {
+        for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
+            if (i == blockObject.index) continue;
+    
+            //ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, true);
+        }
+    }
     
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == blockObject.index) continue;
@@ -693,10 +705,15 @@ function fadeGridBlockContent(opacity, blockObject) {
     }
 }
 
-function ellipsizeElement(container, textElement, restrictTwoLines = true) {
-    if (container == undefined || textElement == undefined) return;
+function ellipsizeElement(container, textElement, restrictTwoLines) {
+    if (container == undefined || textElement == undefined) {
+        console.warn("Container or text element was undefined");
+        return;
+    }
 
     var wordArray = textElement.innerHTML.split(' ');
+
+    console.log("Ellipsize element was called");
 
     var iters = 0;
 
@@ -723,22 +740,18 @@ function ellipsizeElement(container, textElement, restrictTwoLines = true) {
     }
 }
 
-function updateGridBlocks() {
+function updateAllGridBlockTexts() {
     var startIdx = currentPage * maxBlocksInPage;
 
     for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
-        updateGridBlock(i);
+        updateGridBlockText(i);
     }
-    
-    shuffleInstance.update();
 }
 
-function updateGridBlock(idx) {
+function updateGridBlockText(idx) {
     gridBlocks[idx].descriptionText.innerHTML = gridBlocks[idx].description;
 
-    setTimeout(() => {
-        ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText, gridBlocks[idx].blockContent.classList.contains('grid-block-body-container-tall'));
-    });
+    ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText, !gridBlocks[idx].bodyContainer.classList.contains('grid-block-body-container-tall'));
 }
 
 function isMouseInElement(el) {
