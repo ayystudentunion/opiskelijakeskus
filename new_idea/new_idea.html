@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" media="screen" href="../css/materialize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/index.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../css/new_idea.css" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
@@ -18,6 +19,164 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
+    <nav id="navbar">
+        <div class="nav-wrapper row">
+            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                <ul class="left">
+                    <li>
+                        <a href="../index.html">Opiskelijakeskus</a>
+                    </li>
+                </ul>
+                <ul id="nav-mobile" class="right">
+                    <li>
+                        <a href="./new_idea.html">Lisää Idea</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="page-container">
+        <div id="form-container" class="row">
+
+            <h1 id="form-title" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Uusi Idea Opiskelijakeskukseen</h1>
+
+            <div id="form" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
+                <h2 class="form-subtitle">Nimi & Kuvaus</h2>
+
+                <!-- Idea Name Input -->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-name-field" type="text" class="validate" data-length="20" required>
+                        <label for="idea-name-field">Idean Nimi</label>
+                    </div>
+                </div>
+
+                <!-- Idea Description Input -->
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="idea-desc-field" class="materialize-textarea" data-length="350" required></textarea>
+                                <label for="idea-desc-field">Idean Kuvaus</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Arguments -->
+                <h2 class="form-subtitle">Perustelut (3-5)</h2>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-argument-field-1" type="text" class="validate" data-length="100" required>
+                        <label for="idea-argument-field-1">Perustelu 1</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-argument-field-2" type="text" class="validate" data-length="100" required>
+                        <label for="idea-argument-field-2">Perustelu 2</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-argument-field-3" type="text" class="validate" data-length="100" required>
+                        <label for="idea-argument-field-3">Perustelu 3</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-argument-field-4" type="text" class="validate" data-length="100" required>
+                        <label for="idea-argument-field-4">Perustelu 4</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="idea-argument-field-5" type="text" class="validate" data-length="100" required>
+                        <label for="idea-argument-field-5">Perustelu 5</label>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <h2 class="form-subtitle">Pääkategoria</h2>
+
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select class="icons" required>
+                            <option value="" disabled selected>Valitse pääkategoria</option>
+                            <option value="" data-icon="../images/icon4.png">Burgers</option>
+                            <option value="" data-icon="../images/icon2.png">Fish</option>
+                            <option value="" data-icon="../images/icon1.png">Eggs</option>
+                            <option value="" data-icon="../images/icon5.png">Donuts</option>
+                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
+                            <option value="" data-icon="../images/icon7.png">Apples</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <h2 class="form-subtitle">Alakategoriat (0-3)</h2>
+
+                <div class="row">
+                    <div class="input-field col s12 l4">
+                        <select class="icons">
+                            <option value="" disabled selected>Valitse alakategoria</option>
+                            <option value="" data-icon="../images/icon4.png">Burgers</option>
+                            <option value="" data-icon="../images/icon2.png">Fish</option>
+                            <option value="" data-icon="../images/icon1.png">Eggs</option>
+                            <option value="" data-icon="../images/icon5.png">Donuts</option>
+                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
+                            <option value="" data-icon="../images/icon7.png">Apples</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s12 l4">
+                        <select class="icons">
+                            <option value="" disabled selected>Valitse alakategoria</option>
+                            <option value="" data-icon="../images/icon4.png">Burgers</option>
+                            <option value="" data-icon="../images/icon2.png">Fish</option>
+                            <option value="" data-icon="../images/icon1.png">Eggs</option>
+                            <option value="" data-icon="../images/icon5.png">Donuts</option>
+                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
+                            <option value="" data-icon="../images/icon7.png">Apples</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s12 l4">
+                        <select class="icons">
+                            <option value="" disabled selected>Valitse alakategoria</option>
+                            <option value="" data-icon="../images/icon4.png">Burgers</option>
+                            <option value="" data-icon="../images/icon2.png">Fish</option>
+                            <option value="" data-icon="../images/icon1.png">Eggs</option>
+                            <option value="" data-icon="../images/icon5.png">Donuts</option>
+                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
+                            <option value="" data-icon="../images/icon7.png">Apples</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="submit-btn" class="btn waves-effect waves-light center" type="submit" name="action">
+                    Lähetä Idea
+                    <i class="material-icons right">chevron_right</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-spacetaker"></div>
+        
+    <footer id="page-footer" class="page-footer">
+        <div class="row">
+            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                <p id="copyright_text" class="left"></p>
+                <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+            </div>
+        </div>
+    </footer>
+    <!--
     <h2>Idean nimi</h2>
     <div class="row">
         <input id="idea_name" class="col s2 offset-s5" type="text" placeholder="Idean nimi..." required />
@@ -53,8 +212,10 @@
     
     <div class="row">
         <input id="how_many_random_ideas" class="col s2 offset-s5" type="text" placeholder="how mayn random diesa?" value="30" />
-    </div>
+    </div>-->
 
+    <script src="../js/jquery.js"></script>
+    <script src="../js/materialize/materialize.min.js"></script>
     <script src="../js/new_idea_bundle.js"></script>
 </body>
 </html>
