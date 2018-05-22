@@ -143,6 +143,8 @@ div:focus {
 body {
     overflow-x: hidden;
     min-height: 1200px;
+
+    transition: background-color 1s;
 }
 
 .page-footer {
@@ -333,7 +335,7 @@ input:checked + .settings-label:after {
 
     margin-top: var(--grid-block-margin);
     margin-bottom: var(--grid-block-margin);
-    
+
     transition: transform 0.2s, opacity 0.2s, width 0.15s !important;
 }
 
@@ -360,6 +362,57 @@ input:checked + .settings-label:after {
     -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.3);
 
     background-color: white;
+}
+
+#ie-message {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ie-message-text-container {
+    text-align: center;
+}
+
+#ie-message-text-title {
+    font-size: 2em;
+    color: black;
+    width: 100vw;
+    
+    transition: color 0.5s;
+}
+
+#ie-message-text-browsers {
+    font-size: 1.5em;
+    color: white;
+    margin-top: 2rem;
+}
+
+#ie-message-text-container span, #ie-message-text-container a {
+    font-weight: 600;
+}
+
+#ie-message-text-container a:hover {
+    text-decoration: underline;
+}
+
+#chrome-text {
+    color: lightgreen;
+}
+
+#opera-text {
+    color: lightcoral;
+}
+
+#edge-text {
+    color: royalblue;
+}
+
+#firefox-text {
+    color: #CC0000;
 }
 
 #black-site-cover {
