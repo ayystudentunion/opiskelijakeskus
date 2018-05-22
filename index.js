@@ -8,6 +8,12 @@ var shuffleContainer = document.getElementById('shuffle-container');
 var element = document.querySelector('#shuffle-container');
 var sizer = element.querySelector('.sizer');
 
+// Internet Explorer 6-11
+var isBrowserIE = /*@cc_on!@*/false || !!document.documentMode;
+
+// Edge 20+
+var isBrowserEdge = !isBrowserIE && !!window.StyleMedia;
+
 var shuffleInstance = new shuffle(element, {
     itemSelector: '.grid-block',
     sizer: sizer,
@@ -325,6 +331,9 @@ function initGrid() {
         gridBlock.setAttribute('grid-position', flippedIdx);
         gridBlock.setAttribute('data-groups', '["' + categoriesText + '"]');
 
+        var gridBlockEdgeShadow = document.createElement('div');
+        gridBlockEdgeShadow.classList.add('grid-block-edge-shadow');
+
         var gridBlockContent = document.createElement('div');
         gridBlockContent.classList.add('grid-block-content', 'hoverable');
         blockObject.blockContent = gridBlockContent;
@@ -454,7 +463,15 @@ function initGrid() {
         gridBlockContent.appendChild(gridBlockHeaderContainer);
         gridBlockContent.appendChild(gridBlockBodyContainer);
         gridBlockContent.appendChild(gridBlockFooter);
-        gridBlock.appendChild(gridBlockContent);
+
+        // Edge doesn't support shadows on table elements,
+        //    so add additional element for edge to put shadows on
+        if (isBrowserEdge) {
+            gridBlockEdgeShadow.appendChild(gridBlockContent);
+            gridBlock.appendChild(gridBlockEdgeShadow);
+        } else {
+            gridBlock.appendChild(gridBlockContent);
+        }
         
         blockObject.descriptionText = gridBlockDescriptionText;
         blockObject.block = gridBlock;
