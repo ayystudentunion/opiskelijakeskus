@@ -506,9 +506,14 @@ function initGrid() {
                         blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
                         updateGridBlockText(blockObj.index);
 
-                        setTimeout(() => {
-                            shuffleInstance.update();
+                        for (var j = 0; j <= 200; j += 20) {
+                            setTimeout(() => {
+                                shuffleInstance.update();
+                                updateGridBlockText(blockObj.index);
+                            }, j);
+                        }
 
+                        setTimeout(() => {
                             // Fade in all other grid blocks
                             fadeGridBlockContent(1.0, blockObj, true);
                             
@@ -520,7 +525,7 @@ function initGrid() {
 
                             blockObj.bigIcon.classList.remove('no-display');
                             blockObj.bigIcon.classList.remove('faded-out');
-                        }, 150);
+                        }, 200);
                     }, 200);
                 });
             }
@@ -626,7 +631,7 @@ function onBlockMouseEnter(blockObject) {
             setTimeout(() => {
                 shuffleInstance.update();
                 disableEvents = false;
-            }, 250);
+            }, 200);
         }
 
         // Timeout so that the edge cases (above) get to update the sorting before they expand
@@ -639,6 +644,13 @@ function onBlockMouseEnter(blockObject) {
 
         // Fade out all other grid blocks
         fadeGridBlockContent(0.0, blockObject);
+
+        for (var j = 0; j <= 200; j += 20) {
+            setTimeout(() => {
+                shuffleInstance.update();
+                updateGridBlockText(blockObject.index);
+            }, j);
+        }
 
         setTimeout(() => {
             // Update edge block (events are disabled only on edge block cases)
@@ -656,11 +668,8 @@ function onBlockMouseEnter(blockObject) {
                 blockObject.bodyContainer.classList.remove('grid-block-body-container-tall');
                 return;
             }
-
-            shuffleInstance.update();
-            updateGridBlockText(blockObject.index);
-        }, 150);
-    }, 150);
+        }, 200);
+    }, 200);
 }
 
 function initMaterializeEvents() {
