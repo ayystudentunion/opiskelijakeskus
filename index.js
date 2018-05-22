@@ -18,7 +18,8 @@ var shuffleInstance = new shuffle(element, {
     itemSelector: '.grid-block',
     sizer: sizer,
     staggerAmount: 0,
-    staggerAmountMax: 0
+    staggerAmountMax: 0,
+    useTransforms: false
 });
 
 var jsonData = null;
@@ -232,6 +233,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
     var startRemoveIdx = currentPage * maxBlocksInPage;
 
+    // Get removed blocks and then remove them from shuffle (and DOM)
     var wantedBlocks = gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length));
     var blockElements = [];
     for (var i = 0; i < wantedBlocks.length; i++) {
@@ -249,6 +251,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
         // Add new items to the page and shuffle
         var blocksToAdd = [];
         for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
+            gridBlocks[i].block.classList.add('faded-out');
             shuffleContainer.appendChild(gridBlocks[i].block, shuffleContainer.firstChild);
             shuffleInstance.element.appendChild(gridBlocks[i].block, shuffleInstance.element.firstChild);
             blocksToAdd.push(gridBlocks[i].block);
@@ -258,12 +261,14 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
         shuffleInstance.add(blocksToAdd);
 
+        // Fade out button if on the first page
         if (wantedIdx == 0) {
             prevPageBtn.classList.add('faded-out', 'no-events');
         } else {
             prevPageBtn.classList.remove('faded-out', 'no-events');
         }
 
+        // Fade out button if on the last page
         if (((wantedIdx + 2) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
             nextPageBtn.classList.add('faded-out', 'no-events');
         } else {
@@ -281,6 +286,10 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
             M.AutoInit();
             initMaterializeEvents();
+
+            for (var i = 0; i < gridBlocks.length; i++) {
+                gridBlocks[i].block.classList.remove('faded-out');
+            }
 
             cb();
         }, 150);
@@ -325,7 +334,7 @@ function initGrid() {
 
         // Create elements
         var gridBlock = document.createElement('div');
-        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3');
+        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3', 'faded-out');
 
         // Set grid position for sorting
         gridBlock.setAttribute('grid-position', flippedIdx);
@@ -443,6 +452,7 @@ function initGrid() {
 
         var gridBlockHeart = document.createElement('div');
         gridBlockHeart.classList.add('grid-block-heart');
+        gridBlockHeart.innerHTML = "<i class='material-icons'>favorite_border</i>";
         blockObject.heart = gridBlockHeart;
 
         gridBlockHeartContainer.appendChild(gridBlockLikes);
@@ -517,8 +527,8 @@ function initGrid() {
                         blockObj.mainIcon.classList.add('no-display');
                         blockObj.reasonContainer.classList.add('no-display');
 
-                        blockObj.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
                         blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+                        blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
     
                         blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
                         updateGridBlockText(blockObj.index);
@@ -544,7 +554,7 @@ function initGrid() {
                             blockObj.bigIcon.classList.remove('faded-out');
                         }, 200);
                     }, 200);
-                });
+                }, 100);
             }
         }());
     }
@@ -553,6 +563,8 @@ function initGrid() {
     var blocks = [];
     for (var i = 0; i < maxBlocksInPage; i++) {
         blocks.push(gridBlocks[i].block);
+
+        blocks[i].classList.remove('faded-out');
     }
 
     shuffleInstance.add(blocks);
@@ -563,14 +575,16 @@ function initGrid() {
             var gridBlockObject = gridBlocks[i];
 
             gridBlockObject.heart.onclick = function() {
-                gridBlockObject.heart.classList.toggle('grid-block-heart-selected');
+                gridBlockObject.heart.firstChild.innerHTML = (gridBlockObject.heart.firstChild.innerHTML == "favorite") ? "favorite_border" : "favorite";
 
                 var likesText = gridBlockObject.likesText;
                 var likesCount = parseInt(likesText.innerHTML);
 
-                if (gridBlockObject.heart.classList.contains('grid-block-heart-selected')) {
+                if (gridBlockObject.heart.firstChild.innerHTML == "favorite") {
+                    gridBlockObject.heart.style.color = "lightcoral";
                     likesCount++;
                 } else {
+                    gridBlockObject.heart.style.color = null;
                     likesCount--;
                 }
 
@@ -607,6 +621,8 @@ function initGrid() {
 }
 
 function onBlockMouseEnter(blockObject) {
+    if (disableEvents) return;
+
     var currTime = performance.now();
 
     // Add 
@@ -633,6 +649,8 @@ function onBlockMouseEnter(blockObject) {
         blockObject.mainIcon.classList.remove('no-display');
         blockObject.mainIcon.classList.remove('faded-out');
 
+        var disableEnter = false;
+
         // Check if block is on the edge. If it is, it needs to be pushed
         //   one position to the left so it doesn't jump to the next row when it expands
         if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
@@ -643,6 +661,7 @@ function onBlockMouseEnter(blockObject) {
             blockObject.block.setAttribute('grid-position', colNr - 1);
             shuffleInstance.sort({compare: sortGridByPosition});
             disableEvents = true;
+            disableEnter = true;
 
             // Wait for transform animation
             setTimeout(() => {
@@ -653,7 +672,7 @@ function onBlockMouseEnter(blockObject) {
 
         // Timeout so that the edge cases (above) get to update the sorting before they expand
         setTimeout(() => {
-            blockObject.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+            blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
             blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
         });
 
@@ -670,19 +689,49 @@ function onBlockMouseEnter(blockObject) {
         }
 
         setTimeout(() => {
+            blockObject.reasonContainer.classList.remove('no-display');
+            setTimeout(() => {
+                blockObject.reasonContainer.classList.remove('faded-out');
+            });
+            return;
+
             // Update edge block (events are disabled only on edge block cases)
-            if (!disableEvents || (disableEvents && isOnEdge)) {
-                blockObject.reasonContainer.classList.remove('no-display');
-                setTimeout(() => {
-                    blockObject.reasonContainer.classList.remove('faded-out');
-                });
+            if (!disableEnter || (disableEnter && isOnEdge)) {
+                
             }
 
-            if (disableEvents) return;
+            if (disableEnter) return;
 
+            return;
             // Mouse is no longer inside the block; revert
             if (!isMouseInElement(blockObject.blockContent)) {
                 blockObject.bodyContainer.classList.remove('grid-block-body-container-tall');
+                blockObject.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+                blockObject.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
+                console.log("WHAAAAAAAAAT");
+                
+                for (var j = 0; j <= 200; j += 20) {
+                    setTimeout(() => {
+                        shuffleInstance.update();
+                        updateGridBlockText(blockObject.index);
+                        console.log("Updating index " + blockObject.index);
+                    }, j);
+                }
+
+                setTimeout(() => {
+                    // Fade in all other grid blocks
+                    fadeGridBlockContent(1.0, blockObject, true);
+                            
+                    if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
+                        gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr - 1);
+                        blockObject.block.setAttribute('grid-position', colNr);
+                        shuffleInstance.sort({compare: sortGridByPosition});
+                    }
+
+                    blockObject.bigIcon.classList.remove('no-display');
+                    blockObject.bigIcon.classList.remove('faded-out');
+                }, 200);
+
                 return;
             }
         }, 200);
@@ -713,14 +762,6 @@ function initMaterializeEvents() {
 
 function fadeGridBlockContent(opacity, blockObject, ellipsize = false) {
     var startIdx = currentPage * maxBlocksInPage;
-
-    if (ellipsize) {
-        for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
-            if (i == blockObject.index) continue;
-    
-            //ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, true);
-        }
-    }
     
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == blockObject.index) continue;
@@ -738,9 +779,6 @@ function ellipsizeElement(container, textElement, restrictTwoLines) {
     }
 
     var wordArray = textElement.innerHTML.split(' ');
-
-    console.log("Ellipsize element was called");
-
     var iters = 0;
 
     if (restrictTwoLines) {
@@ -749,7 +787,7 @@ function ellipsizeElement(container, textElement, restrictTwoLines) {
             textElement.innerHTML = wordArray.join(' ') + '...';
     
             if (iters++ >= 100) {
-                alert("you are stupidddd");
+                console.log("You fucked up on restricted thing...")
                 break;
             }
         }
@@ -759,7 +797,7 @@ function ellipsizeElement(container, textElement, restrictTwoLines) {
             textElement.innerHTML = wordArray.join(' ') + '...';
     
             if (iters++ >= 100) {
-                alert("you are stupidddd");
+                console.log("You fucked up on full thing...");
                 break;
             }
         }
