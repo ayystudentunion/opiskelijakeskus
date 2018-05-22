@@ -1,5 +1,4 @@
 var fs = require('browserify-fs');
-const $ = require('jquery');
 const randWord = require('random-words');
 
 var sendIdeaBtn = document.getElementById('send_idea_btn');
@@ -10,6 +9,11 @@ var imagesFolderName = "images/";
 var selectedIcon = null;
 
 window.onload = function() {
+    $('input#idea-name-field, textarea#idea-desc-field, input#idea-argument-field-1, input#idea-argument-field-2, input#idea-argument-field-3, input#idea-argument-field-4, input#idea-argument-field-5').characterCounter();
+    $('select').formSelect();
+    
+    setCopyrightText();
+/*
     for (var i = 0; i < iconsContainer.childElementCount; i++) {
         (function() {
             var idx = i;
@@ -25,9 +29,10 @@ window.onload = function() {
                 }
             }
         }());
-    }
+    }*/
 }
 
+/*
 sendIdeaBtn.onclick = function() {
     // Require icon
     if (selectedIcon == null) {
@@ -62,7 +67,7 @@ sendIdeaBtn.onclick = function() {
         return;
     }*/
 
-    
+    /*
     $.getJSON("../data/data.json", function(result) {
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
@@ -169,4 +174,15 @@ generateIdeas.onclick = function() {
         data: {"file_path": "../data/data.json", "data": JSON.stringify(ideas)},
         success: function(data) {}
     });
+}*/
+
+function setCopyrightText() {
+    var copyrightTextEl = document.getElementById('copyright_text');
+    var createdYear = 2018;
+    var currentYear = new Date().getFullYear();
+
+    // Update copyright text year span according to the current year
+    var yearText = String(createdYear) + ((currentYear != createdYear) ? ("-" + String(currentYear)) : "");
+
+    copyrightTextEl.innerHTML = "Copyright © " + yearText + " <a href='https://ayy.fi' target='_blank'>Aalto University Student Union</a>";
 }
