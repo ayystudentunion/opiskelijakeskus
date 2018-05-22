@@ -3,23 +3,78 @@
     padding: 0;
 }
 
-body {
-    text-align: center;
+@font-face {
+    font-family: 'Value';
+    src: url('../fonts/value-regular.otf');
 }
 
-h1, h2 {
+.row {
+    margin-bottom: 0;
+}
+
+#form-container {
+    width: 100%;
+    margin-top: 10rem;
+}
+
+#form-title {
+    padding: 0 40px;
     font-weight: 300;
+    font-size: 2rem;
+    margin-top: 0;
+    text-align: right;
 }
 
-input, textarea {
-    outline: none;
+#form {
+    padding: 0 40px 40px 40px;
+    border-top: 2px solid #033649;
+
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
 }
 
-textarea {
-    resize: none;
+.form-subtitle {
+    font-family: 'Value';
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
 }
 
-#icons img {
-    margin: 10px;
+.input-field {
+    margin-top: -0.6rem;
+}
+
+#submit-btn {
+    background-color: white !important;
+    border: 1px solid #033649;
+    border-radius: 0;
+    box-shadow: none;
+
+    color: black;
     cursor: pointer;
+
+    transition-duration: 0.1s !important;
+    
+    margin: 0 0.1rem 0.6rem;
+}
+
+#submit-btn {
+    margin-top: 2rem;
+}
+
+#submit-btn {
+    padding: 0 8px 0 12px;
+}
+
+#submit-btn i.material-icons {
+    vertical-align: middle;
+    font-size: 22px !important;
+    padding: 0 0 3px;
+    margin: 0;
+}
+
+#submit-btn:hover {
+    box-shadow: none;
+    background-color: #033649 !important;
+    color: white;
 }
