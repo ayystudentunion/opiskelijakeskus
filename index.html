@@ -17,82 +17,92 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    <nav id="navbar">
-        <div class="nav-wrapper row">
-            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <ul class="left">
-                    <li>
-                        <a href="./index.html">Opiskelijakeskus</a>
-                    </li>
-                </ul>
-                <ul id="nav-mobile" class="right">
-                    <li>
-                        <a href="new_idea/new_idea.html">Lisää Idea</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="row">
-        <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-            <div id="content-title-roww" class="row">
-                <div id="content-title-container" class="col m4 offset-m4">
-                    <h1 id="content-title">Ideoita Opiskelijakeskukseen</h1>
-                </div>
-            </div>
-
-            <div id="options-container">
-                <div id="filters-container" class="col m5">
-                    <p id="filters-title">Kategoriafiltterit</p>
-
-                    <div id="filter-buttons-container">
-                        <button class="filter-btn btn waves-effect waves-light">Burgers</button>
-                        <button class="filter-btn btn waves-effect waves-light">Fish</button>
-                        <button class="filter-btn btn waves-effect waves-light">Ice Cream</button>
-                        <button class="filter-btn btn waves-effect waves-light">Donuts</button>
-                        <button class="filter-btn btn waves-effect waves-light">Eggs</button>
-                        <button class="filter-btn btn waves-effect waves-light">Apples</button>
-                    </div>
-                </div>
-
-                <div id="page-buttons-container" class="col m2">
-                    <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text"></span></p>
-
-                    <div class="row">
-                        <div id="prev-page-btn-container" class="col m6">
-                            <div id="prev-page-btn" class="page-btn waves-effect waves-light faded-out no-events"><i class="material-icons">chevron_left</i></div>
-                        </div>
-                
-                        <div id="next-page-btn-container" class="col m6">
-                            <div id="next-page-btn" class="page-btn waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="sorts-container" class="col m5">
-                    <div id="sorts-title">Tykätyimmät ensin</div>
-                    <input type="checkbox" id="sort-by-likes-btn" /><label class="settings-label" for="sort-by-likes-btn">Toggle</label>
-                </div>
-            </div>
-    
-            <div id="shuffle-container" class="row">
-                <div class="col s12 m6 l4 xl4 xxl3 sizer" style="pointer-events: none; position: absolute; top: -10000px;"></div>
-            </div>
+    <div id="ie-message" class="no-display">
+        <div id="ie-message-text-container">
+            <p id="ie-message-text-title">Internet Explorer ei ole tuettu tällä sivulla.</p>
+            <p id="ie-message-text-browsers">Tuetut selaimet ovat <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> ja <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
         </div>
     </div>
-
-    <div id="bottom-spacetaker"></div>
     
-    <footer id="page-footer" class="page-footer no-display">
+    <div id="site-container">
+        <nav id="navbar">
+            <div class="nav-wrapper row">
+                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                    <ul class="left">
+                        <li>
+                            <a href="./index.html">Opiskelijakeskus</a>
+                        </li>
+                    </ul>
+                    <ul id="nav-mobile" class="right">
+                        <li>
+                            <a href="new_idea/new_idea.html">Lisää Idea</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
         <div class="row">
-            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                <p id="copyright_text" class="left"></p>
-                <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+            <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                <div id="content-title-roww" class="row">
+                    <div id="content-title-container" class="col m4 offset-m4">
+                        <h1 id="content-title">Ideoita Opiskelijakeskukseen</h1>
+                    </div>
+                </div>
+    
+                <div id="options-container">
+                    <div id="filters-container" class="col m5">
+                        <p id="filters-title">Kategoriafiltterit</p>
+    
+                        <div id="filter-buttons-container">
+                            <button class="filter-btn btn waves-effect waves-light">Burgers</button>
+                            <button class="filter-btn btn waves-effect waves-light">Fish</button>
+                            <button class="filter-btn btn waves-effect waves-light">Ice Cream</button>
+                            <button class="filter-btn btn waves-effect waves-light">Donuts</button>
+                            <button class="filter-btn btn waves-effect waves-light">Eggs</button>
+                            <button class="filter-btn btn waves-effect waves-light">Apples</button>
+                        </div>
+                    </div>
+    
+                    <div id="page-buttons-container" class="col m2">
+                        <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text"></span></p>
+    
+                        <div class="row">
+                            <div id="prev-page-btn-container" class="col m6">
+                                <div id="prev-page-btn" class="page-btn waves-effect waves-light faded-out no-events"><i class="material-icons">chevron_left</i></div>
+                            </div>
+                    
+                            <div id="next-page-btn-container" class="col m6">
+                                <div id="next-page-btn" class="page-btn waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="sorts-container" class="col m5">
+                        <div id="sorts-title">Tykätyimmät ensin</div>
+                        <input type="checkbox" id="sort-by-likes-btn" /><label class="settings-label" for="sort-by-likes-btn">Toggle</label>
+                    </div>
+                </div>
+        
+                <div id="shuffle-container" class="row">
+                    <div class="col s12 m6 l4 xl4 xxl3 sizer" style="pointer-events: none; position: absolute; top: -10000px;"></div>
+                </div>
             </div>
         </div>
-    </footer>
+    
+        <div id="bottom-spacetaker"></div>
+        
+        <footer id="page-footer" class="page-footer no-display">
+            <div class="row">
+                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                    <p id="copyright_text" class="left"></p>
+                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+                </div>
+            </div>
+        </footer>
+    </div>
 
+    <script src="./js/check_for_ie.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/materialize/materialize.min.js"></script>
     <script src="bundle.js"></script>
