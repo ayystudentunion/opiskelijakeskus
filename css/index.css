@@ -336,7 +336,7 @@ input:checked + .settings-label:after {
     margin-top: var(--grid-block-margin);
     margin-bottom: var(--grid-block-margin);
 
-    transition: transform 0.2s, opacity 0.2s, width 0.15s !important;
+    transition: transform 0.2s, opacity 0.3s, width 0.15s !important;
 }
 
 .extra-block {
@@ -613,12 +613,22 @@ input:checked + .settings-label:after {
     width: 22px;
     height: 22px;
 
-    background-image: url('../images/heart_empty.png');
-    background-size: cover;
-
     cursor: pointer;
+    color: black;
 
-    transition: background-image 0.05s;
+    transition: color 0.05s;
+}
+
+.grid-block-heart i {
+    font-size: 22px !important;
+    
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 .grid-block-heart-selected {
