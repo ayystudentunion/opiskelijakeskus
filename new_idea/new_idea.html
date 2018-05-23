@@ -24,12 +24,12 @@
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                 <ul class="left">
                     <li>
-                        <a href="../index.html">Opiskelijakeskus</a>
+                        <a href="../">Opiskelijakeskus</a>
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right">
                     <li>
-                        <a href="./new_idea.html">Lisää Idea</a>
+                        <a href="/">Lisää Idea</a>
                     </li>
                 </ul>
             </div>
@@ -39,29 +39,29 @@
     <div id="page-container">
         <div id="form-container" class="row">
 
-            <h1 id="form-title" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Uusi Idea Opiskelijakeskukseen</h1>
+            <h1 id="form-title" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Uusi idea Opiskelijakeskukseen</h1>
 
-            <div id="form" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
+            <form id="form" class="col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
                 <h2 class="form-subtitle">Nimi & Kuvaus</h2>
 
                 <!-- Idea Name Input -->
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="idea-name-field" type="text" class="validate" data-length="20" required>
-                        <label for="idea-name-field">Idean Nimi</label>
+                        <label for="idea-name-field">Idean nimi</label>
                     </div>
                 </div>
 
                 <!-- Idea Description Input -->
                 <div class="row">
-                    <form class="col s12">
+                    <div class="col s12">
                         <div class="row">
                             <div class="input-field col s12">
                                 <textarea id="idea-desc-field" class="materialize-textarea" data-length="350" required></textarea>
-                                <label for="idea-desc-field">Idean Kuvaus</label>
+                                <label for="idea-desc-field">Idean kuvaus</label>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <!-- Arguments -->
@@ -90,14 +90,14 @@
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="idea-argument-field-4" type="text" class="validate" data-length="100" required>
+                        <input id="idea-argument-field-4" type="text" class="validate" data-length="100">
                         <label for="idea-argument-field-4">Perustelu 4</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="idea-argument-field-5" type="text" class="validate" data-length="100" required>
+                        <input id="idea-argument-field-5" type="text" class="validate" data-length="100">
                         <label for="idea-argument-field-5">Perustelu 5</label>
                     </div>
                 </div>
@@ -107,14 +107,8 @@
 
                 <div class="row">
                     <div class="input-field col s12 m6">
-                        <select class="icons" required>
+                        <select id="idea-main-category" class="icons" required>
                             <option value="" disabled selected>Valitse pääkategoria</option>
-                            <option value="" data-icon="../images/icon4.png">Burgers</option>
-                            <option value="" data-icon="../images/icon2.png">Fish</option>
-                            <option value="" data-icon="../images/icon1.png">Eggs</option>
-                            <option value="" data-icon="../images/icon5.png">Donuts</option>
-                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
-                            <option value="" data-icon="../images/icon7.png">Apples</option>
                         </select>
                     </div>
                 </div>
@@ -124,45 +118,32 @@
 
                 <div class="row">
                     <div class="input-field col s12 l4">
-                        <select class="icons">
+                        <select id="idea-secondary-category-1" class="icons">
                             <option value="" disabled selected>Valitse alakategoria</option>
-                            <option value="" data-icon="../images/icon4.png">Burgers</option>
-                            <option value="" data-icon="../images/icon2.png">Fish</option>
-                            <option value="" data-icon="../images/icon1.png">Eggs</option>
-                            <option value="" data-icon="../images/icon5.png">Donuts</option>
-                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
-                            <option value="" data-icon="../images/icon7.png">Apples</option>
                         </select>
                     </div>
                     <div class="input-field col s12 l4">
-                        <select class="icons">
+                        <select id="idea-secondary-category-2" class="icons">
                             <option value="" disabled selected>Valitse alakategoria</option>
-                            <option value="" data-icon="../images/icon4.png">Burgers</option>
-                            <option value="" data-icon="../images/icon2.png">Fish</option>
-                            <option value="" data-icon="../images/icon1.png">Eggs</option>
-                            <option value="" data-icon="../images/icon5.png">Donuts</option>
-                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
-                            <option value="" data-icon="../images/icon7.png">Apples</option>
                         </select>
                     </div>
                     <div class="input-field col s12 l4">
-                        <select class="icons">
+                        <select id="idea-secondary-category-3" class="icons">
                             <option value="" disabled selected>Valitse alakategoria</option>
-                            <option value="" data-icon="../images/icon4.png">Burgers</option>
-                            <option value="" data-icon="../images/icon2.png">Fish</option>
-                            <option value="" data-icon="../images/icon1.png">Eggs</option>
-                            <option value="" data-icon="../images/icon5.png">Donuts</option>
-                            <option value="" data-icon="../images/icon6.png">Ice Cream</option>
-                            <option value="" data-icon="../images/icon7.png">Apples</option>
                         </select>
                     </div>
                 </div>
 
-                <button id="submit-btn" class="btn waves-effect waves-light center" type="submit" name="action">
+                <button id="submit-btn" class="btn waves-effect waves-light center" type="submit" name="action" form="form">
                     Lähetä Idea
                     <i class="material-icons right">chevron_right</i>
                 </button>
-            </div>
+
+                <button id="generate-ideas-btn" class="btn waves-effect waves-light right no-display">
+                    Generoi Ideoita
+                    <i class="material-icons right">chevron_right</i>
+                </button>
+            </form>
         </div>
     </div>
 
