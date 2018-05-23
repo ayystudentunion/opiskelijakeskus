@@ -34,6 +34,7 @@ var lastBlockEnterTime = 0;
 var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
+var animationDurationsMS = 200;
 
 var prevPageBtn = document.getElementById('prev-page-btn');
 var nextPageBtn = document.getElementById('next-page-btn');
@@ -43,12 +44,27 @@ var currentPageText = document.getElementById('current-page-text');
 var totalPagesText = document.getElementById('total-pages-text');
 
 var categoryIcons = {
-    "Burgers": 3,
-    "Eggs": 1,
-    "Fish": 2,
-    "Donuts": 5,
-    "Ice Cream": 6,
-    "Apples": 7
+    "Harrastuket": "harrastukset",
+    "Hygieniatilat": "wc ja suihku",
+    "Juhlat": "Juhlat",
+    "Kahvila": "kahvila ja baari",
+    "Kokoukset": "ryhmatyo",
+    "Muut": "muut_abstrakti",
+    "Palvelut": "asiakaspalvelu",
+    "Pop up-tapahtumat": "Nayttelyt",
+    "Rentoutuminen": "Hyvinvointi",
+    "Ruoka": "ravintola",
+    "Säilytys": "tavaran sailytys",
+    "Sauna": "sauna",
+    "Seminaarit": "Muut tapahtumat",
+    "Sosiaalisuus": "sosiaalinen",
+    "Tapahtumat": "muut",
+    "Tietopalvelut": "palvelu",
+    "Työskentely": "opiskelu ja tyot",
+    "Ulkotilat": "ulkotilat",
+    "Urheilu": "urheilu",
+    "Vapaa-aika": "hengailu ja vapaa-aika",
+    "Villit ideat": "villit ideat"
 }
 
 // Store all grid blocks for event handling
@@ -127,13 +143,24 @@ function updateColumnAmount() {
     // Update max block amount according to the column amount
     maxBlocksInPage = 12;
     maxBlocksInPage -= maxBlocksInPage % nrColumns;
+
+    if (nrColumns == 1) {
+        gridBlockTimeoutsMS = 0;
+    } else {
+        gridBlockTimeoutsMS = animationDurationsMS;
+    }
 }
 
 function setupFilterButtons() {
-    for (var i = 0; i < filterButtonsContainer.childElementCount; i++) {
+    for (var key in categoryIcons) {
+        var filterBtn = document.createElement('button');
+        filterBtn.classList.add('filter-btn', 'btn', 'waves-effect', 'waves-light');
+        filterBtn.innerHTML = key;
+        filterButtonsContainer.appendChild(filterBtn);
+
         (function() {
-            var btn = filterButtonsContainer.children[i];
-            var category = btn.innerHTML;
+            var btn = filterBtn;
+            var category = key;
 
             btn.onclick = function(event) {
                 if (pageButtonsDisabled) {
@@ -306,7 +333,7 @@ function initGrid() {
 
         var title = null;
         var description = null;
-        var reasons = null;
+        var idea_arguments = null;
         var icon = null;
         var likes = 0;
         var primaryCategory = null;
@@ -318,11 +345,11 @@ function initGrid() {
         for (var key in jsonData[i]) {
             title = key;
             description = jsonData[i][key].description;
-            reasons = jsonData[i][key].reasons;
+            idea_arguments = jsonData[i][key].arguments;
             icon = jsonData[i][key].icon;
             likes = jsonData[i][key].likes;
-            primaryCategory = jsonData[i][key].primaryCategory;
-            secondaryCategories = jsonData[i][key].secondaryCategories;
+            primaryCategory = jsonData[i][key].main_category;
+            secondaryCategories = jsonData[i][key].secondary_categories;
         }
 
         blockObject.likes = likes;
@@ -368,7 +395,7 @@ function initGrid() {
 
         var gridBlockBigIcon = document.createElement('div');
         gridBlockBigIcon.classList.add('grid-block-icon-big');
-        gridBlockBigIcon.style.backgroundImage = "url('images/" + icon + "')";
+        gridBlockBigIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
         blockObject.bigIcon = gridBlockBigIcon;
 
         var gridBlockReasonsContainer = document.createElement('div');
@@ -383,13 +410,13 @@ function initGrid() {
         var gridBlockReasonsCollapsible = document.createElement('ul');
         gridBlockReasonsCollapsible.classList.add('collapsible');
 
-        if (reasons == null) {
+        if (idea_arguments == null) {
             console.log("Index " + flippedIdx + " has no reasons");
         }
 
         blockObject.collapsibleHeaders = [];
 
-        for (var j = 0; reasons != null && j < reasons.length; j++) {
+        for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
             var reasonBlock = document.createElement('li');
 
             // Open first block by default
@@ -411,7 +438,7 @@ function initGrid() {
             reasonBlockBody.classList.add('collapsible-body');
 
             var reasonBlockBodyText = document.createElement('span');
-            reasonBlockBodyText.innerHTML = reasons[j];
+            reasonBlockBodyText.innerHTML = idea_arguments[j];
             reasonBlockBody.appendChild(reasonBlockBodyText);
             reasonBlock.appendChild(reasonBlockBody);
 
@@ -431,14 +458,14 @@ function initGrid() {
 
         var mainIcon = document.createElement('div');
         mainIcon.classList.add('grid-block-icon', 'no-display', 'faded-out');
-        mainIcon.style.backgroundImage = "url('images/icon" + categoryIcons[primaryCategory] + ".png')";
+        mainIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
         gridBlockCategoryIconsContainer.appendChild(mainIcon);
         blockObject.mainIcon = mainIcon;
 
         for (var j = 0; j < secondaryCategories.length; j++) {
             var icon = document.createElement('div');
             icon.classList.add('grid-block-icon');
-            icon.style.backgroundImage = "url('images/icon" + categoryIcons[secondaryCategories[j]] + ".png')";
+            icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
             gridBlockCategoryIconsContainer.appendChild(icon);
         }
 
@@ -552,8 +579,8 @@ function initGrid() {
 
                             blockObj.bigIcon.classList.remove('no-display');
                             blockObj.bigIcon.classList.remove('faded-out');
-                        }, 200);
-                    }, 200);
+                        }, animationDurationsMS);
+                    }, animationDurationsMS);
                 }, 100);
             }
         }());
@@ -561,7 +588,7 @@ function initGrid() {
 
     // Update shuffle
     var blocks = [];
-    for (var i = 0; i < maxBlocksInPage; i++) {
+    for (var i = 0; i < Math.min(maxBlocksInPage, gridBlocks.length); i++) {
         blocks.push(gridBlocks[i].block);
 
         blocks[i].classList.remove('faded-out');
@@ -667,7 +694,7 @@ function onBlockMouseEnter(blockObject) {
             setTimeout(() => {
                 shuffleInstance.update();
                 disableEvents = false;
-            }, 200);
+            }, animationDurationsMS);
         }
 
         // Timeout so that the edge cases (above) get to update the sorting before they expand
@@ -730,12 +757,12 @@ function onBlockMouseEnter(blockObject) {
 
                     blockObject.bigIcon.classList.remove('no-display');
                     blockObject.bigIcon.classList.remove('faded-out');
-                }, 200);
+                }, animationDurationsMS);
 
                 return;
             }
-        }, 200);
-    }, 200);
+        }, animationDurationsMS);
+    }, gridBlockTimeoutsMS);
 }
 
 function initMaterializeEvents() {
@@ -761,6 +788,8 @@ function initMaterializeEvents() {
 }
 
 function fadeGridBlockContent(opacity, blockObject, ellipsize = false) {
+    if (nrColumns == 1) return;
+
     var startIdx = currentPage * maxBlocksInPage;
     
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
