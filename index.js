@@ -42,6 +42,9 @@ var sortByLikesBtn = document.getElementById('sort-by-likes-btn');
 var filterButtonsContainer = document.getElementById('filter-buttons-container');
 var currentPageText = document.getElementById('current-page-text');
 var totalPagesText = document.getElementById('total-pages-text');
+var filtersDropdown = document.getElementById('filter-buttons-dropdown');
+var filtersTitle = document.getElementById('filters-title');
+var filtersTitleArrow = document.getElementById('filters-title-arrow');
 
 var categoryIcons = {
     "Harrastuket": "harrastukset",
@@ -152,6 +155,13 @@ function updateColumnAmount() {
 }
 
 function setupFilterButtons() {
+    if (nrColumns == 1) {
+        filterButtonsCollapse();
+    } else {
+        filtersTitle.innerHTML = "Sulje Filtterit";
+        filtersTitleArrow.innerHTML = "arrow_drop_up";
+    }
+
     for (var key in categoryIcons) {
         var filterBtn = document.createElement('button');
         filterBtn.classList.add('filter-btn', 'btn', 'waves-effect', 'waves-light');
@@ -200,6 +210,25 @@ function setupFilterButtons() {
                 )
             }
         }());
+    }
+}
+
+filtersDropdown.onclick = function() {
+    filterButtonsCollapse();
+}
+
+function filterButtonsCollapse() {
+    var isCollapsed = filterButtonsContainer.getAttribute('data-collapsed') == 'true';
+    
+    if (isCollapsed) {
+        filtersTitle.innerHTML = "Sulje Filtterit";
+        filtersTitleArrow.innerHTML = "arrow_drop_up";
+        expandSection(filterButtonsContainer)
+        filterButtonsContainer.setAttribute('data-collapsed', 'false')
+    } else {
+        filtersTitle.innerHTML = "Näytä Filtterit";
+        filtersTitleArrow.innerHTML = "arrow_drop_down";
+        collapseSection(filterButtonsContainer)
     }
 }
 
@@ -581,7 +610,7 @@ function initGrid() {
                             blockObj.bigIcon.classList.remove('faded-out');
                         }, animationDurationsMS);
                     }, animationDurationsMS);
-                }, 100);
+                }, (nrColumns == 1) ? 0 : 100);
             }
         }());
     }
@@ -914,10 +943,44 @@ function sortGridBlocksByLikes() {
 
 function updatePageTexts(currPageIdx = currentPage) {
     currentPageText.innerHTML = currPageIdx + 1;
-    totalPagesText.innerHTML = Math.floor(gridBlocks.length / maxBlocksInPage + 1);
+    totalPagesText.innerHTML = Math.floor((gridBlocks.length - 1) / maxBlocksInPage + 1);
 }
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
 };
+
+function collapseSection(element) {
+    var sectionHeight = element.scrollHeight;
+    
+    var elementTransition = element.style.transition;
+    element.style.transition = '';
+
+    requestAnimationFrame(function() {
+        element.style.height = sectionHeight + 'px';
+        element.style.transition = elementTransition;
+      
+        requestAnimationFrame(function() {
+            element.style.height = 0 + 'px';
+            element.style.paddingTop = "1px";
+        });
+    });
+    
+    element.setAttribute('data-collapsed', 'true');
+}
+  
+function expandSection(element) {
+    var sectionHeight = element.scrollHeight;
+    
+    element.style.height = sectionHeight + 'px';
+    element.style.paddingTop = null;
+  
+    element.addEventListener('transitionend', function(e) {
+        element.removeEventListener('transitionend', arguments.callee);
+      
+        element.style.height = null;
+    });
+    
+    element.setAttribute('data-collapsed', 'false');
+}
