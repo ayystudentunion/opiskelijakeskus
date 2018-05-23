@@ -51,16 +51,6 @@
                 </div>
     
                 <div id="options-container">
-                    <!--
-                    <div id="filters-container" class="col s5">
-                        <!--
-                        <p id="filters-title">Kategoriafiltterit <i id="category-filter-arrow" class="material-icons">arrow_drop_up</i></p>
-                            
-                        
-                        <div id="filters-title">Kaikki kategoriat vaativa filtteröinti</div>
-                        <input type="checkbox" id="require-all-categories-btn" /><label class="settings-label" for="require-all-categories-btn">Toggle</label>
-                    </div>-->
-    
                     <div id="page-buttons-container" class="col s6">
                         <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text">1</span></p>
     
@@ -81,7 +71,15 @@
                     </div>
                 </div>
 
-                <div id="filter-buttons-container" class="col s12">
+                <div class="visible-mobile row">
+                    <div class="col s3"></div>
+                    <div id="filter-buttons-dropdown" class="col s6">
+                        <p id="filter-buttons-dropdown-text"><span id="filters-title">Näytä Filtterit</span> <i id="filters-title-arrow" class="material-icons">arrow_drop_down</i></p>
+                    </div>
+                    <div class="col s3"></div>
+                </div>
+
+                <div id="filter-buttons-container" data-collapse="false" class="col s12">
 
                 </div>
         
