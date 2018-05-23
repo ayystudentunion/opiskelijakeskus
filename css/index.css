@@ -409,6 +409,12 @@ input:checked + .settings-label:after {
     transition: transform 0.2s, opacity 0.3s, width 0.15s !important;
 }
 
+@media only screen and (max-width: 600px) {
+    .grid-block {
+        transition: none !important;
+    }
+}
+
 .extra-block {
     opacity: 0 !important;
     pointer-events: none;
@@ -508,14 +514,22 @@ input:checked + .settings-label:after {
     overflow-y: hidden;
 
     transition: height 0.15s !important;
-    /*
-    145px normal
-    379px tall
-    */
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-block-body-container {
+        transition: none !important;
+    }
 }
 
 .grid-block-content > * {
     transition: opacity 0.3s;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-block-content > * {
+        transition: none !important;
+    }
 }
 
 .grid-block-body-container-tall {
@@ -535,6 +549,13 @@ input:checked + .settings-label:after {
     transition-property: transform, opacity, height !important;
 }
 
+@media only screen and (max-width: 600px) {
+    .grid-block-description-container {
+        transition-property: none !important;
+        transition: none !important;
+    }
+}
+
 .grid-block-description-text {
     line-clamp: 3;
     box-orient: vertical;
@@ -550,6 +571,12 @@ input:checked + .settings-label:after {
     margin: 1rem auto 0;
 
     transition: opacity 0.15s;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-block-icon-big, .grid-block-reasons-container, .grid-block-icon {
+        transition: none !important;
+    }
 }
 
 .grid-block-description-header {
