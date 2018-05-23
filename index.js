@@ -14,13 +14,7 @@ var isBrowserIE = /*@cc_on!@*/false || !!document.documentMode;
 // Edge 20+
 var isBrowserEdge = !isBrowserIE && !!window.StyleMedia;
 
-var shuffleInstance = new shuffle(element, {
-    itemSelector: '.grid-block',
-    sizer: sizer,
-    staggerAmount: 0,
-    staggerAmountMax: 0,
-    useTransforms: false
-});
+var shuffleInstance = null;
 
 var jsonData = null;
 var nrColumns = -1;
@@ -78,6 +72,8 @@ var currentFilters = [];
 var maxBlocksInPage = null;
 
 window.onmousemove = function(event) {
+    if (nrColumns == 1) return;
+
     mouseX = event.clientX;
     mouseY = event.clientY;
 
@@ -94,6 +90,14 @@ window.onload = function() {
     setCopyrightText();
 
     updateColumnAmount();
+
+    shuffleInstance = new shuffle(element, {
+        itemSelector: '.grid-block',
+        sizer: sizer,
+        staggerAmount: 0,
+        staggerAmountMax: 0,
+        useTransforms: (nrColumns == 1)
+    });
 
     currentPageCols = nrColumns;
 
@@ -149,12 +153,14 @@ function updateColumnAmount() {
 
     if (nrColumns == 1) {
         gridBlockTimeoutsMS = 0;
+        maxBlocksInPage = 6;
     } else {
         gridBlockTimeoutsMS = animationDurationsMS;
     }
 }
 
 function setupFilterButtons() {
+    // Setup filter dropdown if on mobile
     if (nrColumns == 1) {
         filterButtonsCollapse();
     } else {
@@ -195,17 +201,6 @@ function setupFilterButtons() {
                     // Update grid items with new filters
                     function() {
                         updateGridOnFilterChange();
-                    },
-                    // After finished
-                    function() {
-                        console.log(gridBlocks);
-                        /*
-                        if (currentFilters.length > 0) {
-                            shuffleInstance.filter(currentFilters);
-                        } else {
-                            shuffleInstance.filter();
-                        }
-                        */
                     }
                 )
             }
@@ -564,6 +559,8 @@ function initGrid() {
             }
 
             blockObj.blockContent.onmouseleave = function() {
+                if (nrColumns == 1) return;
+
                 var gridPos = blockObj.index;
 
                 // The timeout is here because sometimes when leaving the grid block,
@@ -583,22 +580,31 @@ function initGrid() {
                         blockObj.mainIcon.classList.add('no-display');
                         blockObj.reasonContainer.classList.add('no-display');
 
-                        blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
-                        blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
+                        if (nrColumns > 1) {
+                            blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+                            blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
+                        }
     
                         blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
                         updateGridBlockText(blockObj.index);
 
-                        for (var j = 0; j <= 200; j += 20) {
-                            setTimeout(() => {
-                                shuffleInstance.update();
-                                updateGridBlockText(blockObj.index);
-                            }, j);
+                        if (nrColumns > 1) {
+                            for (var j = 0; j <= 200; j += 20) {
+                                setTimeout(() => {
+                                    shuffleInstance.update();
+                                    updateGridBlockText(blockObj.index);
+                                }, j);
+                            }
                         }
 
                         setTimeout(() => {
                             // Fade in all other grid blocks
                             fadeGridBlockContent(1.0, blockObj, true);
+                            
+                            if (nrColumns == 1) {
+                                shuffleInstance.update();
+                                updateGridBlockText(blockObject.index);
+                            }
                             
                             if (nrColumns > 1 && (gridPos + 1) % nrColumns == 0) {
                                 gridBlocks[gridPos - 1].block.setAttribute('grid-position', gridPos - 1);
@@ -609,7 +615,7 @@ function initGrid() {
                             blockObj.bigIcon.classList.remove('no-display');
                             blockObj.bigIcon.classList.remove('faded-out');
                         }, animationDurationsMS);
-                    }, animationDurationsMS);
+                    }, (nrColumns == 1) ? 0 : animationDurationsMS);
                 }, (nrColumns == 1) ? 0 : 100);
             }
         }());
@@ -676,13 +682,50 @@ function initGrid() {
     }, 150);
 }
 
+function onBlockMouseEnterMobile(blockObject) {
+    var startIdx = currentPage * maxBlocksInPage;
+    for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
+        if (i == blockObject.index) continue;
+
+        if (gridBlocks[i].bodyContainer.classList.contains('grid-block-body-container-tall')) {
+            gridBlocks[i].bodyContainer.classList.remove('grid-block-body-container-tall');
+            gridBlocks[i].bigIcon.classList.add('faded-out');
+            gridBlocks[i].bigIcon.classList.add('no-display');
+            gridBlocks[i].mainIcon.classList.remove('no-display');
+            gridBlocks[i].mainIcon.classList.remove('faded-out');
+            updateGridBlockText(gridBlocks[i].index);
+
+            gridBlocks[i].reasonContainer.classList.add('no-display', 'faded-out');
+            break;
+        }
+    }
+
+    blockObject.bigIcon.classList.add('faded-out', 'no-display');
+    blockObject.mainIcon.classList.remove('no-display');
+    blockObject.mainIcon.classList.remove('faded-out');
+    blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
+
+    blockObject.reasonContainer.classList.remove('no-display');
+    blockObject.reasonContainer.classList.remove('faded-out');
+
+    blockObject.reasonContainer.classList.remove('faded-out');
+
+    shuffleInstance.update();
+    updateGridBlockText(blockObject.index);
+}
+
 function onBlockMouseEnter(blockObject) {
+    if (nrColumns == 1) {
+        onBlockMouseEnterMobile(blockObject);
+        return;
+    }
+
     if (disableEvents) return;
 
     var currTime = performance.now();
 
     // Add 
-    if (currTime - lastBlockEnterTime < 500) {
+    if (nrColumns > 1 && currTime - lastBlockEnterTime < 500) {
         return;
     }
 
@@ -694,7 +737,7 @@ function onBlockMouseEnter(blockObject) {
     setTimeout(() => {
         // Check that the mouse is still inside the block.
         //   The timing check is here to allow all animations to finish before new ones start.
-        if (!isMouseInElement(blockObject.blockContent) || disableEvents || performance.now() - lastBlockLeaveTime < 550) {
+        if (nrColumns > 1 && (!isMouseInElement(blockObject.blockContent) || disableEvents || performance.now() - lastBlockLeaveTime < 550)) {
             blockObject.bigIcon.classList.remove('faded-out');
             return;
         }
@@ -727,69 +770,38 @@ function onBlockMouseEnter(blockObject) {
         }
 
         // Timeout so that the edge cases (above) get to update the sorting before they expand
-        setTimeout(() => {
-            blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
-            blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
-        });
+        if (nrColumns > 1) {
+            setTimeout(() => {
+                blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
+                blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
+            });
+        }
 
         blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
 
         // Fade out all other grid blocks
         fadeGridBlockContent(0.0, blockObject);
 
-        for (var j = 0; j <= 200; j += 20) {
-            setTimeout(() => {
-                shuffleInstance.update();
-                updateGridBlockText(blockObject.index);
-            }, j);
+        // Smooth position animations for grid blocks
+        if (nrColumns > 1) {
+            for (var j = 0; j <= 200; j += 20) {
+                setTimeout(() => {
+                    shuffleInstance.update();
+                    updateGridBlockText(blockObject.index);
+                }, j);
+            }
         }
 
         setTimeout(() => {
+            if (nrColumns == 1) {
+                shuffleInstance.update();
+                updateGridBlockText(blockObject.index);
+            }
+
             blockObject.reasonContainer.classList.remove('no-display');
             setTimeout(() => {
                 blockObject.reasonContainer.classList.remove('faded-out');
             });
-            return;
-
-            // Update edge block (events are disabled only on edge block cases)
-            if (!disableEnter || (disableEnter && isOnEdge)) {
-                
-            }
-
-            if (disableEnter) return;
-
-            return;
-            // Mouse is no longer inside the block; revert
-            if (!isMouseInElement(blockObject.blockContent)) {
-                blockObject.bodyContainer.classList.remove('grid-block-body-container-tall');
-                blockObject.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
-                blockObject.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
-                console.log("WHAAAAAAAAAT");
-                
-                for (var j = 0; j <= 200; j += 20) {
-                    setTimeout(() => {
-                        shuffleInstance.update();
-                        updateGridBlockText(blockObject.index);
-                        console.log("Updating index " + blockObject.index);
-                    }, j);
-                }
-
-                setTimeout(() => {
-                    // Fade in all other grid blocks
-                    fadeGridBlockContent(1.0, blockObject, true);
-                            
-                    if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
-                        gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr - 1);
-                        blockObject.block.setAttribute('grid-position', colNr);
-                        shuffleInstance.sort({compare: sortGridByPosition});
-                    }
-
-                    blockObject.bigIcon.classList.remove('no-display');
-                    blockObject.bigIcon.classList.remove('faded-out');
-                }, animationDurationsMS);
-
-                return;
-            }
         }, animationDurationsMS);
     }, gridBlockTimeoutsMS);
 }
