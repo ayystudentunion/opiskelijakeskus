@@ -44,7 +44,29 @@
     margin-top: -0.6rem;
 }
 
-#submit-btn {
+select {
+    display: block;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+select * {
+    pointer-events: all;
+}
+
+select option {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#submit-btn, #generate-ideas-btn {
     background-color: white !important;
     border: 1px solid #033649;
     border-radius: 0;
@@ -55,25 +77,18 @@
 
     transition-duration: 0.1s !important;
     
-    margin: 0 0.1rem 0.6rem;
-}
-
-#submit-btn {
-    margin-top: 2rem;
-}
-
-#submit-btn {
+    margin: 2rem 0.1rem 0.6rem;
     padding: 0 8px 0 12px;
 }
 
-#submit-btn i.material-icons {
+#submit-btn i.material-icons, #generate-ideas-btn i.material-icons {
     vertical-align: middle;
     font-size: 22px !important;
     padding: 0 0 3px;
     margin: 0;
 }
 
-#submit-btn:hover {
+#submit-btn:hover, #generate-ideas-btn:hover {
     box-shadow: none;
     background-color: #033649 !important;
     color: white;
