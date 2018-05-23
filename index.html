@@ -30,12 +30,12 @@
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                     <ul class="left">
                         <li>
-                            <a href="./index.html">Opiskelijakeskus</a>
+                            <a href="/">Opiskelijakeskus</a>
                         </li>
                     </ul>
                     <ul id="nav-mobile" class="right">
                         <li>
-                            <a href="new_idea/new_idea.html">Lisää Idea</a>
+                            <a href="new_idea/">Lisää Idea</a>
                         </li>
                     </ul>
                 </div>
@@ -45,43 +45,44 @@
         <div class="row">
             <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                 <div id="content-title-roww" class="row">
-                    <div id="content-title-container" class="col m4 offset-m4">
+                    <div id="content-title-container" class="col s10 offset-s1 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
                         <h1 id="content-title">Ideoita Opiskelijakeskukseen</h1>
                     </div>
                 </div>
     
                 <div id="options-container">
-                    <div id="filters-container" class="col m5">
-                        <p id="filters-title">Kategoriafiltterit</p>
+                    <!--
+                    <div id="filters-container" class="col s5">
+                        <!--
+                        <p id="filters-title">Kategoriafiltterit <i id="category-filter-arrow" class="material-icons">arrow_drop_up</i></p>
+                            
+                        
+                        <div id="filters-title">Kaikki kategoriat vaativa filtteröinti</div>
+                        <input type="checkbox" id="require-all-categories-btn" /><label class="settings-label" for="require-all-categories-btn">Toggle</label>
+                    </div>-->
     
-                        <div id="filter-buttons-container">
-                            <button class="filter-btn btn waves-effect waves-light">Burgers</button>
-                            <button class="filter-btn btn waves-effect waves-light">Fish</button>
-                            <button class="filter-btn btn waves-effect waves-light">Ice Cream</button>
-                            <button class="filter-btn btn waves-effect waves-light">Donuts</button>
-                            <button class="filter-btn btn waves-effect waves-light">Eggs</button>
-                            <button class="filter-btn btn waves-effect waves-light">Apples</button>
-                        </div>
-                    </div>
-    
-                    <div id="page-buttons-container" class="col m2">
-                        <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text"></span></p>
+                    <div id="page-buttons-container" class="col s6">
+                        <p id="page-title">Sivu <span id="current-page-text">1</span> / <span id="total-pages-text">1</span></p>
     
                         <div class="row">
-                            <div id="prev-page-btn-container" class="col m6">
+                            <div id="prev-page-btn-container" class="col s6">
                                 <div id="prev-page-btn" class="page-btn waves-effect waves-light faded-out no-events"><i class="material-icons">chevron_left</i></div>
                             </div>
                     
-                            <div id="next-page-btn-container" class="col m6">
+                            <div id="next-page-btn-container" class="col s6">
                                 <div id="next-page-btn" class="page-btn waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
                             </div>
                         </div>
                     </div>
     
-                    <div id="sorts-container" class="col m5">
+                    <div id="sorts-container" class="col s6">
                         <div id="sorts-title">Tykätyimmät ensin</div>
-                        <input type="checkbox" id="sort-by-likes-btn" /><label class="settings-label" for="sort-by-likes-btn">Toggle</label>
+                        <input type="checkbox" id="sort-by-likes-btn" /><label id="sort-label" class="settings-label" for="sort-by-likes-btn">Toggle</label>
                     </div>
+                </div>
+
+                <div id="filter-buttons-container" class="col s12">
+
                 </div>
         
                 <div id="shuffle-container" class="row">
