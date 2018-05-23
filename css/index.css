@@ -112,6 +112,12 @@ a#site-title {
     margin: 0;
 }
 
+@media only screen and (max-width: 450px) {
+    #content-title {
+        font-size: 2em;
+    }
+}
+
 h1, h2 {
     font-weight: 100;
 }
@@ -153,6 +159,20 @@ body {
     width: 100vw;
 }
 
+@media only screen and (max-width: 550px) {
+    .page-footer p, .page-footer a {
+        text-align: center !important;
+        float: none !important;
+        margin: 0 !important;
+        height: 52px !important;
+        line-height: 52px !important;
+    }
+
+    .page-footer p {
+        margin-bottom: -12px !important;
+    }
+}
+
 #content-title-row {
     display: flex;
     justify-content: center;
@@ -160,12 +180,14 @@ body {
 }
 
 #options-container {
-    padding-left: 6px;
-    padding-right: 1.75rem;
     width: 100%;
 
     display: flex;
     justify-content: space-between;
+}
+
+#sorts-container {
+    text-align: center;
 }
 
 #filters-title, #sorts-title, #page-title {
@@ -175,14 +197,30 @@ body {
     color: #666666;
 }
 
+@media only screen and (max-width: 450px) {
+    #filters-title, #sorts-title, #page-title {
+        font-size: 1.10em !important;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    #filters-title, #sorts-title, #page-title {
+        font-size: 0.95em !important;
+    }
+}
+
+#category-filter-arrow {
+    margin-top: 5px;
+}
+
+#filter-buttons-container {
+    text-align: center;
+}
+
 #page-title {
     text-align: center;
     font-family: inherit;
     font-size: 1.2em;
-}
-
-#sorts-title {
-    text-align: right;
 }
 
 .filter-btn, .page-btn {
@@ -196,7 +234,7 @@ body {
 
     transition-duration: 0.1s !important;
     
-    margin: 0 0.1rem 0.6rem;
+    margin: 0 0.3rem 0.6rem;
 }
 
 .page-btn {
@@ -253,7 +291,6 @@ input[type=checkbox]{
     margin-top: 5px;
 	border-radius: 50px;
     position: relative;
-    float: right;
 }
 
 .settings-label:after {
@@ -300,7 +337,7 @@ input:checked + .settings-label:after {
 
 #submit-bugs {
     padding: 0 15px;
-    margin-right: 2.75rem;
+    margin-right: 1.5rem;
 
     color: lightcoral;
 
@@ -327,6 +364,8 @@ input:checked + .settings-label:after {
     min-height: calc((var(--grid-block-body-container-height) + var(--grid-block-margin)) * 5);
 
     margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .grid-block {
@@ -450,6 +489,12 @@ input:checked + .settings-label:after {
 
 .grid-block-body-container-tall {
     height: calc(var(--grid-block-margin) * 2 + 379px) !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid-block-body-container-tall {
+        height: calc(var(--grid-block-margin) * 2 + 450px) !important;
+    }
 }
 
 .grid-block-description-container {
