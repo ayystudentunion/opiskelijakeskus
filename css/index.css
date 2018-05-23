@@ -214,6 +214,7 @@ body {
 
 #filter-buttons-dropdown {
     border-bottom: 2px solid #033649;
+    cursor: pointer;
 }
 
 #filter-buttons-dropdown i {
