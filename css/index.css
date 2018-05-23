@@ -169,6 +169,7 @@ body {
     }
 
     .page-footer p {
+        padding-top: 4px !important;
         margin-bottom: -12px !important;
     }
 }
