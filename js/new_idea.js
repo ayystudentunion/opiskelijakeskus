@@ -1,18 +1,61 @@
-var fs = require('browserify-fs');
 const randWord = require('random-words');
 
-var sendIdeaBtn = document.getElementById('send_idea_btn');
 var generateIdeas = document.getElementById('generate_ideas');
 
+var form = document.getElementById('form');
+var generateIdeasBtn = document.getElementById('generate-ideas-btn');
 var iconsContainer = document.getElementById('icons');
 var imagesFolderName = "images/";
 var selectedIcon = null;
 
+var categoryIcons = {
+    "Harrastuket": "harrastukset",
+    "Hygieniatilat": "wc ja suihku",
+    "Juhlat": "Juhlat",
+    "Kahvila": "kahvila ja baari",
+    "Kokoukset": "ryhmatyo",
+    "Muut": "muut_abstrakti",
+    "Palvelut": "asiakaspalvelu",
+    "Pop up-tapahtumat": "Nayttelyt",
+    "Rentoutuminen": "Hyvinvointi",
+    "Ruoka": "ravintola",
+    "Säilytys": "tavaran sailytys",
+    "Sauna": "sauna",
+    "Seminaarit": "Muut tapahtumat",
+    "Sosiaalisuus": "sosiaalinen",
+    "Tapahtumat": "muut",
+    "Tietopalvelut": "palvelu",
+    "Työskentely": "opiskelu ja tyot",
+    "Ulkotilat": "ulkotilat",
+    "Urheilu": "urheilu",
+    "Vapaa-aika": "hengailu ja vapaa-aika",
+    "Villit ideat": "villit ideat"
+}
+
 window.onload = function() {
     $('input#idea-name-field, textarea#idea-desc-field, input#idea-argument-field-1, input#idea-argument-field-2, input#idea-argument-field-3, input#idea-argument-field-4, input#idea-argument-field-5').characterCounter();
-    $('select').formSelect();
     
     setCopyrightText();
+
+    /*
+    <select class="icons" required>
+        <option value="" disabled selected>Valitse pääkategoria</option>
+        <option value="" data-icon="../images/harrastukset_musta.png">Harrastukset</option>
+    </select>
+    */
+
+    var selectElements = document.getElementsByTagName('select');
+    
+    for (var i = 0; i < selectElements.length; i++) {
+        for (var key in categoryIcons) {
+            var option = document.createElement('option');
+            option.setAttribute('data-icon', "../images/" + categoryIcons[key] + "_musta.png");
+            option.innerHTML = key;
+            selectElements[i].appendChild(option);
+        }
+    }
+
+    $('select').formSelect();
 /*
     for (var i = 0; i < iconsContainer.childElementCount; i++) {
         (function() {
@@ -32,53 +75,41 @@ window.onload = function() {
     }*/
 }
 
-/*
-sendIdeaBtn.onclick = function() {
-    // Require icon
-    if (selectedIcon == null) {
-        alert("valitse kuvake pls");
-        return;
-    }
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
 
     // Get values from input fields
-    var ideaName = document.getElementById('idea_name').value;
-    var ideaDesc = document.getElementById('idea_description').value;
-    var ideaReason1 = document.getElementById('reason1').value;
-    var ideaReason2 = document.getElementById('reason2').value;
-    var ideaReason3 = document.getElementById('reason3').value;
+    var ideaName = document.getElementById('idea-name-field').value;
+    var ideaDesc = document.getElementById('idea-desc-field').value;
+    var ideaArgument1 = document.getElementById('idea-argument-field-1').value;
+    var ideaArgument2 = document.getElementById('idea-argument-field-2').value;
+    var ideaArgument3 = document.getElementById('idea-argument-field-3').value;
+    var ideaArgument4 = document.getElementById('idea-argument-field-4').value;
+    var ideaArgument5 = document.getElementById('idea-argument-field-5').value;
+    var mainCategory = document.getElementById('idea-main-category').value;
+    var secondaryCategory1 = document.getElementById('idea-secondary-category-1').value;
+    var secondaryCategory2 = document.getElementById('idea-secondary-category-2').value;
+    var secondaryCategory3 = document.getElementById('idea-secondary-category-3').value;
 
-    var iconPath = iconsContainer.children[selectedIcon].getAttribute('src');
-    var iconFile = iconPath.substring(iconPath.indexOf(imagesFolderName) + imagesFolderName.length, iconPath.length);
-
-    // Require text for all
-    /*
-    if (!/\S/.test(ideaName)) {
-        alert("anna idealle nimi");
-        return;
-    }
-
-    if (!/\S/.test(ideaDesc)) {
-        alert("anna idealle kuvaus");
-        return;
-    }
-
-    if (!/\S/.test(ideaReasons)) {
-        alert("anna idealle syyt");
-        return;
-    }*/
-
-    /*
     $.getJSON("../data/data.json", function(result) {
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
         newIdeaObj[ideaName]["description"] = ideaDesc;
-        newIdeaObj[ideaName]["reasons"] = [];
-        newIdeaObj[ideaName]["icon"] = iconFile;
+        newIdeaObj[ideaName]["arguments"] = [];
         newIdeaObj[ideaName]["likes"] = "0";
+        newIdeaObj[ideaName]["secondary_categories"] = [];
 
-        if (ideaReason1 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason1);
-        if (ideaReason2 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason2);
-        if (ideaReason3 != "") newIdeaObj[ideaName]["reasons"].push(ideaReason3);
+        if (ideaArgument1 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument1);
+        if (ideaArgument2 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument2);
+        if (ideaArgument3 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument3);
+        if (ideaArgument4 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument4);
+        if (ideaArgument5 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument5);
+
+        if (mainCategory != "") newIdeaObj[ideaName]["main_category"] = mainCategory;
+
+        if (secondaryCategory1 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1);
+        if (secondaryCategory2 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2);
+        if (secondaryCategory3 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
 
         result.push(newIdeaObj);
 
@@ -89,7 +120,9 @@ sendIdeaBtn.onclick = function() {
             success: function(data) {}
         });
     });
-}
+}, false);
+
+/*
 
 var categories = {
     1: "Eggs",
@@ -100,9 +133,11 @@ var categories = {
     6: "Ice Cream",
     7: "Apples"
 };
+*/
 
-generateIdeas.onclick = function() {
-    var ideasCount = parseInt(document.getElementById('how_many_random_ideas').value);
+// Generates some ideas randomly and overwrites all old ideas
+generateIdeasBtn.onclick = function() {
+    var ideasCount = 115;
 
     var ideas = [];
     for (var i = 0; i < ideasCount; i++) {
@@ -112,7 +147,7 @@ generateIdeas.onclick = function() {
         var desc = "";
 
         var counter = 0;
-        while (desc.length < 450) {
+        while (desc.length < 350) {
             var word = randWord();
             if (counter++ == 0) word = word.charAt(0).toUpperCase() + word.slice(1);
             desc += word + " ";
@@ -134,9 +169,13 @@ generateIdeas.onclick = function() {
 
         var secondaryCategories = [];
         var usedCategories = [];
+        var categories = [];
+        for (var key in categoryIcons) {
+            categories.push(key);
+        }
 
         for (var j = 0; j < Math.random() * 2; j++) {
-            var num = Math.floor(Math.random() * 7 + 1);
+            var num = Math.floor(Math.random() * 20 + 1);
             var newCategory = categories[num];
             if (secondaryCategories.indexOf(newCategory) != -1) {
                 j--;
@@ -149,7 +188,7 @@ generateIdeas.onclick = function() {
 
         var iconNr = null;
         while (iconNr == null) {
-            var nr = Math.floor(Math.random() * 7 + 1);
+            var nr = Math.floor(Math.random() * 20 + 1);
             if (usedCategories.indexOf(nr) == -1) {
                 iconNr = nr;
             }
@@ -157,16 +196,13 @@ generateIdeas.onclick = function() {
 
         idea[name] = {};
         idea[name].description = desc;
-        idea[name].reasons = reasons;
+        idea[name].arguments = reasons;
         idea[name].likes = String(Math.floor(Math.random() * 200));
-        idea[name].icon = "icon" + String(iconNr) + ".png";
-        idea[name].primaryCategory = categories[iconNr];
-        idea[name].secondaryCategories = secondaryCategories;
+        idea[name].main_category = categories[iconNr];
+        idea[name].secondary_categories = secondaryCategories;
 
         ideas.push(idea);
     }
-
-    console.log(ideas);
 
     $.ajax({
         url: '../php/save_data.php',
@@ -174,7 +210,7 @@ generateIdeas.onclick = function() {
         data: {"file_path": "../data/data.json", "data": JSON.stringify(ideas)},
         success: function(data) {}
     });
-}*/
+}
 
 function setCopyrightText() {
     var copyrightTextEl = document.getElementById('copyright_text');
