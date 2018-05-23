@@ -153,7 +153,6 @@ function updateColumnAmount() {
 
     if (nrColumns == 1) {
         gridBlockTimeoutsMS = 0;
-        maxBlocksInPage = 6;
     } else {
         gridBlockTimeoutsMS = animationDurationsMS;
     }
