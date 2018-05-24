@@ -1,0 +1,25 @@
+body {
+    overflow-y: hidden;
+}
+
+nav .left a {
+    color: lightcoral !important;
+}
+
+#page-container {
+    width: 100vw;
+    height: 100vh;
+
+    display: table;
+    border-collapse: collapse;
+}
+
+#site-title {
+    font-family: 'Value';
+    font-size: 2.5em;
+}
+
+.page-footer {
+    display: table-row;
+    vertical-align: bottom;
+}
