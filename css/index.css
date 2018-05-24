@@ -19,6 +19,18 @@
       url("../fonts/materialize-icons.ttf") format('truetype');
 }
 
+html {
+    height: 100%
+}
+
+body {
+    min-height: 100%;
+
+    overflow-x: hidden;
+
+    transition: background-color 1s;
+}
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -146,20 +158,18 @@ div:focus {
     pointer-events: none !important;
 }
 
-body {
-    overflow-x: hidden;
-    min-height: 1200px;
-
-    transition: background-color 1s;
-}
-
 .page-footer {
     background-color: #033649;
     padding-top: 0 !important;
     width: 100vw;
+    height: 64px;
 }
 
 @media only screen and (max-width: 550px) {
+    .page-footer {
+        height: auto;
+    }
+
     .page-footer p, .page-footer a {
         text-align: center !important;
         float: none !important;
@@ -740,7 +750,7 @@ input:checked + .settings-label:after {
     background-image: url('../images/heart_filled.png') !important;
 }
 
-#bottom-spacetaker {
+.bottom-spacetaker {
     width: 100vw;
     height: calc(var(--grid-block-body-container-height) + var(--grid-block-margin) * 2);
 }
