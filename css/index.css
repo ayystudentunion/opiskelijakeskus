@@ -1,23 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-}
 
-@font-face {
-    font-family: 'Value';
-    src: url('../fonts/value-regular.otf');
-}
-
-@font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 300;
-    src: local('Material Icons'),
-      local('MaterialIcons-Regular'),
-      url("../fonts/materialize-icons.woff2") format('woff2'),
-      url("../fonts/materialize-icons.woff") format('woff'),
-      url("../fonts/materialize-icons.ttf") format('truetype');
-}
 
 html {
     height: 100%
@@ -29,29 +10,6 @@ body {
     overflow-x: hidden;
 
     transition: background-color 1s;
-}
-
-.material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 18px !important; /* Preferred icon size */
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
-
-    /* Support for all WebKit browsers. */
-    -webkit-font-smoothing: antialiased;
-
-    /* Support for Safari and Chrome. */
-    text-rendering: optimizeLegibility;
-
-    /* Support for Firefox. */
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .brand-logo {
