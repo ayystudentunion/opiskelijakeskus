@@ -1,0 +1,66 @@
+#page-container {
+    width: 100vw;
+    height: 100vh;
+
+    display: table;
+    border-collapse: collapse;
+}
+
+nav a {
+    color: lightcoral !important;
+}
+
+.form-subtitle {
+    color: #033649 !important;
+    text-decoration: underline;
+}
+
+.form-subtitle + .form-paragraph {
+    margin-top: -1.2rem;
+}
+
+.form-paragraph {
+    font-family: 'Value';
+    font-size: 1.05rem;
+}
+
+#form-bottom-buttons-container {
+    margin-top: 5rem;
+}
+
+#reject-btn, #accept-btn {
+    background-color: white !important;
+    border-radius: 0;
+    border: 1px solid #000;
+    box-shadow: none;
+
+    color: black;
+    cursor: pointer;
+
+    transition-duration: 0.1s !important;
+    
+    margin: 0 0.3rem 0.6rem;
+}
+
+#reject-btn {
+    border-color: darkred;
+}
+
+#accept-btn {
+    border-color: darkgreen;
+}
+
+#reject-btn:hover {
+    background-color: darkred !important;
+    color: white;
+}
+
+#accept-btn:hover {
+    background-color: darkgreen !important;
+    color: white;
+}
+
+.page-footer {
+    display: table-row;
+    vertical-align: bottom;
+}
