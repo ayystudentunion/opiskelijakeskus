@@ -7,6 +7,7 @@ var generateIdeasBtn = document.getElementById('generate-ideas-btn');
 var iconsContainer = document.getElementById('icons');
 var imagesFolderName = "images/";
 var selectedIcon = null;
+var dataFilePath = "../data/data_under_review.json";
 
 var categoryIcons = {
     "Harrastuket": "harrastukset",
@@ -91,7 +92,7 @@ form.addEventListener("submit", function(event) {
     var secondaryCategory2 = document.getElementById('idea-secondary-category-2').value;
     var secondaryCategory3 = document.getElementById('idea-secondary-category-3').value;
 
-    $.getJSON("../data/data.json", function(result) {
+    $.getJSON(dataFilePath, function(result) {
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
         newIdeaObj[ideaName]["description"] = ideaDesc;
@@ -116,7 +117,7 @@ form.addEventListener("submit", function(event) {
         $.ajax({
             url: '../php/save_data.php',
             type: 'POST',
-            data: {"file_path": "../data/data.json", "data": JSON.stringify(result)},
+            data: {"file_path": dataFilePath, "data": JSON.stringify(result)},
             success: function(data) {}
         });
     });
@@ -207,7 +208,7 @@ generateIdeasBtn.onclick = function() {
     $.ajax({
         url: '../php/save_data.php',
         type: 'POST',
-        data: {"file_path": "../data/data.json", "data": JSON.stringify(ideas)},
+        data: {"file_path": "../data/data_under_review.json", "data": JSON.stringify(ideas)},
         success: function(data) {}
     });
 }
