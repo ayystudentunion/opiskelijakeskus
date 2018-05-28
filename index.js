@@ -167,6 +167,11 @@ function setupFilterButtons() {
         filtersTitleArrow.innerHTML = "arrow_drop_up";
     }
 
+    // Fade out next page button if there are too few ideas
+    if ((2 * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
+        nextPageBtn.classList.add('faded-out', 'no-events');
+    }
+
     for (var key in categoryIcons) {
         var filterBtn = document.createElement('button');
         filterBtn.classList.add('filter-btn', 'btn', 'waves-effect', 'waves-light');
@@ -350,7 +355,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 //   and adds the first page to the DOM and ShuffleJS. All other grid elements are stored.
 function initGrid() {
     var likeCounts = [];
-
+    console.log(jsonData.length);
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var flippedIdx = Math.abs((i + 1) - jsonData.length);
 
