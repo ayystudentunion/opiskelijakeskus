@@ -6,7 +6,7 @@
     border-collapse: collapse;
 }
 
-nav a {
+nav ul.left a {
     color: lightcoral !important;
 }
 
