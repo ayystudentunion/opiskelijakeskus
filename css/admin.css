@@ -2,7 +2,7 @@ body {
     overflow-y: hidden;
 }
 
-nav .left a {
+nav ul.left a {
     color: lightcoral !important;
 }
 
