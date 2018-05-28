@@ -1,15 +1,38 @@
+var formContainer = document.getElementById('form-container');
+
 window.onload = function() {
     setCopyrightText();
 
+    resetReviewModal();
+}
+
+function resetReviewModal() {
     $.getJSON("../../data/data_under_review.json", function(result) {
         if (result.length == 0) {
-            alert("Ei moderoitavia ideoita.");
+            if (formContainer.classList.contains('no-display')) {
+                alert("Ei moderoitavia ideoita.");
+            } else {
+                formContainer.classList.add('no-display');
+            }
+
             initParticles();
+
             return;
         }
 
         document.getElementById('number-of-ideas').innerHTML = result.length;
         document.getElementById('form-bottom-buttons-container').classList.remove('no-display');
+
+        // Reset argument and secondary categories to no display because next idea might have less of either
+        var argumentEls = document.getElementsByClassName('idea-argument');
+        for (var i = 0; i < argumentEls.length; i++) {
+            argumentEls[i].classList.add('no-display');
+        }
+
+        var secondaryCategoryEls = document.getElementsByClassName('idea-secondary-category');
+        for (var i = 0; i < secondaryCategoryEls; i++) {
+            secondaryCategoryEls[i].classList.add('no-display');
+        }
 
         var idea = result[0];
         for (var key in idea) {
@@ -30,8 +53,11 @@ window.onload = function() {
                 el.classList.remove('no-display');
             }
 
+            var secondaryCategoriesTitleEl = document.getElementById('idea-secondary-categories-title');
             if (ideaObj.secondary_categories != undefined && ideaObj.secondary_categories.length > 0) {
-                document.getElementById('idea-secondary-categories-title').classList.remove('no-display');
+                secondaryCategoriesTitleEl.classList.remove('no-display');
+            } else {
+                secondaryCategoriesTitleEl.classList.add('no-display');
             }
         }
 
@@ -42,7 +68,8 @@ window.onload = function() {
     });
 }
 
-$("#form").submit(function() {
+$("#form").submit(function(event) {
+    event.preventDefault();
     var isAcceptBtn = document.activeElement.getAttribute('id') == 'accept-btn';
 
     $.getJSON("../../data/data_under_review.json", function(results) {
@@ -67,6 +94,11 @@ $("#form").submit(function() {
             });
         });
     });
+
+    formContainer.classList.add('faded-out');
+    setTimeout(() => {
+        resetReviewModal();
+    }, 500);
 });
 
 function setCopyrightText() {
