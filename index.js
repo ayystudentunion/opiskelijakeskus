@@ -41,14 +41,14 @@ var filtersTitle = document.getElementById('filters-title');
 var filtersTitleArrow = document.getElementById('filters-title-arrow');
 
 var categoryIcons = {
-    "Harrastuket": "harrastukset",
+    "Harrastukset": "harrastukset",
     "Hygieniatilat": "wc ja suihku",
     "Juhlat": "Juhlat",
     "Kahvila": "kahvila ja baari",
     "Kokoukset": "ryhmatyo",
     "Muut": "muut_abstrakti",
     "Palvelut": "asiakaspalvelu",
-    "Pop up-tapahtumat": "Nayttelyt",
+    "Pop-up -tapahtumat": "Nayttelyt",
     "Rentoutuminen": "Hyvinvointi",
     "Ruoka": "ravintola",
     "Säilytys": "tavaran sailytys",
@@ -490,11 +490,13 @@ function initGrid() {
         gridBlockCategoryIconsContainer.appendChild(mainIcon);
         blockObject.mainIcon = mainIcon;
 
-        for (var j = 0; j < secondaryCategories.length; j++) {
-            var icon = document.createElement('div');
-            icon.classList.add('grid-block-icon');
-            icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
-            gridBlockCategoryIconsContainer.appendChild(icon);
+        if (secondaryCategories.length > 0 && secondaryCategories[0] != "") {
+            for (var j = 0; j < secondaryCategories.length; j++) {
+                var icon = document.createElement('div');
+                icon.classList.add('grid-block-icon');
+                icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
+                gridBlockCategoryIconsContainer.appendChild(icon);
+            }
         }
 
         var gridBlockHeartContainer = document.createElement('div');
