@@ -280,7 +280,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
         return errorCB("Already at the first page");
     }
 
-    if (((wantedIdx + 1) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
+    if (wantedIdx != 0 && ((wantedIdx + 1) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
         return errorCB("Reached the end of pages");
     }
 
@@ -924,6 +924,7 @@ function setCopyrightText() {
 function updateGridOnFilterChange() {
     if (currentFilters.length == 0) {
         gridBlocks = originalGridBlocks;
+        console.log("Reset to original");
     } else {
         gridBlocks = [];
 
@@ -949,17 +950,21 @@ function updateGridOnFilterChange() {
 }
 
 function sortGridBlocksByLikes() {
-    var sortFuncToUse = (sortByLikes) ? sortByLikesFunc : sortByOriginalIndexFunc;
-    gridBlocks.sort(sortFuncToUse);
-    for (var i = 0; i < gridBlocks.length; i++) {
-        gridBlocks[i].block.setAttribute('grid-position', i);
-        gridBlocks[i].index = i;
+    if (gridBlocks.length > 0) {
+        var sortFuncToUse = (sortByLikes) ? sortByLikesFunc : sortByOriginalIndexFunc;
+        gridBlocks.sort(sortFuncToUse);
+        for (var i = 0; i < gridBlocks.length; i++) {
+            gridBlocks[i].block.setAttribute('grid-position', i);
+            gridBlocks[i].index = i;
+        }
     }
 }
 
 function updatePageTexts(currPageIdx = currentPage) {
-    currentPageText.innerHTML = currPageIdx + 1;
-    totalPagesText.innerHTML = Math.floor((gridBlocks.length - 1) / maxBlocksInPage + 1);
+    var totalPages = Math.floor((gridBlocks.length - 1) / maxBlocksInPage + 1);
+
+    currentPageText.innerHTML = (totalPages == 0) ? 0 : currPageIdx + 1;
+    totalPagesText.innerHTML = totalPages;
 }
 
 String.prototype.replaceAll = function(search, replacement) {
