@@ -1,7 +1,7 @@
 <?php
     if (isset($_POST['file_path']) && isset($_POST['data'])) {
         function save_data($file_path, $data) {
-            $handle = fopen($file_path, 'r+');
+            $handle = fopen($file_path, 'w+');
 
             // Lock file to prevent data from getting fucked
             if (flock($handle, LOCK_EX)) {
