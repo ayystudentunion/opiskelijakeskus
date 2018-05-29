@@ -1,5 +1,6 @@
 var shuffle = require('shufflejs');
 var $ = require('jquery');
+const uuid = require('uuid/v1');
 
 // Container for grid items
 var shuffleContainer = document.getElementById('shuffle-container');
@@ -29,6 +30,7 @@ var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
 var animationDurationsMS = 200;
+var currentLikeID = 0;
 
 var prevPageBtn = document.getElementById('prev-page-btn');
 var nextPageBtn = document.getElementById('next-page-btn');
@@ -119,8 +121,6 @@ window.onload = function() {
         if (cookie != "") {
             likedIdeas = JSON.parse(cookie);
         }
-        
-        console.log(likedIdeas);
 
         // Initialize main grid
         initGrid();
@@ -201,17 +201,24 @@ function setupFilterButtons() {
             var category = key;
 
             btn.onclick = function(event) {
-                if (pageButtonsDisabled || (!btn.classList.contains('selected') && currentFilters.length >= 1)) {
+                if (pageButtonsDisabled) {
                     event.preventDefault();
                     return;
                 }
 
                 btn.classList.toggle('selected');
 
+                // Disselect every other button
+                for (var i = 0; i < filterButtonsContainer.childElementCount; i++) {
+                    if (filterButtonsContainer.children[i].innerHTML == btn.innerHTML) continue;
+
+                    filterButtonsContainer.children[i].classList.remove('selected');
+                }
+
                 if (currentFilters.indexOf(category) != -1) {
-                    currentFilters.splice(currentFilters.indexOf(category), 1);
+                    currentFilters = [];
                 } else {
-                    currentFilters.push(category);
+                    currentFilters = [category];
                 }
 
                 // Reset pages when filters change 
@@ -386,6 +393,7 @@ function initGrid() {
         var idea_arguments = null;
         var icon = null;
         var likes = 0;
+        var id = null;
         var primaryCategory = null;
         var secondaryCategories = [];
 
@@ -394,6 +402,7 @@ function initGrid() {
         // Get data
         for (var key in jsonData[i]) {
             title = key;
+            id = jsonData[i][key].id;
             description = jsonData[i][key].description;
             idea_arguments = jsonData[i][key].arguments;
             icon = jsonData[i][key].icon;
@@ -402,10 +411,13 @@ function initGrid() {
             secondaryCategories = jsonData[i][key].secondary_categories;
         }
 
+        blockObject.id = id;
         blockObject.title = title;
         blockObject.likes = likes;
         blockObject.description = description;
         blockObject.arguments = idea_arguments;
+        blockObject.mainCategory = primaryCategory;
+        blockObject.secondaryCategories = secondaryCategories;
         var categoriesText = String(primaryCategory + "," + secondaryCategories);
 
         // Convert to JSON format
@@ -686,9 +698,9 @@ function initGrid() {
                 var likesText = gridBlockObject.likesText;
                 var likesCount = parseInt(likesText.innerHTML);
 
-                var likeIdx = likedIdeas.indexOf(gridBlockObject.title);
+                var likeIdx = likedIdeas.indexOf(gridBlockObject.id);
                 if (likeIdx == -1) {
-                    likedIdeas.push(gridBlockObject.title);
+                    likedIdeas.push(gridBlockObject.id);
                 } else {
                     likedIdeas.splice(likeIdx, 1);
                 }
@@ -711,11 +723,17 @@ function initGrid() {
                     // Update likes (there might be better way to do this..)
                     for (var i = 0; i < result.length; i++) {
                         if (Object.keys(result[i])[0] == ideaName) {
-                            result[i][ideaName]["likes"] = String(likesCount);
-                            break;
+                            var r = result[i][ideaName];
+
+                            // Check that everything matches because if there are multiple
+                            //   ideas with the same name, the wrong one could be chosen without this check
+                            if (r.id == gridBlockObject.id) {
+                                result[i][ideaName]["likes"] = String(likesCount);
+                                break;
+                            }
                         }
                     }
-            
+                    
                     // Save to file
                     $.ajax({
                         url: 'php/save_data.php',
@@ -726,7 +744,7 @@ function initGrid() {
                 });
             }
 
-            if (likedIdeas.indexOf(gridBlockObject.title) != -1) {
+            if (likedIdeas.indexOf(gridBlockObject.id) != -1) {
                 gridBlockObject.heart.firstChild.innerHTML = "favorite";
                 gridBlockObject.heart.style.color = "lightcoral";
             }
@@ -1108,4 +1126,15 @@ function checkCookiesEnabled() {
         cookieEnabled = document.cookie.indexOf("testcookie") != -1;
     }
     return cookieEnabled;
+}
+
+function arraysEqual(arr1, arr2) {
+    if (arr1.length != arr2.length)
+        return false;
+    for (var i = arr1.length; i--;) {
+        if (arr1[i] != arr2[i])
+            return false;
+    }
+
+    return true;
 }
