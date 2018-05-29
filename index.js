@@ -183,7 +183,7 @@ function setupFilterButtons() {
             var category = key;
 
             btn.onclick = function(event) {
-                if (pageButtonsDisabled) {
+                if (pageButtonsDisabled || (!btn.classList.contains('selected') && currentFilters.length >= 1)) {
                     event.preventDefault();
                     return;
                 }
@@ -356,6 +356,8 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 function initGrid() {
     var likeCounts = [];
     console.log(jsonData.length);
+    jsonData = shuffleArr(jsonData);
+
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var flippedIdx = Math.abs((i + 1) - jsonData.length);
 
@@ -1006,4 +1008,15 @@ function expandSection(element) {
     });
     
     element.setAttribute('data-collapsed', 'false');
+}
+
+function shuffleArr(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
