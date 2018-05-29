@@ -431,7 +431,6 @@ function initGrid() {
             colorIdx = Math.floor(Math.random() * 3);
         } while (colorIdx == lastColorIdx);
         lastColorIdx = colorIdx;
-        console.log(colorIdx);
 
         gridBlockContent.style.backgroundColor = gridBlockColors[colorIdx];
 
@@ -486,6 +485,7 @@ function initGrid() {
 
             var reasonBlockHeader = document.createElement('div');
             reasonBlockHeader.classList.add('collapsible-header', 'waves-effect', 'waves-light');
+            reasonBlockHeader.style.backgroundColor = gridBlockColors[colorIdx];
 
             // Also add icon accordingly
             // See https://materializecss.com/icons.html for information about icons
