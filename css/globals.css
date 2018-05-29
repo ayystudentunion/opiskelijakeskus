@@ -72,6 +72,12 @@ nav ul li.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+#navbar-add-icon {
+    display: inline-block;
+    position: absolute;
+    margin-left: -21px;
+}
+
 /* CSS states */
 .no-highlight {
     -webkit-touch-callout: none; /* iOS Safari */
