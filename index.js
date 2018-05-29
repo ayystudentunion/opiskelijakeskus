@@ -40,6 +40,12 @@ var filtersDropdown = document.getElementById('filter-buttons-dropdown');
 var filtersTitle = document.getElementById('filters-title');
 var filtersTitleArrow = document.getElementById('filters-title-arrow');
 
+var gridBlockColors = [
+    "rgb(255, 255, 229)",
+    "rgb(254, 244, 113)",
+    "rgb(255, 254, 174)"
+]
+
 var categoryIcons = {
     "Harrastukset": "harrastukset",
     "Hygieniatilat": "wc ja suihku",
@@ -370,6 +376,7 @@ function initGrid() {
     console.log(jsonData.length);
     jsonData = shuffleArr(jsonData);
 
+    var lastColorIdx = -1;
     var maxContainerWidth = 0;
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var flippedIdx = Math.abs((i + 1) - jsonData.length);
@@ -418,6 +425,15 @@ function initGrid() {
         var gridBlockContent = document.createElement('div');
         gridBlockContent.classList.add('grid-block-content', 'hoverable');
         blockObject.blockContent = gridBlockContent;
+        
+        var colorIdx;
+        do {
+            colorIdx = Math.floor(Math.random() * 3);
+        } while (colorIdx == lastColorIdx);
+        lastColorIdx = colorIdx;
+        console.log(colorIdx);
+
+        gridBlockContent.style.backgroundColor = gridBlockColors[colorIdx];
 
         var gridBlockHeaderContainer = document.createElement('div');
         gridBlockHeaderContainer.classList.add('grid-block-header-container');
