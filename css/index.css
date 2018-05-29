@@ -627,6 +627,10 @@ input:checked + .settings-label:after {
     border-bottom: 1px solid #553180;
 }
 
+.collapsible, .collapsible * {
+    border-color: #bbb !important;
+}
+
 .grid-block-footer {
     display: table-row;
     vertical-align: bottom;
