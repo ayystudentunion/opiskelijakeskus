@@ -10,6 +10,7 @@
 
 body {
     overflow-x: hidden;
+    background-color: rgb(245, 245, 245);
 }
 
 @font-face {
@@ -143,7 +144,7 @@ nav ul li.active {
 
 /* Button styles */
 .simple-btn {
-    background-color: white !important;
+    background-color: rgb(245, 245, 245) !important;
     border: 1px solid #033649;
     border-radius: 0;
     box-shadow: none;
@@ -159,7 +160,7 @@ nav ul li.active {
 .simple-btn:hover {
     box-shadow: none;
     background-color: #033649 !important;
-    color: white;
+    color: rgb(245, 245, 245);
 }
 
 .simple-btn i.material-icons {
