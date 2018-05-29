@@ -225,7 +225,7 @@ div:focus {
 }
 
 .filter-btn, .page-btn {
-    background-color: white !important;
+    background-color: rgb(245, 245, 245) !important;
     border: 1px solid #033649;
     border-radius: 0;
     box-shadow: none;
@@ -261,12 +261,12 @@ div:focus {
 .filter-btn:hover, .page-btn:hover {
     box-shadow: none;
     background-color: #033649 !important;
-    color: white;
+    color: rgb(245, 245, 245);
 }
 
 .filter-btn.selected {
     background-color: #033649 !important;
-    color: white !important;
+    color: rgb(245, 245, 245) !important;
 }
 
 .filter-btn.selected:hover {
