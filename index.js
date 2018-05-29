@@ -707,12 +707,15 @@ function initGrid() {
 
                 setCookie("liked_ideas", JSON.stringify(likedIdeas));
 
+                var change = 0;
                 if (gridBlockObject.heart.firstChild.innerHTML == "favorite") {
                     gridBlockObject.heart.style.color = "lightcoral";
                     likesCount++;
+                    change = 1;
                 } else {
                     gridBlockObject.heart.style.color = null;
                     likesCount--;
+                    change = -1;
                 }
 
                 // Update HTML and data file
@@ -728,7 +731,7 @@ function initGrid() {
                             // Check that everything matches because if there are multiple
                             //   ideas with the same name, the wrong one could be chosen without this check
                             if (r.id == gridBlockObject.id) {
-                                result[i][ideaName]["likes"] = String(likesCount);
+                                result[i][ideaName]["likes"] = parseInt(result[i][ideaName]["likes"]) + change;
                                 break;
                             }
                         }
