@@ -68,6 +68,7 @@ var categoryIcons = {
 var gridBlocks = [];
 var originalGridBlocks = [];
 var currentFilters = [];
+var likedIdeas = [];
 
 var maxBlocksInPage = null;
 
@@ -87,6 +88,10 @@ window.onmousemove = function(event) {
 
 // Load data from JSON
 window.onload = function() {
+    if (sortByLikesBtn.checked) {
+        sortByLikesBtn.checked = false;
+    }
+
     setCopyrightText();
 
     updateColumnAmount();
@@ -103,6 +108,13 @@ window.onload = function() {
 
     $.getJSON("data/data.json", function(result) {
         jsonData = result;
+
+        var cookie = getCookie("liked_ideas");
+        if (cookie != "") {
+            likedIdeas = JSON.parse(cookie);
+        }
+        
+        console.log(likedIdeas);
 
         // Initialize main grid
         initGrid();
@@ -311,7 +323,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
             shuffleInstance.element.appendChild(gridBlocks[i].block, shuffleInstance.element.firstChild);
             blocksToAdd.push(gridBlocks[i].block);
 
-            ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, true);
+            ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, gridBlocks[i], true);
         }
 
         shuffleInstance.add(blocksToAdd);
@@ -358,6 +370,7 @@ function initGrid() {
     console.log(jsonData.length);
     jsonData = shuffleArr(jsonData);
 
+    var maxContainerWidth = 0;
     for (var i = jsonData.length - 1; i >= 0; i--) {
         var flippedIdx = Math.abs((i + 1) - jsonData.length);
 
@@ -382,8 +395,10 @@ function initGrid() {
             secondaryCategories = jsonData[i][key].secondary_categories;
         }
 
+        blockObject.title = title;
         blockObject.likes = likes;
         blockObject.description = description;
+        blockObject.arguments = idea_arguments;
         var categoriesText = String(primaryCategory + "," + secondaryCategories);
 
         // Convert to JSON format
@@ -406,6 +421,7 @@ function initGrid() {
 
         var gridBlockHeaderContainer = document.createElement('div');
         gridBlockHeaderContainer.classList.add('grid-block-header-container');
+        blockObject.headerContainer = gridBlockHeaderContainer;
 
         var gridBlockHeaderText = document.createElement('p');
         gridBlockHeaderText.classList.add('grid-block-header-text');
@@ -556,7 +572,11 @@ function initGrid() {
             shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
         }
 
-        ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, true);
+        if (blockObject.bodyContainer.clientWidth > maxContainerWidth) {
+            maxContainerWidth = blockObject.bodyContainer.clientWidth;
+        }
+        
+        ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, blockObject, true);
 
         (function() {
             var idx = flippedIdx;
@@ -650,6 +670,15 @@ function initGrid() {
                 var likesText = gridBlockObject.likesText;
                 var likesCount = parseInt(likesText.innerHTML);
 
+                var likeIdx = likedIdeas.indexOf(gridBlockObject.title);
+                if (likeIdx == -1) {
+                    likedIdeas.push(gridBlockObject.title);
+                } else {
+                    likedIdeas.splice(likeIdx, 1);
+                }
+
+                setCookie("liked_ideas", JSON.stringify(likedIdeas));
+
                 if (gridBlockObject.heart.firstChild.innerHTML == "favorite") {
                     gridBlockObject.heart.style.color = "lightcoral";
                     likesCount++;
@@ -679,6 +708,11 @@ function initGrid() {
                         success: function(data) {}
                     });
                 });
+            }
+
+            if (likedIdeas.indexOf(gridBlockObject.title) != -1) {
+                gridBlockObject.heart.firstChild.innerHTML = "favorite";
+                gridBlockObject.heart.style.color = "lightcoral";
             }
         }());
     }
@@ -713,10 +747,10 @@ function onBlockMouseEnterMobile(blockObject) {
     blockObject.mainIcon.classList.remove('faded-out');
     blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
 
-    blockObject.reasonContainer.classList.remove('no-display');
-    blockObject.reasonContainer.classList.remove('faded-out');
-
-    blockObject.reasonContainer.classList.remove('faded-out');
+    if (blockObject.arguments.length > 0) {
+        blockObject.reasonContainer.classList.remove('no-display');
+        blockObject.reasonContainer.classList.remove('faded-out');
+    }
 
     shuffleInstance.update();
     updateGridBlockText(blockObject.index);
@@ -806,10 +840,12 @@ function onBlockMouseEnter(blockObject) {
                 updateGridBlockText(blockObject.index);
             }
 
-            blockObject.reasonContainer.classList.remove('no-display');
-            setTimeout(() => {
-                blockObject.reasonContainer.classList.remove('faded-out');
-            });
+            if (blockObject.arguments.length > 0) {
+                blockObject.reasonContainer.classList.remove('no-display');
+                setTimeout(() => {
+                    blockObject.reasonContainer.classList.remove('faded-out');
+                });
+            }
         }, animationDurationsMS);
     }, gridBlockTimeoutsMS);
 }
@@ -850,9 +886,8 @@ function fadeGridBlockContent(opacity, blockObject, ellipsize = false) {
     }
 }
 
-function ellipsizeElement(container, textElement, restrictTwoLines) {
+function ellipsizeElement(container, textElement, blockObject, restrictTwoLines) {
     if (container == undefined || textElement == undefined) {
-        console.warn("Container or text element was undefined");
         return;
     }
 
@@ -865,7 +900,6 @@ function ellipsizeElement(container, textElement, restrictTwoLines) {
             textElement.innerHTML = wordArray.join(' ') + '...';
     
             if (iters++ >= 100) {
-                console.log("You fucked up on restricted thing...")
                 break;
             }
         }
@@ -875,9 +909,18 @@ function ellipsizeElement(container, textElement, restrictTwoLines) {
             textElement.innerHTML = wordArray.join(' ') + '...';
     
             if (iters++ >= 100) {
-                console.log("You fucked up on full thing...");
                 break;
             }
+        }
+    }
+
+    var titleArray = blockObject.headerText.innerHTML.split(' ');
+    while (blockObject.headerContainer.clientHeight > 50) {
+        titleArray.pop();
+        blockObject.headerText.innerHTML = titleArray.join(' ') + '...';
+
+        if (iters++ >= 100) {
+            break;
         }
     }
 }
@@ -892,8 +935,9 @@ function updateAllGridBlockTexts() {
 
 function updateGridBlockText(idx) {
     gridBlocks[idx].descriptionText.innerHTML = gridBlocks[idx].description;
+    gridBlocks[idx].headerText.innerHTML = gridBlocks[idx].title;
 
-    ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText, !gridBlocks[idx].bodyContainer.classList.contains('grid-block-body-container-tall'));
+    ellipsizeElement(gridBlocks[idx].bodyContainer, gridBlocks[idx].descriptionText, gridBlocks[idx], !gridBlocks[idx].bodyContainer.classList.contains('grid-block-body-container-tall'));
 }
 
 function isMouseInElement(el) {
@@ -928,7 +972,6 @@ function setCopyrightText() {
 function updateGridOnFilterChange() {
     if (currentFilters.length == 0) {
         gridBlocks = originalGridBlocks;
-        console.log("Reset to original");
     } else {
         gridBlocks = [];
 
@@ -1010,6 +1053,7 @@ function expandSection(element) {
     element.setAttribute('data-collapsed', 'false');
 }
 
+// Shuffles around array randomly
 function shuffleArr(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
@@ -1019,4 +1063,33 @@ function shuffleArr(a) {
         a[j] = x;
     }
     return a;
+}
+
+function setCookie(cname, cvalue) {
+    document.cookie = cname + "=" + cvalue + ";";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookiesEnabled() {
+    var cookieEnabled = navigator.cookieEnabled;
+    if (!cookieEnabled) { 
+        document.cookie = "testcookie";
+        cookieEnabled = document.cookie.indexOf("testcookie") != -1;
+    }
+    return cookieEnabled;
 }
