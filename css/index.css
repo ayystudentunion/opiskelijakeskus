@@ -474,9 +474,12 @@ input:checked + .settings-label:after {
 
 .grid-block-header-container {
     padding: 10px;
-    font-size: 1.1em;
 
     border-bottom: 1px solid #553180;
+}
+
+.grid-block-header-text {
+    font-size: 1.1em;
 }
 
 .grid-block-body-container {
