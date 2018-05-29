@@ -8,7 +8,8 @@
     "fs": "0.0.1-security",
     "jquery": "^3.3.1",
     "random-words": "^1.1.0",
-    "shufflejs": "^5.1.2"
+    "shufflejs": "^5.1.2",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {},
   "scripts": {
