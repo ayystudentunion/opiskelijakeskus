@@ -1,4 +1,4 @@
-const randWord = require('random-words');
+const uuid = require('uuid/v1');
 
 var generateIdeas = document.getElementById('generate_ideas');
 
@@ -75,6 +75,7 @@ form.addEventListener("submit", function(event) {
         newIdeaObj[ideaName]["arguments"] = [];
         newIdeaObj[ideaName]["likes"] = "0";
         newIdeaObj[ideaName]["secondary_categories"] = [];
+        newIdeaObj[ideaName]["id"] = uuid();
 
         if (ideaArgument1 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument1);
         if (ideaArgument2 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument2);
