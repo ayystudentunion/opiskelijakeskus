@@ -50,6 +50,7 @@ window.onload = function() {
     }
 
     $('select').formSelect();
+}
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
