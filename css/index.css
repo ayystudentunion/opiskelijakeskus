@@ -23,6 +23,10 @@ ul.right {
     margin-right: 1.25rem;
 }
 
+ul.right a {
+    padding: 0 15px 0 30px;
+}
+
 .collapsible * {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
