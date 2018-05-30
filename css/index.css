@@ -510,7 +510,8 @@ input:checked + .settings-label:after {
 }
 
 .grid-block-body-container-tall {
-    height: calc(var(--grid-block-margin) * 2 + 379px) !important;
+    /*height: calc(var(--grid-block-margin) * 2 + 379px) !important;*/
+    height: calc(var(--grid-block-margin) * 2 + 351px) !important;
 }
 
 @media only screen and (max-width: 600px) {
