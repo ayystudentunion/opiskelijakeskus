@@ -6,30 +6,7 @@ var imagesFolderName = "images/";
 var selectedIcon = null;
 var dataFilePath = "../data/data_under_review.json";
 
-var categoryIcons = {
-    "Harrastukset": "harrastukset",
-    "Hygieniatilat": "wc ja suihku",
-    "Juhlat": "Juhlat",
-    "Kahvila": "kahvila ja baari",
-    "Kokoukset": "ryhmatyo",
-    "Muut": "muut_abstrakti",
-    "Palvelut": "asiakaspalvelu",
-    "Pop-up -tapahtumat": "Nayttelyt",
-    "Rentoutuminen": "Hyvinvointi",
-    "Ruoka": "ravintola",
-    "Säilytys": "tavaran sailytys",
-    "Sauna": "sauna",
-    "Seminaarit": "Muut tapahtumat",
-    "Sosiaalisuus": "sosiaalinen",
-    "Tapahtumat": "muut",
-    "Tietopalvelut": "palvelu",
-    "Työskentely": "opiskelu ja tyot",
-    "Ulkotilat": "ulkotilat",
-    "Urheilu": "urheilu",
-    "Vapaa-aika": "hengailu ja vapaa-aika",
-    "Villit ideat": "villit ideat"
-}
-
+// Reset scroll on page reload becuase if the page is scrolled half way it looks stupid
 window.onbeforeunload = function() {
     window.scrollTo(0, 0);
 }
@@ -56,8 +33,6 @@ window.onload = function() {
 form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    console.log("Submit");
-
     document.getElementById('submit-btn').disabled = true;
 
     // Get values from input fields
@@ -73,6 +48,7 @@ form.addEventListener("submit", function(event) {
     var secondaryCategory2 = document.getElementById('idea-secondary-category-2').value;
     var secondaryCategory3 = document.getElementById('idea-secondary-category-3').value;
 
+    // Add new idea to reviewed ideas
     $.getJSON(dataFilePath, function(result) {
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
@@ -103,20 +79,10 @@ form.addEventListener("submit", function(event) {
             success: function(data) {}
         });
 
+        // Show load bar and refresh page after it finishes
         document.getElementById('top-load-bar').style.width = "100vw";
         setTimeout(() => {
             location.reload();
         }, 2500);
     });
 }, false);
-
-function setCopyrightText() {
-    var copyrightTextEl = document.getElementById('copyright_text');
-    var createdYear = 2018;
-    var currentYear = new Date().getFullYear();
-
-    // Update copyright text year span according to the current year
-    var yearText = String(createdYear) + ((currentYear != createdYear) ? ("-" + String(currentYear)) : "");
-
-    copyrightTextEl.innerHTML = "Copyright © " + yearText + " <a href='https://ayy.fi' target='_blank'>Aalto University Student Union</a>";
-}
