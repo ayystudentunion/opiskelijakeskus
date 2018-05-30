@@ -964,6 +964,7 @@ function ellipsizeElement(container, textElement, blockObject, restrictTwoLines)
         }
     }
 
+    iters = 0;
     var titleArray = blockObject.headerText.innerHTML.split(' ');
     while (blockObject.headerContainer.clientHeight > 50) {
         titleArray.pop();
@@ -1112,7 +1113,7 @@ function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -1122,15 +1123,6 @@ function getCookie(cname) {
         }
     }
     return "";
-}
-
-function checkCookiesEnabled() {
-    var cookieEnabled = navigator.cookieEnabled;
-    if (!cookieEnabled) { 
-        document.cookie = "testcookie";
-        cookieEnabled = document.cookie.indexOf("testcookie") != -1;
-    }
-    return cookieEnabled;
 }
 
 function arraysEqual(arr1, arr2) {
