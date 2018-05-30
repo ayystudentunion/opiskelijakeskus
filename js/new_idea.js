@@ -1,7 +1,10 @@
 const uuid = require('uuid/v1');
 
+var formContainer = document.getElementsByClassName('form-container')[0];
 var form = document.getElementById('form');
 var iconsContainer = document.getElementById('icons');
+var loadBar = document.getElementById('top-load-bar');
+var ideaSentWrapper = document.getElementById('idea-sent-wrapper');
 var imagesFolderName = "images/";
 var selectedIcon = null;
 var dataFilePath = "../data/data_under_review.json";
@@ -71,18 +74,41 @@ form.addEventListener("submit", function(event) {
         if (secondaryCategory3 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
 
         result.push(newIdeaObj);
+        loadBar.style.width = "100vw";
 
         $.ajax({
             url: '../php/save_data.php',
             type: 'POST',
             data: {"file_path": dataFilePath, "data": JSON.stringify(result)},
-            success: function(data) {}
+            success: function(data) {
+                setTimeout(() => {
+                    afterIdeaSent(true);
+                }, 1500);
+            },
+            error: function(err) {
+                setTimeout(() => {
+                    afterIdeaSent(false);
+                }, 1500);
+            }
         });
-
-        // Show load bar and refresh page after it finishes
-        document.getElementById('top-load-bar').style.width = "100vw";
-        setTimeout(() => {
-            location.reload();
-        }, 2500);
     });
 }, false);
+
+function afterIdeaSent(success) {
+    if (!success) {
+        document.getElementById('idea-sent-container').style.borderTop = "2px solid darkred";
+        document.getElementById('idea-sent-title').innerHTML = "Pahoittelut, idean lähettämisessä tapahtui virhe.";
+    }
+
+    loadBar.classList.add('no-display');
+    formContainer.classList.add('faded-out');
+
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        formContainer.classList.add('no-display');
+        ideaSentWrapper.classList.remove('no-display');
+        setTimeout(() => {
+            ideaSentWrapper.classList.remove('faded-out');
+        });
+    }, 500);
+}
