@@ -369,6 +369,8 @@ function initGrid() {
     // Shuffle ideas around for better diversity
     jsonData = shuffleArr(jsonData);
 
+    var longestArg = 0;
+    var longestArgTitle = "";
     var lastColorIdx = -1;
     for (var i = 0; i < jsonData.length; i++) {
         var title = null;
@@ -401,6 +403,7 @@ function initGrid() {
         blockObject.mainCategory = primaryCategory;
         blockObject.secondaryCategories = secondaryCategories;
         blockObject.footerIcons = [];
+        blockObject.collapsibleIcons = [];
         var categoriesText = String(primaryCategory + "," + secondaryCategories);
 
         // Convert to JSON format
@@ -473,29 +476,39 @@ function initGrid() {
         for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
             var reasonBlock = document.createElement('li');
 
+            if (idea_arguments[j].length > longestArg && idea_arguments[j].length < 151) {
+                
+                longestArg = idea_arguments[j].length;
+                longestArgTitle = title;
+            }
+
             // Open first block by default
             if (j == 0) reasonBlock.classList.add('active');
 
             var reasonBlockHeader = document.createElement('div');
-            reasonBlockHeader.classList.add('collapsible-header', 'waves-effect', 'waves-light');
+            reasonBlockHeader.classList.add('collapsible-header', 'has-content', 'waves-effect', 'waves-light');
             reasonBlockHeader.style.backgroundColor = gridBlockColors[colorIdx];
+
+            /* The collapsibles are still here if at some point they want to be reverted to */
 
             // Also add icon accordingly
             // See https://materializecss.com/icons.html for information about icons
-            var reasonBlockIcon = document.createElement('i');
-            reasonBlockIcon.classList.add('material-icons');
-            reasonBlockIcon.innerHTML = (j == 0) ? "arrow_drop_up" : "arrow_drop_down";
-            reasonBlockHeader.appendChild(reasonBlockIcon);
+            //var reasonBlockIcon = document.createElement('i');
+            //reasonBlockIcon.classList.add('material-icons');
+            //reasonBlockIcon.innerHTML = (j == 0) ? "arrow_drop_up" : "arrow_drop_down";
+            //reasonBlockHeader.appendChild(reasonBlockIcon);
+            reasonBlockHeader.innerHTML = idea_arguments[j];
             reasonBlock.appendChild(reasonBlockHeader);
             blockObject.collapsibleHeaders.push(reasonBlockHeader);
+            //blockObject.collapsibleIcons.push(reasonBlockIcon);
 
             var reasonBlockBody = document.createElement('div');
             reasonBlockBody.classList.add('collapsible-body');
+            blockObject.reasonBody = reasonBlockBody;
 
             var reasonBlockBodyText = document.createElement('span');
             reasonBlockBodyText.innerHTML = idea_arguments[j];
             reasonBlockBody.appendChild(reasonBlockBodyText);
-            reasonBlock.appendChild(reasonBlockBody);
 
             gridBlockReasonsCollapsible.appendChild(reasonBlock);
         }
@@ -612,6 +625,9 @@ function initGrid() {
 
         blocks[i].classList.remove('faded-out');
     }
+
+    console.log(longestArgTitle);
+    console.log(longestArg);
 
     shuffleInstance.add(blocks);
     shuffleInstance.update();
