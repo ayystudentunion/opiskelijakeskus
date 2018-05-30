@@ -38,6 +38,12 @@ p {
 
 .collapsible-header {
     padding: 0.5rem !important;
+    pointer-events: none !important;
+}
+
+.collapsible-header.has-content {
+    padding-left: 1rem !important;
+    font-size: 0.9em !important;
 }
 
 .collapsible-body {
@@ -321,7 +327,7 @@ input:checked + .settings-label:after {
 }
 
 .grid-block-reasons-title {
-    font-weight: 350;
+    font-weight: 500;
     font-size: 0.95rem;
     padding-left: 1.05rem;
 }
