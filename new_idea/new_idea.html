@@ -33,6 +33,25 @@
 
         <div id="top-load-bar"></div>
 
+        <div id="idea-sent-wrapper" class="row center-content vertical-offset minor-offset no-display faded-out">
+            <div id="idea-sent-container" class="col xxxl6 l8 s10">
+                <h2 id="idea-sent-title">Idea lähetetty. Idea tulee näkyviin Opiskelijaskuksen ideat -sivulle, kun se on tarkastettu ja hyväksytty.</h2>
+                
+                <div id="idea-sent-buttons-container" class="row">
+                    <div class="col s12 m6">
+                        <a href="../">
+                            <button href="../" id="to-frontpage-btn" class="button btn simple-btn center large-padding">Etusivulle</button>
+                        </a>
+                    </div>
+                    <div class="col s12 m6">
+                        <a href="./">
+                            <button id="new-idea-btn" class="button btn simple-btn center large-padding">Uusi Idea</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="page-container">
             <div class="row form-container">
 
@@ -44,7 +63,7 @@
                     <!-- Idea Name Input -->
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-name-field" type="text" class="validate" data-length="20" maxlength="20" required>
+                            <input id="idea-name-field" type="text" class="validate" data-length="60" maxlength="60" required pattern=".*\S+.*" title="Anna idealle nimi">
                             <label for="idea-name-field">Idean nimi</label>
                         </div>
                     </div>
@@ -54,7 +73,7 @@
                         <div class="col s12">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <textarea id="idea-desc-field" class="materialize-textarea" data-length="350" maxlength="350" required></textarea>
+                                    <textarea id="idea-desc-field" class="materialize-textarea" data-length="300" maxlength="300" required></textarea>
                                     <label for="idea-desc-field">Idean kuvaus</label>
                                 </div>
                             </div>
@@ -62,39 +81,39 @@
                     </div>
 
                     <!-- Arguments -->
-                    <h2 class="form-subtitle">Perustelut (3-5)</h2>
+                    <h2 class="form-subtitle">Perustelut (1-5)</h2>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-argument-field-1" type="text" class="validate" data-length="100" maxlength="100" required>
+                            <input id="idea-argument-field-1" type="text" class="validate" data-length="100" maxlength="100" required pattern=".*\S+.*" title="Anna idealle perustelu">
                             <label for="idea-argument-field-1">Perustelu 1</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-argument-field-2" type="text" class="validate" data-length="100" maxlength="100" required>
+                            <input id="idea-argument-field-2" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
                             <label for="idea-argument-field-2">Perustelu 2</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-argument-field-3" type="text" class="validate" data-length="100" maxlength="100" required>
+                            <input id="idea-argument-field-3" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
                             <label for="idea-argument-field-3">Perustelu 3</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-argument-field-4" type="text" class="validate" data-length="100" maxlength="100">
+                            <input id="idea-argument-field-4" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
                             <label for="idea-argument-field-4">Perustelu 4</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="idea-argument-field-5" type="text" class="validate" data-length="100" maxlength="100">
+                            <input id="idea-argument-field-5" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
                             <label for="idea-argument-field-5">Perustelu 5</label>
                         </div>
                     </div>
