@@ -503,7 +503,7 @@ function initGrid() {
             // See https://materializecss.com/icons.html for information about icons
             var reasonBlockIcon = document.createElement('i');
             reasonBlockIcon.classList.add('material-icons');
-            reasonBlockIcon.innerHTML = (j == 0) ? "remove" : "add";
+            reasonBlockIcon.innerHTML = (j == 0) ? "arrow_drop_up" : "arrow_drop_down";
             reasonBlockHeader.appendChild(reasonBlockIcon);
             reasonBlock.appendChild(reasonBlockHeader);
             blockObject.collapsibleHeaders.push(reasonBlockHeader);
@@ -898,9 +898,9 @@ function initMaterializeEvents() {
                 setTimeout(() => {
                     for (var i = 0; i < collapsibleHeaders.length; i++) {
                         if (collapsibleHeaders[i].parentElement.classList.contains('active')) {
-                            collapsibleHeaders[i].firstChild.innerHTML = "remove";
+                            collapsibleHeaders[i].firstChild.innerHTML = "arrow_drop_up";
                         } else {
-                            collapsibleHeaders[i].firstChild.innerHTML = "add";
+                            collapsibleHeaders[i].firstChild.innerHTML = "arrow_drop_down";
                         }
                     }
                 });
