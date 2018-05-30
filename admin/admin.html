@@ -13,39 +13,50 @@
     <link rel="icon" type="image/png" href="../images/favicon/favicon.png">
 </head>
 <body>
-    <div id="page-container">
-        <nav id="navbar" class="no-highlight">
-            <div class="nav-wrapper row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <ul class="left">
-                        <li>
-                            <a href="/">Opiskelijakeskus Admin</a>
-                        </li>
-                    </ul>
-                    <ul id="nav-mobile" class="right">
-			            <li>
-                            <a href="review_ideas/">Moderoi Ideoita</a>
-                        </li>
-                        <li>
-                            <a href="../logout">Kirjaudu Ulos</a>
-                        </li>
-                    </ul>
+    <div id="site-container">
+        <div id="page-container">
+            <nav id="navbar" class="no-highlight">
+                <div class="nav-wrapper row">
+                    <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                        <ul class="left">
+                            <li>
+                                <a href="/">Opiskelijakeskus Admin</a>
+                            </li>
+                        </ul>
+                        <ul id="nav-mobile" class="right">
+                            <li>
+                                <a href="review_ideas/">Moderoi Ideoita</a>
+                            </li>
+                            <li>
+                                <a href="../logout">Kirjaudu Ulos</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-
-        <div id="particles-js" class="no-display"></div>
+            </nav>
     
-        <footer id="page-footer" class="page-footer">
-            <div class="row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <p id="copyright_text" class="left"></p>
-                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+            <div id="particles-js" class="no-display"></div>
+        
+            <footer id="page-footer" class="page-footer">
+                <div class="row">
+                    <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                        <p id="copyright_text" class="left"></p>
+                        <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
 
+    <!-- Element to replace page if Internet Explorer is used -->
+    <div id="ie-message" class="no-display">
+        <div id="ie-message-text-container">
+            <p id="ie-message-text-title">Internet Explorer ei ole tuettu tällä sivulla.</p>
+            <p id="ie-message-text-browsers">Tuetut selaimet ovat <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> ja <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
+        </div>
+    </div>
+    
+    <script src="../../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
     <script src="../../js/particles/particles.min.js"></script>
     <script src="../../js/init_particles.js"></script>
