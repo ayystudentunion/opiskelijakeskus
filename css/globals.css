@@ -79,6 +79,10 @@ div:focus {
     padding-bottom: 20%;
 }
 
+.center-content.vertical-offset.minor-offset {
+    padding-bottom: 10%;
+}
+
 @media only screen and (max-width: 450px) {
     .center-content.vertical-offset.mobile-extra-offset {
         padding-bottom: 50%;
