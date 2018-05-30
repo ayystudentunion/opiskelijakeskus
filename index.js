@@ -369,8 +369,6 @@ function initGrid() {
     // Shuffle ideas around for better diversity
     jsonData = shuffleArr(jsonData);
 
-    var longestArg = 0;
-    var longestArgTitle = "";
     var lastColorIdx = -1;
     for (var i = 0; i < jsonData.length; i++) {
         var title = null;
@@ -475,12 +473,6 @@ function initGrid() {
         // Create argument elements
         for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
             var reasonBlock = document.createElement('li');
-
-            if (idea_arguments[j].length > longestArg && idea_arguments[j].length < 151) {
-                
-                longestArg = idea_arguments[j].length;
-                longestArgTitle = title;
-            }
 
             // Open first block by default
             if (j == 0) reasonBlock.classList.add('active');
@@ -625,9 +617,6 @@ function initGrid() {
 
         blocks[i].classList.remove('faded-out');
     }
-
-    console.log(longestArgTitle);
-    console.log(longestArg);
 
     shuffleInstance.add(blocks);
     shuffleInstance.update();
