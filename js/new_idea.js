@@ -36,8 +36,6 @@ window.onload = function() {
 form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    document.getElementById('submit-btn').disabled = true;
-
     // Get values from input fields
     var ideaName = document.getElementById('idea-name-field').value;
     var ideaDesc = document.getElementById('idea-desc-field').value;
@@ -50,6 +48,18 @@ form.addEventListener("submit", function(event) {
     var secondaryCategory1 = document.getElementById('idea-secondary-category-1').value;
     var secondaryCategory2 = document.getElementById('idea-secondary-category-2').value;
     var secondaryCategory3 = document.getElementById('idea-secondary-category-3').value;
+
+    var checkedCategories = [];
+    var cats = [mainCategory, secondaryCategory1, secondaryCategory2, secondaryCategory3];
+    for (var i = 0; i < cats.length; i++) {
+        if (cats[i] != "" && checkedCategories.indexOf(cats[i]) != -1) {
+            return alert("Valitse jokaiseksi kategoriaksi eri kategoria.");
+        }
+
+        checkedCategories.push(cats[i]);
+    }
+
+    document.getElementById('submit-btn').disabled = true;
 
     // Add new idea to reviewed ideas
     $.getJSON(dataFilePath, function(result) {
