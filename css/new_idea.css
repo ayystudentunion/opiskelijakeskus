@@ -1,41 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-@font-face {
-    font-family: 'Value';
-    src: url('../fonts/value-regular.otf');
-}
-
 .row {
     margin-bottom: 0;
-}
-
-.input-field {
-    margin-top: -0.6rem;
-}
-
-select {
-    display: block;
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    pointer-events: none;
-}
-
-select * {
-    pointer-events: all;
-}
-
-select option {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
 }
 
 #top-load-bar {
@@ -49,30 +13,10 @@ select option {
     transition: width 2.5s cubic-bezier(0.1, 0, 0.3, 1);
 }
 
-#submit-btn, #generate-ideas-btn {
-    background-color: white !important;
-    border: 1px solid #033649;
-    border-radius: 0;
-    box-shadow: none;
+.input-field {
+    margin-top: -0.6rem;
+}
 
-    color: black;
-    cursor: pointer;
-
-    transition-duration: 0.1s !important;
-    
+#submit-btn {
     margin: 2rem 0.1rem 0.6rem;
-    padding: 0 8px 0 12px;
-}
-
-#submit-btn i.material-icons, #generate-ideas-btn i.material-icons {
-    vertical-align: middle;
-    font-size: 22px !important;
-    padding: 0 0 3px;
-    margin: 0;
-}
-
-#submit-btn:hover, #generate-ideas-btn:hover {
-    box-shadow: none;
-    background-color: #033649 !important;
-    color: white;
 }
