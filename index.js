@@ -418,6 +418,7 @@ function initGrid() {
         blockObject.arguments = idea_arguments;
         blockObject.mainCategory = primaryCategory;
         blockObject.secondaryCategories = secondaryCategories;
+        blockObject.footerIcons = [];
         var categoriesText = String(primaryCategory + "," + secondaryCategories);
 
         // Convert to JSON format
@@ -526,6 +527,7 @@ function initGrid() {
         
         var gridBlockIconsContainer = document.createElement('div');
         gridBlockIconsContainer.classList.add('grid-block-icons-container');
+        blockObject.iconsContainer = gridBlockIconsContainer;
 
         var gridBlockCategoryIconsContainer = document.createElement('div');
         gridBlockCategoryIconsContainer.classList.add('grid-block-category-icons-container');
@@ -535,6 +537,7 @@ function initGrid() {
         mainIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
         gridBlockCategoryIconsContainer.appendChild(mainIcon);
         blockObject.mainIcon = mainIcon;
+        blockObject.footerIcons.push(mainIcon);
 
         if (secondaryCategories.length > 0 && secondaryCategories[0] != "") {
             for (var j = 0; j < secondaryCategories.length; j++) {
@@ -542,6 +545,7 @@ function initGrid() {
                 icon.classList.add('grid-block-icon');
                 icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
                 gridBlockCategoryIconsContainer.appendChild(icon);
+                blockObject.footerIcons.push(icon);
             }
         }
 
@@ -555,8 +559,13 @@ function initGrid() {
 
         var gridBlockHeart = document.createElement('div');
         gridBlockHeart.classList.add('grid-block-heart');
-        gridBlockHeart.innerHTML = "<i class='material-icons'>favorite_border</i>";
+
+        var gridBlockHeartIcon = document.createElement('i');
+        gridBlockHeartIcon.classList.add('material-icons');
+        gridBlockHeartIcon.innerHTML = "favorite_border";
+        gridBlockHeart.appendChild(gridBlockHeartIcon);
         blockObject.heart = gridBlockHeart;
+        blockObject.heartIcon = gridBlockHeartIcon;
 
         gridBlockHeartContainer.appendChild(gridBlockLikes);
         gridBlockHeartContainer.appendChild(gridBlockHeart);
@@ -635,6 +644,15 @@ function initGrid() {
                     setTimeout(() => {
                         blockObj.mainIcon.classList.add('no-display');
                         blockObj.reasonContainer.classList.add('no-display');
+                        for (var i = 0; i < blockObj.footerIcons.length; i++) {
+                            blockObj.footerIcons[i].style.marginTop = null;
+                        }
+                
+                        blockObj.likesText.style.fontSize = null;
+                        blockObj.heart.style.width = null;
+                        blockObj.heart.style.height = null;
+                        blockObj.heartIcon.style.fontSize = null;
+                        blockObj.iconsContainer.style.maxHeight = null;
 
                         if (nrColumns > 1) {
                             blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
@@ -826,6 +844,16 @@ function onBlockMouseEnter(blockObject) {
         blockObject.bigIcon.classList.add('no-display');
         blockObject.mainIcon.classList.remove('no-display');
         blockObject.mainIcon.classList.remove('faded-out');
+
+        for (var i = 0; i < blockObject.footerIcons.length; i++) {
+            blockObject.footerIcons[i].style.marginTop = "33px";
+        }
+
+        blockObject.likesText.style.fontSize = "21px";
+        blockObject.heart.style.width = "50px";
+        blockObject.heart.style.height = "50px";
+        blockObject.heartIcon.setAttribute('style', 'font-size: 50px !important');
+        blockObject.iconsContainer.style.maxHeight = "9000px";
 
         var disableEnter = false;
 
