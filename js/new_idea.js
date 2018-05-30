@@ -1,9 +1,6 @@
 const uuid = require('uuid/v1');
 
-var generateIdeas = document.getElementById('generate_ideas');
-
 var form = document.getElementById('form');
-var generateIdeasBtn = document.getElementById('generate-ideas-btn');
 var iconsContainer = document.getElementById('icons');
 var imagesFolderName = "images/";
 var selectedIcon = null;
@@ -33,6 +30,10 @@ var categoryIcons = {
     "Villit ideat": "villit ideat"
 }
 
+window.onbeforeunload = function() {
+    window.scrollTo(0, 0);
+}
+
 window.onload = function() {
     $('input#idea-name-field, textarea#idea-desc-field, input#idea-argument-field-1, input#idea-argument-field-2, input#idea-argument-field-3, input#idea-argument-field-4, input#idea-argument-field-5').characterCounter();
     
@@ -54,6 +55,10 @@ window.onload = function() {
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
+
+    console.log("Submit");
+
+    document.getElementById('submit-btn').disabled = true;
 
     // Get values from input fields
     var ideaName = document.getElementById('idea-name-field').value;
@@ -97,6 +102,11 @@ form.addEventListener("submit", function(event) {
             data: {"file_path": dataFilePath, "data": JSON.stringify(result)},
             success: function(data) {}
         });
+
+        document.getElementById('top-load-bar').style.width = "100vw";
+        setTimeout(() => {
+            location.reload();
+        }, 2500);
     });
 }, false);
 
