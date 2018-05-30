@@ -4,10 +4,7 @@
   "description": "Opiskelijakeskuksen sivut",
   "main": "index.js",
   "dependencies": {
-    "browserify-fs": "^1.0.0",
-    "fs": "0.0.1-security",
     "jquery": "^3.3.1",
-    "random-words": "^1.1.0",
     "shufflejs": "^5.1.2",
     "uuid": "^3.2.1"
   },
