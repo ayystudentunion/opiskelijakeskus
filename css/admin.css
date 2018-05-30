@@ -6,6 +6,10 @@ nav ul.left a {
     color: lightcoral !important;
 }
 
+ul.right a {
+    padding: 0 15px 0 15px;
+}
+
 #page-container {
     width: 100vw;
     height: 100vh;
