@@ -2,6 +2,18 @@
     margin-bottom: 0;
 }
 
+#site-container {
+    width: 100vw;
+    height: 100vh;
+
+    display: table;
+    border-collapse: collapse;
+}
+
+#form {
+    margin-bottom: 18vh;
+}
+
 #top-load-bar {
     width: 0px;
     height: 5px;
@@ -10,7 +22,60 @@
     left: 0;
     background-color: #78A177;
 
-    transition: width 2.5s cubic-bezier(0.1, 0, 0.3, 1);
+    transition: width 1.5s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+#idea-sent-wrapper {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#idea-sent-container {
+    padding: 40px;
+    border-top: 2px solid #78A177;
+
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+    font-family: 'Value';
+
+    margin: 0 !important;
+}
+
+#idea-sent-container h2 {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+#idea-sent-buttons-container {
+    margin-top: 2rem;
+}
+
+#to-frontpage-btn {
+    float: right;
+    border-color: darkred;
+}
+
+#new-idea-btn {
+    float: left;
+    border-color: darkgreen;
+}
+
+@media only screen and (max-width: 550px) {
+    #to-frontpage-btn, #new-idea-btn {
+        float: none !important;
+    }
+}
+
+#to-frontpage-btn:hover {
+    background-color: darkred !important;
+    color: white;
+}
+
+#new-idea-btn:hover {
+    background-color: darkgreen !important;
+    color: white;
 }
 
 .input-field {
@@ -19,4 +84,15 @@
 
 #submit-btn {
     margin: 2rem 0.1rem 0.6rem;
+}
+
+.page-footer {
+    display: table-row;
+    vertical-align: bottom;
+}
+
+@media only screen and (max-width: 550px) {
+    .page-footer {
+        height: 64px !important;
+    }
 }
