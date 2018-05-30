@@ -1,6 +1,6 @@
 var shuffle = require('shufflejs');
-var $ = require('jquery');
 const uuid = require('uuid/v1');
+var $ = require('jquery');
 
 // Container for grid items
 var shuffleContainer = document.getElementById('shuffle-container');
@@ -9,22 +9,27 @@ var shuffleContainer = document.getElementById('shuffle-container');
 var element = document.querySelector('#shuffle-container');
 var sizer = element.querySelector('.sizer');
 
-// Internet Explorer 6-11
+// Detect Edge because an extra element on grid blocks is needed for it
 var isBrowserIE = /*@cc_on!@*/false || !!document.documentMode;
-
-// Edge 20+
 var isBrowserEdge = !isBrowserIE && !!window.StyleMedia;
 
 var shuffleInstance = null;
 
+// General states / variables
 var jsonData = null;
 var nrColumns = -1;
 var disableEvents = false;
 var pageButtonsDisabled = false;
 var sortByLikes = false;
+var maxBlocksInPage = null;
 
+var gridBlocks = [];
+var originalGridBlocks = [];
+var currentFilters = [];
+var likedIdeas = [];
+
+// Indices, coordinates and counters
 var currentPage = 0;
-var currentPageCols = 0;
 var lastBlockEnterTime = 0;
 var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
@@ -32,6 +37,7 @@ var mouseX = -1, mouseY = -1;
 var animationDurationsMS = 200;
 var currentLikeID = 0;
 
+// HTML DOM elements
 var prevPageBtn = document.getElementById('prev-page-btn');
 var nextPageBtn = document.getElementById('next-page-btn');
 var sortByLikesBtn = document.getElementById('sort-by-likes-btn');
@@ -42,44 +48,14 @@ var filtersDropdown = document.getElementById('filter-buttons-dropdown');
 var filtersTitle = document.getElementById('filters-title');
 var filtersTitleArrow = document.getElementById('filters-title-arrow');
 
+// Possible colors for grid blocks
 var gridBlockColors = [
     "rgb(255, 255, 229)",
     "rgb(254, 244, 113)",
     "rgb(255, 254, 174)"
 ]
 
-var categoryIcons = {
-    "Harrastukset": "harrastukset",
-    "Hygieniatilat": "wc ja suihku",
-    "Juhlat": "Juhlat",
-    "Kahvila": "kahvila ja baari",
-    "Kokoukset": "ryhmatyo",
-    "Muut": "muut_abstrakti",
-    "Palvelut": "asiakaspalvelu",
-    "Pop-up -tapahtumat": "Nayttelyt",
-    "Rentoutuminen": "Hyvinvointi",
-    "Ruoka": "ravintola",
-    "Säilytys": "tavaran sailytys",
-    "Sauna": "sauna",
-    "Seminaarit": "Muut tapahtumat",
-    "Sosiaalisuus": "sosiaalinen",
-    "Tapahtumat": "muut",
-    "Tietopalvelut": "palvelu",
-    "Työskentely": "opiskelu ja tyot",
-    "Ulkotilat": "ulkotilat",
-    "Urheilu": "urheilu",
-    "Vapaa-aika": "hengailu ja vapaa-aika",
-    "Villit ideat": "villit ideat"
-}
-
-// Store all grid blocks for event handling
-var gridBlocks = [];
-var originalGridBlocks = [];
-var currentFilters = [];
-var likedIdeas = [];
-
-var maxBlocksInPage = null;
-
+// Update mouse coordinates and check for grid block events
 window.onmousemove = function(event) {
     if (nrColumns == 1) return;
 
@@ -94,8 +70,9 @@ window.onmousemove = function(event) {
     }
 }
 
-// Load data from JSON
+// Load ideas from JSON
 window.onload = function() {
+    // Firefox leaves checkboxes checked over page refresh
     if (sortByLikesBtn.checked) {
         sortByLikesBtn.checked = false;
     }
@@ -104,6 +81,7 @@ window.onload = function() {
 
     updateColumnAmount();
 
+    // Init ShuffleJS
     shuffleInstance = new shuffle(element, {
         itemSelector: '.grid-block',
         sizer: sizer,
@@ -112,11 +90,10 @@ window.onload = function() {
         useTransforms: (nrColumns == 1)
     });
 
-    currentPageCols = nrColumns;
-
     $.getJSON("data/data.json", function(result) {
         jsonData = result;
 
+        // Get liked ideas from cookies to prevent like spamming
         var cookie = getCookie("liked_ideas");
         if (cookie != "") {
             likedIdeas = JSON.parse(cookie);
@@ -131,18 +108,30 @@ window.onload = function() {
         // Initialize events for materialize collapsibles
         setTimeout(() => {
             initMaterializeEvents();
-        }, 1000)
+        }, 1000);
 
+        // Add filter buttons to DOM and setup their events
         setupFilterButtons();
 
+        // Update text which tells the page that the user is on
         updatePageTexts();
     });
 };
 
+/* Sorting functions */
 function sortGridByPosition(a, b) {
     return a.element.getAttribute('grid-position') - b.element.getAttribute('grid-position');
 }
 
+function sortByOriginalIndexFunc(a, b) {
+    return a.originalIndex - b.originalIndex;
+}
+
+function sortByLikesFunc(a, b) {
+    return b.likes - a.likes;
+}
+
+// Update texts only after window has stopped resizing for better performance
 var resizeEndCheck;
 window.onresize = function() {
     clearTimeout(resizeEndCheck);
@@ -155,6 +144,8 @@ window.onresize = function() {
 }
 
 function updateColumnAmount() {
+    // Some hardcoded values from custom Materialize CSS
+    //   Should possibly be declared somewhere
     if (window.innerWidth < 600) {
         nrColumns = 1;
     } else if (window.innerWidth <= 992) {
@@ -167,8 +158,8 @@ function updateColumnAmount() {
 
     // Update max block amount according to the column amount
     maxBlocksInPage = 12;
-    maxBlocksInPage -= maxBlocksInPage % nrColumns;
 
+    // Disable all delays on mobile for performance
     if (nrColumns == 1) {
         gridBlockTimeoutsMS = 0;
     } else {
@@ -191,8 +182,9 @@ function setupFilterButtons() {
     }
 
     for (var key in categoryIcons) {
+        // Create button and add to DOM
         var filterBtn = document.createElement('button');
-        filterBtn.classList.add('filter-btn', 'btn', 'waves-effect', 'waves-light');
+        filterBtn.classList.add('filter-btn', 'simple-btn', 'large-padding', 'center', 'waves-effect', 'waves-light');
         filterBtn.innerHTML = key;
         filterButtonsContainer.appendChild(filterBtn);
 
@@ -247,12 +239,12 @@ function filterButtonsCollapse() {
     if (isCollapsed) {
         filtersTitle.innerHTML = "Sulje Filtterit";
         filtersTitleArrow.innerHTML = "arrow_drop_up";
-        expandSection(filterButtonsContainer)
-        filterButtonsContainer.setAttribute('data-collapsed', 'false')
+        expandSection(filterButtonsContainer);
+        filterButtonsContainer.setAttribute('data-collapsed', 'false');
     } else {
         filtersTitle.innerHTML = "Näytä Filtterit";
         filtersTitleArrow.innerHTML = "arrow_drop_down";
-        collapseSection(filterButtonsContainer)
+        collapseSection(filterButtonsContainer);
     }
 }
 
@@ -266,14 +258,6 @@ nextPageBtn.onclick = function() {
     moveToPage(currentPage + 1, function(err) {
         // Handle error if needed
     });
-}
-
-function sortByOriginalIndexFunc(a, b) {
-    return a.originalIndex - b.originalIndex;
-}
-
-function sortByLikesFunc(a, b) {
-    return b.likes - a.likes;
 }
 
 sortByLikesBtn.onclick = function(event) {
@@ -298,6 +282,7 @@ sortByLikesBtn.onclick = function(event) {
     );
 }
 
+// Changes to wanted page in the grid if possible
 function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = function() {}) {
     if (pageButtonsDisabled) return errorCB("Already switching pages");
 
@@ -311,11 +296,10 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
     pageButtonsDisabled = true;
 
-    var startRemoveIdx = currentPage * maxBlocksInPage;
-
     // Get removed blocks and then remove them from shuffle (and DOM)
-    var wantedBlocks = gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length));
     var blockElements = [];
+    var startRemoveIdx = currentPage * maxBlocksInPage;
+    var wantedBlocks = gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length));
     for (var i = 0; i < wantedBlocks.length; i++) {
         blockElements.push(wantedBlocks[i].block);
     }
@@ -364,6 +348,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
             pageButtonsDisabled = false;
 
+            // Initialize collapsibles for current page
             M.AutoInit();
             initMaterializeEvents();
 
@@ -380,18 +365,15 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 //   and adds the first page to the DOM and ShuffleJS. All other grid elements are stored.
 function initGrid() {
     var likeCounts = [];
-    console.log(jsonData.length);
+
+    // Shuffle ideas around for better diversity
     jsonData = shuffleArr(jsonData);
 
     var lastColorIdx = -1;
-    var maxContainerWidth = 0;
-    for (var i = jsonData.length - 1; i >= 0; i--) {
-        var flippedIdx = Math.abs((i + 1) - jsonData.length);
-
+    for (var i = 0; i < jsonData.length; i++) {
         var title = null;
         var description = null;
         var idea_arguments = null;
-        var icon = null;
         var likes = 0;
         var id = null;
         var primaryCategory = null;
@@ -405,12 +387,12 @@ function initGrid() {
             id = jsonData[i][key].id;
             description = jsonData[i][key].description;
             idea_arguments = jsonData[i][key].arguments;
-            icon = jsonData[i][key].icon;
             likes = jsonData[i][key].likes;
             primaryCategory = jsonData[i][key].main_category;
             secondaryCategories = jsonData[i][key].secondary_categories;
         }
 
+        // Store information that is needed for something else later
         blockObject.id = id;
         blockObject.title = title;
         blockObject.likes = likes;
@@ -424,12 +406,12 @@ function initGrid() {
         // Convert to JSON format
         categoriesText = categoriesText.replaceAll(",", "\",\"");
 
-        // Create elements
+        /* Create all grid elements */
         var gridBlock = document.createElement('div');
         gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3', 'faded-out');
 
         // Set grid position for sorting
-        gridBlock.setAttribute('grid-position', flippedIdx);
+        gridBlock.setAttribute('grid-position', i);
         gridBlock.setAttribute('data-groups', '["' + categoriesText + '"]');
 
         var gridBlockEdgeShadow = document.createElement('div');
@@ -439,9 +421,10 @@ function initGrid() {
         gridBlockContent.classList.add('grid-block-content', 'hoverable');
         blockObject.blockContent = gridBlockContent;
         
+        // Select a color for the block randomly
         var colorIdx;
         do {
-            colorIdx = Math.floor(Math.random() * 3);
+            colorIdx = Math.floor(Math.random() * gridBlockColors.length);
         } while (colorIdx == lastColorIdx);
         lastColorIdx = colorIdx;
 
@@ -484,12 +467,9 @@ function initGrid() {
         var gridBlockReasonsCollapsible = document.createElement('ul');
         gridBlockReasonsCollapsible.classList.add('collapsible');
 
-        if (idea_arguments == null) {
-            console.log("Index " + flippedIdx + " has no reasons");
-        }
-
         blockObject.collapsibleHeaders = [];
 
+        // Create argument elements
         for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
             var reasonBlock = document.createElement('li');
 
@@ -597,26 +577,22 @@ function initGrid() {
         
         blockObject.descriptionText = gridBlockDescriptionText;
         blockObject.block = gridBlock;
-        blockObject.index = flippedIdx;
-        blockObject.originalIndex = flippedIdx;
+        blockObject.index = i;
+        blockObject.originalIndex = i;
         originalGridBlocks.push(blockObject);
         gridBlocks.push(blockObject);
         
-        if (flippedIdx < maxBlocksInPage) {
+        if (i < maxBlocksInPage) {
             shuffleContainer.appendChild(gridBlock, shuffleContainer.firstChild);
 
             // Add new element to shuffle
             shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
         }
-
-        if (blockObject.bodyContainer.clientWidth > maxContainerWidth) {
-            maxContainerWidth = blockObject.bodyContainer.clientWidth;
-        }
         
+        // Cut texts in the block if they overflow
         ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, blockObject, true);
 
         (function() {
-            var idx = flippedIdx;
             var blockObj = blockObject;
 
             blockObj.blockContent.onmouseenter = function() {
@@ -624,78 +600,12 @@ function initGrid() {
             }
 
             blockObj.blockContent.onmouseleave = function() {
-                if (nrColumns == 1) return;
-
-                var gridPos = blockObj.index;
-
-                // The timeout is here because sometimes when leaving the grid block,
-                //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
-                setTimeout(() => {
-                    // The mouseleave event sometimes fires when opening other elements inside the grid block
-                    if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
-
-                    blockObj.mainIcon.classList.add('faded-out');
-                    blockObj.reasonContainer.classList.add('faded-out');
-
-                    if (blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
-                        lastBlockLeaveTime = performance.now();
-                    }
-
-                    setTimeout(() => {
-                        blockObj.mainIcon.classList.add('no-display');
-                        blockObj.reasonContainer.classList.add('no-display');
-                        for (var i = 0; i < blockObj.footerIcons.length; i++) {
-                            blockObj.footerIcons[i].style.marginTop = null;
-                        }
-                
-                        blockObj.likesText.style.fontSize = null;
-                        blockObj.heart.style.width = null;
-                        blockObj.heart.style.height = null;
-                        blockObj.heartIcon.style.fontSize = null;
-                        blockObj.iconsContainer.style.maxHeight = null;
-
-                        if (nrColumns > 1) {
-                            blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
-                            blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
-                        }
-    
-                        blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
-                        updateGridBlockText(blockObj.index);
-
-                        if (nrColumns > 1) {
-                            for (var j = 0; j <= 200; j += 20) {
-                                setTimeout(() => {
-                                    shuffleInstance.update();
-                                    updateGridBlockText(blockObj.index);
-                                }, j);
-                            }
-                        }
-
-                        setTimeout(() => {
-                            // Fade in all other grid blocks
-                            fadeGridBlockContent(1.0, blockObj, true);
-                            
-                            if (nrColumns == 1) {
-                                shuffleInstance.update();
-                                updateGridBlockText(blockObject.index);
-                            }
-                            
-                            if (nrColumns > 1 && (gridPos + 1) % nrColumns == 0) {
-                                gridBlocks[gridPos - 1].block.setAttribute('grid-position', gridPos - 1);
-                                blockObj.block.setAttribute('grid-position', gridPos);
-                                shuffleInstance.sort({compare: sortGridByPosition});
-                            }
-
-                            blockObj.bigIcon.classList.remove('no-display');
-                            blockObj.bigIcon.classList.remove('faded-out');
-                        }, animationDurationsMS);
-                    }, (nrColumns == 1) ? 0 : animationDurationsMS);
-                }, (nrColumns == 1) ? 0 : 100);
+                onBlockMouseLeave(blockObj);
             }
         }());
     }
 
-    // Update shuffle
+    // Add first page to shuffle and fade the first page in
     var blocks = [];
     for (var i = 0; i < Math.min(maxBlocksInPage, gridBlocks.length); i++) {
         blocks.push(gridBlocks[i].block);
@@ -706,6 +616,7 @@ function initGrid() {
     shuffleInstance.add(blocks);
     shuffleInstance.update();
 
+    // Setup hearts (liking functionality)
     for (var i = 0; i < gridBlocks.length; i++) {
         (function() {
             var gridBlockObject = gridBlocks[i];
@@ -723,8 +634,10 @@ function initGrid() {
                     likedIdeas.splice(likeIdx, 1);
                 }
 
+                // Save the liked ideas in a cookie to prevent like spamming by using page refresh
                 setCookie("liked_ideas", JSON.stringify(likedIdeas));
 
+                // Update heart color
                 var change = 0;
                 if (gridBlockObject.heart.firstChild.innerHTML == "favorite") {
                     gridBlockObject.heart.style.color = "lightcoral";
@@ -741,13 +654,11 @@ function initGrid() {
                 $.getJSON("data/data.json", function(result) {
                     var ideaName = gridBlockObject.headerText.innerHTML;
 
-                    // Update likes (there might be better way to do this..)
+                    // Update likes
                     for (var i = 0; i < result.length; i++) {
                         if (Object.keys(result[i])[0] == ideaName) {
                             var r = result[i][ideaName];
 
-                            // Check that everything matches because if there are multiple
-                            //   ideas with the same name, the wrong one could be chosen without this check
                             if (r.id == gridBlockObject.id) {
                                 result[i][ideaName]["likes"] = parseInt(result[i][ideaName]["likes"]) + change;
                                 break;
@@ -765,6 +676,7 @@ function initGrid() {
                 });
             }
 
+            // Set liked ideas from cookie to be already liked
             if (likedIdeas.indexOf(gridBlockObject.id) != -1) {
                 gridBlockObject.heart.firstChild.innerHTML = "favorite";
                 gridBlockObject.heart.style.color = "lightcoral";
@@ -779,6 +691,7 @@ function initGrid() {
     }, 150);
 }
 
+// Mobile-optimized handling for mouse enter (basically no animations or delays)
 function onBlockMouseEnterMobile(blockObject) {
     var startIdx = currentPage * maxBlocksInPage;
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
@@ -811,6 +724,7 @@ function onBlockMouseEnterMobile(blockObject) {
     updateGridBlockText(blockObject.index);
 }
 
+// Handles the mouse entering a grid block
 function onBlockMouseEnter(blockObject) {
     if (nrColumns == 1) {
         onBlockMouseEnterMobile(blockObject);
@@ -913,6 +827,77 @@ function onBlockMouseEnter(blockObject) {
             }
         }, animationDurationsMS);
     }, gridBlockTimeoutsMS);
+}
+
+// Handles the mouse leaving a grid block
+function onBlockMouseLeave(blockObj) {
+    if (nrColumns == 1) return;
+
+    var gridPos = blockObj.index;
+
+    // The timeout is here because sometimes when leaving the grid block,
+    //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
+    setTimeout(() => {
+        // The mouseleave event sometimes fires when opening other elements inside the grid block
+        if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
+
+        blockObj.mainIcon.classList.add('faded-out');
+        blockObj.reasonContainer.classList.add('faded-out');
+
+        if (blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
+            lastBlockLeaveTime = performance.now();
+        }
+
+        setTimeout(() => {
+            blockObj.mainIcon.classList.add('no-display');
+            blockObj.reasonContainer.classList.add('no-display');
+            for (var i = 0; i < blockObj.footerIcons.length; i++) {
+                blockObj.footerIcons[i].style.marginTop = null;
+            }
+    
+            blockObj.likesText.style.fontSize = null;
+            blockObj.heart.style.width = null;
+            blockObj.heart.style.height = null;
+            blockObj.heartIcon.style.fontSize = null;
+            blockObj.iconsContainer.style.maxHeight = null;
+
+            if (nrColumns > 1) {
+                blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+                blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
+            }
+
+            blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
+            updateGridBlockText(blockObj.index);
+
+            if (nrColumns > 1) {
+                for (var j = 0; j <= 200; j += 20) {
+                    setTimeout(() => {
+                        shuffleInstance.update();
+                        updateGridBlockText(blockObj.index);
+                    }, j);
+                }
+            }
+
+            setTimeout(() => {
+                // Fade in all other grid blocks
+                fadeGridBlockContent(1.0, blockObj, true);
+                
+                if (nrColumns == 1) {
+                    shuffleInstance.update();
+                    updateGridBlockText(blockObject.index);
+                }
+                
+                if (nrColumns > 1 && (gridPos + 1) % nrColumns == 0) {
+                    gridBlocks[gridPos - 1].block.setAttribute('grid-position', gridPos - 1);
+                    blockObj.block.setAttribute('grid-position', gridPos);
+                    shuffleInstance.sort({compare: sortGridByPosition});
+                }
+
+                blockObj.bigIcon.classList.remove('no-display');
+                blockObj.bigIcon.classList.remove('faded-out');
+            }, animationDurationsMS);
+        }, (nrColumns == 1) ? 0 : animationDurationsMS);
+    }, (nrColumns == 1) ? 0 : 100);
 }
 
 function initMaterializeEvents() {
@@ -1021,17 +1006,6 @@ function isMouseInShuffleContainer() {
     var yDiff = mouseY - elY;
 
     return (yDiff >= 0 && xDiff >= 0 && xDiff < shuffleContainer.clientWidth - 5 && yDiff < shuffleContainer.clientHeight - 5);
-}
-
-function setCopyrightText() {
-    var copyrightTextEl = document.getElementById('copyright_text');
-    var createdYear = 2018;
-    var currentYear = new Date().getFullYear();
-
-    // Update copyright text year span according to the current year
-    var yearText = String(createdYear) + ((currentYear != createdYear) ? ("-" + String(currentYear)) : "");
-
-    copyrightTextEl.innerHTML = "Copyright © " + yearText + " <a href='https://ayy.fi' target='_blank'>Aalto University Student Union</a>";
 }
 
 function updateGridOnFilterChange() {
