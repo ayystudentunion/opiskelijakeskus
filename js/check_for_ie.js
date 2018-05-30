@@ -1,4 +1,3 @@
-
 // Internet Explorer 6-11
 var isBrowserIE = /*@cc_on!@*/false || !!document.documentMode;
 
