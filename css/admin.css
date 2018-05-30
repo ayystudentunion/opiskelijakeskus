@@ -18,3 +18,9 @@ nav ul.left a {
     display: table-row;
     vertical-align: bottom;
 }
+
+@media only screen and (max-width: 550px) {
+    .page-footer {
+        height: 64px !important;
+    }
+}
