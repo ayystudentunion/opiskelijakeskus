@@ -13,83 +13,94 @@
     <link rel="icon" type="image/png" href="../../images/favicon/favicon.png">
 </head>
 <body>
-    <div id="page-container">
-        <nav id="navbar">
-            <div class="nav-wrapper row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <ul class="left">
-                        <li>
-                            <a href="../">Opiskelijakeskus Admin</a>
-                        </li>
-                    </ul>
-                    <ul id="nav-mobile" class="right">
-                        <li class="active">
-                            <a href="./">Moderoi Ideoita</a>
-                        </li>
-			            <li>
-                            <a href="../../logout">Kirjaudu Ulos</a>
-                        </li>
-                    </ul>
+    <div id="site-container">
+        <div id="page-container">
+            <nav id="navbar">
+                <div class="nav-wrapper row">
+                    <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                        <ul class="left">
+                            <li>
+                                <a href="../">Opiskelijakeskus Admin</a>
+                            </li>
+                        </ul>
+                        <ul id="nav-mobile" class="right">
+                            <li class="active">
+                                <a href="./">Moderoi Ideoita</a>
+                            </li>
+                            <li>
+                                <a href="../../logout">Kirjaudu Ulos</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+            </nav>
+        
+            <div id="form-container" class="form-container row no-display faded-out">
+                <h1 id="form-title" class="form-title col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Tarkistettavia ideoita jäljellä <span id="number-of-ideas">0</span></h1>
+        
+                <form id="form" class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
+                    <h2 class="form-subtitle">Idean nimi</h2>
+                    <p id="idea-name" class="form-paragraph"></p>
+        
+                    <h2 class="form-subtitle">Idean kuvaus</h2>
+                    <p id="idea-description" class="form-paragraph"></p>
+        
+                    <!-- Arguments -->
+                    <h2 class="form-subtitle">Perustelut</h2>
+                    <p id="idea-argument-1" class="idea-argument form-paragraph"></p>
+                    <p id="idea-argument-2" class="idea-argument form-paragraph"></p>
+                    <p id="idea-argument-3" class="idea-argument form-paragraph"></p>
+                    <p id="idea-argument-4" class="idea-argument form-paragraph no-display"></p>
+                    <p id="idea-argument-5" class="idea-argument form-paragraph no-display"></p>
+        
+                    <!-- Categories -->
+                    <h2 class="form-subtitle">Pääkategoria</h2>
+                    <p id="idea-primary-category" class="form-paragraph"></p>
+        
+                    <!-- Categories -->
+                    <h2 id="idea-secondary-categories-title" class="form-subtitle no-display">Alakategoriat</h2>
+                    <p id="idea-secondary-category-1" class="idea-secondary-category form-paragraph no-display"></p>
+                    <p id="idea-secondary-category-2" class="idea-secondary-category form-paragraph no-display"></p>
+                    <p id="idea-secondary-category-3" class="idea-secondary-category form-paragraph no-display"></p>
+        
+                    <div id="form-bottom-buttons-container" class="no-display">
+                        <div id="form-reject-button-container" class="col s6">
+                            <button id="reject-btn" class="simple-btn btn large-padding waves-effect waves-light center">
+                                Hylkää Idea
+                            </button>
+                        </div>
+        
+                        <div id="form-accept-button-container" class="col s6">
+                            <button id="accept-btn" class="simple-btn btn large-padding waves-effect waves-light center">
+                                Hyväksy Idea
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </nav>
-    
-        <div id="form-container" class="form-container row no-display faded-out">
-            <h1 id="form-title" class="form-title col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Tarkistettavia ideoita jäljellä <span id="number-of-ideas">0</span></h1>
-    
-            <form id="form" class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
-                <h2 class="form-subtitle">Idean nimi</h2>
-                <p id="idea-name" class="form-paragraph"></p>
-    
-                <h2 class="form-subtitle">Idean kuvaus</h2>
-                <p id="idea-description" class="form-paragraph"></p>
-    
-                <!-- Arguments -->
-                <h2 class="form-subtitle">Perustelut</h2>
-                <p id="idea-argument-1" class="idea-argument form-paragraph"></p>
-                <p id="idea-argument-2" class="idea-argument form-paragraph"></p>
-                <p id="idea-argument-3" class="idea-argument form-paragraph"></p>
-                <p id="idea-argument-4" class="idea-argument form-paragraph no-display"></p>
-                <p id="idea-argument-5" class="idea-argument form-paragraph no-display"></p>
-    
-                <!-- Categories -->
-                <h2 class="form-subtitle">Pääkategoria</h2>
-                <p id="idea-primary-category" class="form-paragraph"></p>
-    
-                <!-- Categories -->
-                <h2 id="idea-secondary-categories-title" class="form-subtitle no-display">Alakategoriat</h2>
-                <p id="idea-secondary-category-1" class="idea-secondary-category form-paragraph no-display"></p>
-                <p id="idea-secondary-category-2" class="idea-secondary-category form-paragraph no-display"></p>
-                <p id="idea-secondary-category-3" class="idea-secondary-category form-paragraph no-display"></p>
-    
-                <div id="form-bottom-buttons-container" class="no-display">
-                    <div id="form-reject-button-container" class="col s6">
-                        <button id="reject-btn" class="simple-btn btn large-padding waves-effect waves-light center">
-                            Hylkää Idea
-                        </button>
-                    </div>
-    
-                    <div id="form-accept-button-container" class="col s6">
-                        <button id="accept-btn" class="simple-btn btn large-padding waves-effect waves-light center">
-                            Hyväksy Idea
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
 
-        <div id="particles-js" class="no-display"></div>
-    
-        <footer id="page-footer" class="page-footer footer-with-margin">
-            <div class="row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <p id="copyright_text" class="left"></p>
-                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+            <div id="particles-js" class="no-display"></div>
+        
+            <footer id="page-footer" class="page-footer footer-with-margin">
+                <div class="row">
+                    <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                        <p id="copyright_text" class="left"></p>
+                        <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
 
+    <!-- Element to replace page if Internet Explorer is used -->
+    <div id="ie-message" class="no-display">
+        <div id="ie-message-text-container">
+            <p id="ie-message-text-title">Internet Explorer ei ole tuettu tällä sivulla.</p>
+            <p id="ie-message-text-browsers">Tuetut selaimet ovat <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> ja <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
+        </div>
+    </div>
+    
+    <script src="../../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
     <script src="../../js/particles/particles.min.js"></script>
     <script src="../../js/init_particles.js"></script>
