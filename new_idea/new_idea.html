@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="../css/materialize.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../css/globals.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/index.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../css/new_idea.css" />
 
     <link rel="icon" type="image/png" href="../images/favicon/favicon.png">
@@ -24,7 +23,7 @@
                 </ul>
                 <ul id="nav-mobile" class="right">
                     <li class="active">
-                        <a href="./"><i id="navbar-add-icon" class="material-icons">add_box</i> Lisää Idea</a>
+                        <a href="./" class="has-icon"><i id="navbar-add-icon" class="material-icons">add_box</i> Lisää Idea</a>
                     </li>
                 </ul>
             </div>
@@ -131,17 +130,15 @@
                     </div>
                 </div>
 
-                <button id="submit-btn" class="btn waves-effect waves-light center" type="submit" name="action" form="form">
+                <button id="submit-btn" class="simple-btn btn waves-effect waves-light" type="submit" name="action" form="form">
                     Lähetä Idea
                     <i class="material-icons right">chevron_right</i>
                 </button>
             </form>
         </div>
     </div>
-
-    <div class="bottom-spacetaker"></div>
         
-    <footer id="page-footer" class="page-footer">
+    <footer id="page-footer" class="page-footer footer-with-margin">
         <div class="row">
             <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                 <p id="copyright_text" class="left"></p>
@@ -152,6 +149,7 @@
 
     <script src="../js/jquery.js"></script>
     <script src="../js/materialize/materialize.min.js"></script>
+    <script src="../js/globals.js"></script>
     <script src="../js/new_idea_bundle.js"></script>
 </body>
 </html>
