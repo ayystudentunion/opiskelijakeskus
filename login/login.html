@@ -13,30 +13,41 @@
     <link rel="icon" type="image/png" href="../../images/favicon/favicon.png">
 </head>
 <body>
-    <div class="center-content full-site vertical-offset mobile-extra-offset row">
-        <div class="form-container">
-            <form class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1" method="POST" action="./dologin">
-                <h2 class="form-subtitle">Opiskelijakeskus Admin Login</h2>
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <input id="form-username" type="text" name="httpd_username" class="validate" value="" required>
-                        <label for="form-username">Käyttäjätunnus</label>
+    <div id="site-container">
+        <div class="center-content full-site vertical-offset mobile-extra-offset row">
+            <div class="form-container">
+                <form class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1" method="POST" action="./dologin">
+                    <h2 class="form-subtitle">Opiskelijakeskus Admin Login</h2>
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input id="form-username" type="text" name="httpd_username" class="validate" value="" required>
+                            <label for="form-username">Käyttäjätunnus</label>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <input id="form-password" type="password" name="httpd_password" class="validate" value="" required>
+                            <label for="form-password">Salasana</label>
+                        </div>
                     </div>
 
-                    <div class="input-field col s12 m6">
-                        <input id="form-password" type="password" name="httpd_password" class="validate" value="" required>
-                        <label for="form-password">Salasana</label>
-                    </div>
-                </div>
-
-                <button class="button btn simple-btn" name="login" type="submit">
-                    Kirjaudu Sisään
-                    <i class="material-icons right">chevron_right</i>
-                </button>
-            </form>
+                    <button class="button btn simple-btn" name="login" type="submit">
+                        Kirjaudu Sisään
+                        <i class="material-icons right">chevron_right</i>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- Element to replace page if Internet Explorer is used -->
+    <div id="ie-message" class="no-display">
+        <div id="ie-message-text-container">
+            <p id="ie-message-text-title">Internet Explorer ei ole tuettu tällä sivulla.</p>
+            <p id="ie-message-text-browsers">Tuetut selaimet ovat <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> ja <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
+        </div>
+    </div>
+    
+    <script src="../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
     <script src="../../js/materialize/materialize.min.js"></script>
 </body>
