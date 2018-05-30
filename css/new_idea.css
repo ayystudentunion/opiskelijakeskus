@@ -38,6 +38,17 @@ select option {
                                   supported by Chrome and Opera */
 }
 
+#top-load-bar {
+    width: 0px;
+    height: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #78A177;
+
+    transition: width 2.5s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
 #submit-btn, #generate-ideas-btn {
     background-color: white !important;
     border: 1px solid #033649;
