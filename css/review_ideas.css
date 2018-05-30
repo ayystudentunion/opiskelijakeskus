@@ -10,6 +10,10 @@ nav ul.left a {
     color: lightcoral !important;
 }
 
+ul.right a {
+    padding: 0 15px 0 15px;
+}
+
 .form-subtitle {
     color: #033649 !important;
     text-decoration: underline;
