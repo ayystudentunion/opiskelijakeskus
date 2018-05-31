@@ -1,14 +1,10 @@
 # Opiskelijakeskus
 
-Source of opiskelijakeskus.fi; using watchify (browserify) to bundle dependecies with source.
+Source of opiskelijakeskus.fi; using browserify to bundle dependecies with source.
 
-Run the following commands for development:
+Run the following to get required modules and bundled JS files:
   ```bash
-  watchify index.js -o bundle.js
-  watchify js/new_idea.js -o js/new_idea_bundle.js
-  ```
-  
-Using php server for development:
-  ```bash
-  php -S localhost:8000
+  npm install
+  browserify index.js -o bundle.js
+  browserify js/new_idea.js -o js/new_idea_bundle.js
   ```
