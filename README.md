@@ -8,8 +8,3 @@ Run the following to get required modules and bundled JS files:
   browserify index.js -o bundle.js
   browserify js/new_idea.js -o js/new_idea_bundle.js
   ```
-  
-Using php server for development:
-  ```bash
-  php -S localhost:8000
-  ```
