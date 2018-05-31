@@ -58,7 +58,6 @@ p {
 #content-title-container {
     padding: 1rem;
     text-align: center;
-    border-bottom: 1px solid black;
 }
 
 #content-title {
@@ -71,6 +70,42 @@ p {
 @media only screen and (max-width: 450px) {
     #content-title {
         font-size: 2em;
+    }
+}
+
+#content-title-description-container {
+    padding-left: 2.75rem;
+    padding-right: 0.75rem;
+}
+
+#form {
+    position: relative;
+}
+
+#form-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 24px !important;
+}
+
+#content-title-description {
+    text-align: center;
+    font-family: 'Value';
+}
+
+#form-container {
+    margin-top: 0;
+}
+
+form {
+    padding: 40px !important;
+}
+
+@media only screen and (max-width: 1200px) {
+    form {
+        padding: 40px 20px !important;
     }
 }
 
