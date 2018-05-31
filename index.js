@@ -35,6 +35,7 @@ var lastBlockLeaveTime = 0;
 var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
 var animationDurationsMS = 200;
+var lastHeartClickMS = 0;
 var currentLikeID = 0;
 
 // HTML DOM elements
@@ -626,7 +627,15 @@ function initGrid() {
         (function() {
             var gridBlockObject = gridBlocks[i];
 
-            gridBlockObject.heart.onclick = function() {
+            gridBlockObject.heart.onclick = function(event) {
+                var currTimeMS = performance.now();
+                if (currTimeMS - lastHeartClickMS < 1000) {
+                    event.preventDefault();
+                    return;
+                }
+
+                lastHeartClickMS = currTimeMS;
+
                 var likeIdx = likedIdeas.indexOf(gridBlockObject.id);
                 if (likeIdx == -1) {
                     likedIdeas.push(gridBlockObject.id);
