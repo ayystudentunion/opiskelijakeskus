@@ -519,3 +519,9 @@ input:checked + .settings-label:after {
     width: 100vw;
     height: calc(var(--grid-block-body-container-height) + var(--grid-block-margin) * 2);
 }
+
+@media only screen and (max-width: 350px) {
+    #copyright_text {
+        font-size: 0.95em;
+    }
+}
