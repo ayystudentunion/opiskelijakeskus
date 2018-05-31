@@ -14,14 +14,21 @@ nav ul.left a {
     margin-bottom: 18vh;
 }
 
-.form-subtitle {
-    color: #033649 !important;
-    text-decoration: underline;
+.row {
+    margin-bottom: 0;
 }
 
 .form-paragraph {
     font-family: 'Value';
     font-size: 1.05rem;
+}
+
+.input-field {
+    margin-top: 0.2rem;
+}
+
+#idea-main-category-field, .idea-secondary-category {
+    margin-top: -0.6rem;
 }
 
 #form-bottom-buttons-container {
