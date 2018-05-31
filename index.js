@@ -1025,6 +1025,8 @@ function isMouseInShuffleContainer() {
 
 function isMouseInCookieInfo() {
     var cookieInfo = document.getElementsByClassName('cookieinfo')[0];
+    if (cookieInfo == undefined || cookieInfo == null) return false;
+
     var elY = cookieInfo.getBoundingClientRect().top;
     var yDiff = mouseY - elY;
 
@@ -1128,7 +1130,11 @@ function shuffleArr(a) {
 }
 
 function setCookie(cname, cvalue) {
-    document.cookie = cname + "=" + cvalue + ";";
+    // Store cookie for 1 year
+    var expiration_date = new Date();
+    expiration_date.setFullYear(expiration_date.getFullYear() + 1);
+
+    document.cookie = cname + "=" + cvalue + ";" + " expires=" + expiration_date.toUTCString();
 }
 
 function getCookie(cname) {
