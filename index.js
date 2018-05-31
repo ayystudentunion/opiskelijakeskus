@@ -1,5 +1,4 @@
 var shuffle = require('shufflejs');
-const uuid = require('uuid/v1');
 var $ = require('jquery');
 
 // Container for grid items
