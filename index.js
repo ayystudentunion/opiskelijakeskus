@@ -39,6 +39,8 @@ var lastHeartClickMS = 0;
 var currentLikeID = 0;
 
 // HTML DOM elements
+var formContainer = document.getElementById('form-container');
+var formCloseBtn = document.getElementById('form-close-btn');
 var prevPageBtn = document.getElementById('prev-page-btn');
 var nextPageBtn = document.getElementById('next-page-btn');
 var sortByLikesBtn = document.getElementById('sort-by-likes-btn');
@@ -247,6 +249,11 @@ function filterButtonsCollapse() {
         filtersTitleArrow.innerHTML = "arrow_drop_down";
         collapseSection(filterButtonsContainer);
     }
+}
+
+formCloseBtn.onclick = function() {
+    formContainer.classList.add('no-display');
+    document.getElementById('content-title-container').style.borderBottom = "1px solid black";
 }
 
 prevPageBtn.onclick = function() {
