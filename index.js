@@ -627,11 +627,6 @@ function initGrid() {
             var gridBlockObject = gridBlocks[i];
 
             gridBlockObject.heart.onclick = function() {
-                gridBlockObject.heart.firstChild.innerHTML = (gridBlockObject.heart.firstChild.innerHTML == "favorite") ? "favorite_border" : "favorite";
-
-                var likesText = gridBlockObject.likesText;
-                var likesCount = parseInt(likesText.innerHTML);
-
                 var likeIdx = likedIdeas.indexOf(gridBlockObject.id);
                 if (likeIdx == -1) {
                     likedIdeas.push(gridBlockObject.id);
@@ -642,9 +637,14 @@ function initGrid() {
                 // Save the liked ideas in a cookie to prevent like spamming by using page refresh
                 setCookie("liked_ideas", JSON.stringify(likedIdeas));
 
+                gridBlockObject.heart.firstChild.innerHTML = (likedIdeas.indexOf(gridBlockObject.id) == -1) ? "favorite_border" : "favorite";
+
+                var likesText = gridBlockObject.likesText;
+                var likesCount = parseInt(likesText.innerHTML);
+
                 // Update heart color
                 var change = 0;
-                if (gridBlockObject.heart.firstChild.innerHTML == "favorite") {
+                if (likedIdeas.indexOf(gridBlockObject.id) != -1) {
                     gridBlockObject.heart.style.color = "lightcoral";
                     likesCount++;
                     change = 1;
