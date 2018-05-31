@@ -1011,7 +1011,7 @@ function isMouseInElement(el) {
     var xDiff = mouseX - elX;
     var yDiff = mouseY - elY;
 
-    return (yDiff >= 0 && xDiff >= 0 && xDiff < el.clientWidth - 5 && yDiff < el.clientHeight - 5) && isMouseInShuffleContainer();
+    return (yDiff >= 0 && xDiff >= 0 && xDiff < el.clientWidth - 5 && yDiff < el.clientHeight - 5) && isMouseInShuffleContainer() && !isMouseInCookieInfo();
 }
 
 function isMouseInShuffleContainer() {
@@ -1021,6 +1021,14 @@ function isMouseInShuffleContainer() {
     var yDiff = mouseY - elY;
 
     return (yDiff >= 0 && xDiff >= 0 && xDiff < shuffleContainer.clientWidth - 5 && yDiff < shuffleContainer.clientHeight - 5);
+}
+
+function isMouseInCookieInfo() {
+    var cookieInfo = document.getElementsByClassName('cookieinfo')[0];
+    var elY = cookieInfo.getBoundingClientRect().top;
+    var yDiff = mouseY - elY;
+
+    return (yDiff >= 0 && yDiff < cookieInfo.clientHeight - 5);
 }
 
 function updateGridOnFilterChange() {
