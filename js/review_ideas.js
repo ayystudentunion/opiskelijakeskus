@@ -27,11 +27,13 @@ function resetReviewModal() {
         var argumentEls = document.getElementsByClassName('idea-argument');
         for (var i = 0; i < argumentEls.length; i++) {
             argumentEls[i].classList.add('no-display');
+            argumentEls[i].innerHTML = "";
         }
 
         var secondaryCategoryEls = document.getElementsByClassName('idea-secondary-category');
         for (var i = 0; i < secondaryCategoryEls; i++) {
             secondaryCategoryEls[i].classList.add('no-display');
+            secondaryCategoryEls[i].innerHTML = "";
         }
 
         var idea = result[0];
