@@ -301,6 +301,8 @@ input:checked + .settings-label:after {
     overflow-y: hidden;
 
     transition: height 0.15s !important;
+
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 600px) {
@@ -311,6 +313,8 @@ input:checked + .settings-label:after {
 
 .grid-block-body-container-tall {
     height: calc(var(--grid-block-margin) * 2 + 351px) !important;
+
+    cursor: initial !important;
 }
 
 @media only screen and (max-width: 600px) {
