@@ -35,34 +35,98 @@
                 </div>
             </nav>
         
-            <div id="form-container" class="form-container row no-display faded-out">
+            <div id="form-container" class="row form-container no-display faded-out">
                 <h1 id="form-title" class="form-title col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Tarkistettavia ideoita jäljellä <span id="number-of-ideas">0</span></h1>
-        
+
                 <form id="form" class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
-                    <h2 class="form-subtitle">Idean nimi</h2>
-                    <p id="idea-name" class="form-paragraph"></p>
-        
-                    <h2 class="form-subtitle">Idean kuvaus</h2>
-                    <p id="idea-description" class="form-paragraph"></p>
-        
+                    <h2 class="form-subtitle">Nimi & Kuvaus</h2>
+
+                    <!-- Idea Name Input -->
+                    <div class="row">
+                        <div id="idea-name" class="input-field col s12">
+                            <input id="idea-name-field" type="text" class="validate" data-length="60" maxlength="60" required pattern=".*\S+.*" title="Anna idealle nimi">
+                            <label for="idea-name-field">Idean nimi</label>
+                        </div>
+                    </div>
+
+                    <!-- Idea Description Input -->
+                    <div class="row">
+                        <div id="idea-desc" class="input-field col s12">
+                            <textarea id="idea-desc-field" class="materialize-textarea" data-length="300" maxlength="300" required></textarea>
+                            <label for="idea-desc-field">Idean kuvaus</label>
+                        </div>
+                    </div>
+
                     <!-- Arguments -->
                     <h2 class="form-subtitle">Perustelut</h2>
-                    <p id="idea-argument-1" class="idea-argument form-paragraph"></p>
-                    <p id="idea-argument-2" class="idea-argument form-paragraph"></p>
-                    <p id="idea-argument-3" class="idea-argument form-paragraph"></p>
-                    <p id="idea-argument-4" class="idea-argument form-paragraph no-display"></p>
-                    <p id="idea-argument-5" class="idea-argument form-paragraph no-display"></p>
-        
+
+                    <div class="row">
+                        <div id="idea-argument-1" class="input-field col s12 idea-argument">
+                            <input id="idea-argument-field-1" type="text" class="validate" data-length="100" maxlength="100" required pattern=".*\S+.*" title="Anna idealle perustelu">
+                            <label for="idea-argument-field-1">Perustelu 1</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="idea-argument-2" class="input-field col s12 idea-argument no-display">
+                            <input id="idea-argument-field-2" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
+                            <label for="idea-argument-field-2">Perustelu 2</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="idea-argument-3" class="input-field col s12 idea-argument no-display">
+                            <input id="idea-argument-field-3" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
+                            <label for="idea-argument-field-3">Perustelu 3</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="idea-argument-4" class="input-field col s12 idea-argument no-display">
+                            <input id="idea-argument-field-4" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
+                            <label for="idea-argument-field-4">Perustelu 4</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="idea-argument-5" class="input-field col s12 idea-argument no-display">
+                            <input id="idea-argument-field-5" type="text" class="validate" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
+                            <label for="idea-argument-field-5">Perustelu 5</label>
+                        </div>
+                    </div>
+
                     <!-- Categories -->
                     <h2 class="form-subtitle">Pääkategoria</h2>
-                    <p id="idea-primary-category" class="form-paragraph"></p>
-        
+
+                    <div class="row">
+                        <div id="idea-main-category-field" class="input-field col s12 m6">
+                            <select id="idea-main-category" class="icons" required>
+                                <option value="" disabled selected>Valitse pääkategoria</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <!-- Categories -->
-                    <h2 id="idea-secondary-categories-title" class="form-subtitle no-display">Alakategoriat</h2>
-                    <p id="idea-secondary-category-1" class="idea-secondary-category form-paragraph no-display"></p>
-                    <p id="idea-secondary-category-2" class="idea-secondary-category form-paragraph no-display"></p>
-                    <p id="idea-secondary-category-3" class="idea-secondary-category form-paragraph no-display"></p>
-        
+                    <h2 id="form-secondary-categories-title" class="form-subtitle">Alakategoriat</h2>
+
+                    <div class="row">
+                        <div id="idea-secondary-category-1" class="idea-secondary-category no-display input-field col s12 l4">
+                            <select id="idea-secondary-category-field-1" class="icons">
+                                <option value="" disabled selected>Valitse alakategoria</option>
+                            </select>
+                        </div>
+                        <div id="idea-secondary-category-2" class="idea-secondary-category no-display input-field col s12 l4">
+                            <select id="idea-secondary-category-field-2" class="icons">
+                                <option value="" disabled selected>Valitse alakategoria</option>
+                            </select>
+                        </div>
+                        <div id="idea-secondary-category-3" class="idea-secondary-category no-display input-field col s12 l4">
+                            <select id="idea-secondary-category-field-3" class="icons">
+                                <option value="" disabled selected>Valitse alakategoria</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div id="form-bottom-buttons-container" class="no-display">
                         <div id="form-reject-button-container" class="col s6">
                             <button id="reject-btn" class="simple-btn btn large-padding waves-effect waves-light center">
@@ -100,9 +164,11 @@
         </div>
     </div>
     
+    <script src="../../js/globals.js"></script>
     <script src="../../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
     <script src="../../js/particles/particles.min.js"></script>
+    <script src="../../js/materialize/materialize.min.js"></script>
     <script src="../../js/init_particles.js"></script>
     <script src="../../js/review_ideas.js"></script>
     <script src="../../js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
