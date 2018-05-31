@@ -18,7 +18,6 @@ var shuffleInstance = null;
 // General states / variables
 var jsonData = null;
 var nrColumns = -1;
-var disableEvents = false;
 var pageButtonsDisabled = false;
 var sortByLikes = false;
 var maxBlocksInPage = null;
@@ -64,13 +63,6 @@ window.onmousemove = function(event) {
 
     mouseX = event.clientX;
     mouseY = event.clientY;
-
-    var startIdx = currentPage * maxBlocksInPage;
-    for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
-        if (isMouseInElement(gridBlocks[i].blockContent) && !gridBlocks[i].blockContent.classList.contains('grid-block-body-container-tall')) {
-            onBlockMouseEnter(gridBlocks[i]);
-        }
-    }
 }
 
 // Load ideas from JSON
@@ -608,8 +600,8 @@ function initGrid() {
         (function() {
             var blockObj = blockObject;
 
-            blockObj.blockContent.onmouseenter = function() {
-                onBlockMouseEnter(blockObj);
+            blockObj.bodyContainer.onclick = function() {
+                onBlockMouseClick(blockObj);
             }
 
             blockObj.blockContent.onmouseleave = function() {
@@ -713,7 +705,7 @@ function initGrid() {
 }
 
 // Mobile-optimized handling for mouse enter (basically no animations or delays)
-function onBlockMouseEnterMobile(blockObject) {
+function onBlockMouseClickMobile(blockObject) {
     var startIdx = currentPage * maxBlocksInPage;
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == blockObject.index) continue;
@@ -746,108 +738,82 @@ function onBlockMouseEnterMobile(blockObject) {
 }
 
 // Handles the mouse entering a grid block
-function onBlockMouseEnter(blockObject) {
+function onBlockMouseClick(blockObject) {
     if (nrColumns == 1) {
-        onBlockMouseEnterMobile(blockObject);
+        onBlockMouseClickMobile(blockObject);
         return;
     }
 
-    if (disableEvents) return;
-
-    var currTime = performance.now();
-
-    // Add 
-    if (nrColumns > 1 && currTime - lastBlockEnterTime < 500) {
-        return;
+    // Do some timing checks because don't want to open a new block before last one is closed
+    if (performance.now() - lastBlockLeaveTime < 500) return;
+    
+    // Enlarge like button so it's easier to click without leaving the block
+    for (var i = 0; i < blockObject.footerIcons.length; i++) {
+        blockObject.footerIcons[i].style.marginTop = "33px";
     }
 
-    lastBlockEnterTime = currTime;
+    blockObject.likesText.style.fontSize = "21px";
+    blockObject.heart.style.width = "50px";
+    blockObject.heart.style.height = "50px";
+    blockObject.heartIcon.setAttribute('style', 'font-size: 50px !important');
+    blockObject.iconsContainer.style.maxHeight = "9000px";
 
-    blockObject.bigIcon.classList.add('faded-out');
+    var colNr = blockObject.index;
+    blockObject.bigIcon.classList.add('no-display', 'faded-out');
+    blockObject.mainIcon.classList.remove('no-display');
+    blockObject.mainIcon.classList.remove('faded-out');
 
-    // Add a little delay so the mouse can be moved over the blocks without immediately setting everything off
-    setTimeout(() => {
-        // Check that the mouse is still inside the block.
-        //   The timing check is here to allow all animations to finish before new ones start.
-        if (nrColumns > 1 && (!isMouseInElement(blockObject.blockContent) || disableEvents || performance.now() - lastBlockLeaveTime < 550)) {
-            blockObject.bigIcon.classList.remove('faded-out');
-            return;
-        }
+    // Check if block is on the edge. If it is, it needs to be pushed
+    //   one position to the left so it doesn't jump to the next row when it expands
+    if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
+        // Swap edge block and the one before it and resort all blocks
+        gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr);
+        blockObject.block.setAttribute('grid-position', colNr - 1);
+        shuffleInstance.sort({compare: sortGridByPosition});
 
-        var isOnEdge = false;
-        var colNr = blockObject.index;
-        blockObject.bigIcon.classList.add('no-display');
-        blockObject.mainIcon.classList.remove('no-display');
-        blockObject.mainIcon.classList.remove('faded-out');
-
-        for (var i = 0; i < blockObject.footerIcons.length; i++) {
-            blockObject.footerIcons[i].style.marginTop = "33px";
-        }
-
-        blockObject.likesText.style.fontSize = "21px";
-        blockObject.heart.style.width = "50px";
-        blockObject.heart.style.height = "50px";
-        blockObject.heartIcon.setAttribute('style', 'font-size: 50px !important');
-        blockObject.iconsContainer.style.maxHeight = "9000px";
-
-        var disableEnter = false;
-
-        // Check if block is on the edge. If it is, it needs to be pushed
-        //   one position to the left so it doesn't jump to the next row when it expands
-        if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
-            isOnEdge = true;
-
-            // Swap edge block and the one before it and resort all blocks
-            gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr);
-            blockObject.block.setAttribute('grid-position', colNr - 1);
-            shuffleInstance.sort({compare: sortGridByPosition});
-            disableEvents = true;
-            disableEnter = true;
-
-            // Wait for transform animation
-            setTimeout(() => {
-                shuffleInstance.update();
-                disableEvents = false;
-            }, animationDurationsMS);
-        }
-
-        // Timeout so that the edge cases (above) get to update the sorting before they expand
-        if (nrColumns > 1) {
-            setTimeout(() => {
-                blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
-                blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
-            });
-        }
-
-        blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
-
-        // Fade out all other grid blocks
-        fadeGridBlockContent(0.0, blockObject);
-
-        // Smooth position animations for grid blocks
-        if (nrColumns > 1) {
-            for (var j = 0; j <= 200; j += 20) {
-                setTimeout(() => {
-                    shuffleInstance.update();
-                    updateGridBlockText(blockObject.index);
-                }, j);
-            }
-        }
-
+        // Wait for transform animation
         setTimeout(() => {
-            if (nrColumns == 1) {
+            shuffleInstance.update();
+        }, animationDurationsMS);
+    }
+
+    // Timeout so that the edge cases (above) get to update the sorting before they expand
+    if (nrColumns > 1) {
+        setTimeout(() => {
+            blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
+            blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
+        });
+    }
+
+    // Expand vertically
+    blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
+
+    // Fade out all other grid blocks
+    fadeGridBlockContent(0.0, blockObject);
+
+    // Smooth position animations for grid blocks
+    if (nrColumns > 1) {
+        for (var j = 0; j <= 200; j += 20) {
+            setTimeout(() => {
                 shuffleInstance.update();
                 updateGridBlockText(blockObject.index);
-            }
+            }, j);
+        }
+    }
 
-            if (blockObject.arguments.length > 0) {
-                blockObject.reasonContainer.classList.remove('no-display');
-                setTimeout(() => {
-                    blockObject.reasonContainer.classList.remove('faded-out');
-                });
-            }
-        }, animationDurationsMS);
-    }, gridBlockTimeoutsMS);
+    setTimeout(() => {
+        if (nrColumns == 1) {
+            shuffleInstance.update();
+            updateGridBlockText(blockObject.index);
+        }
+
+        if (blockObject.arguments.length > 0) {
+            blockObject.reasonContainer.classList.remove('no-display');
+            setTimeout(() => {
+                blockObject.reasonContainer.classList.remove('faded-out');
+            });
+        }
+    }, animationDurationsMS);
 }
 
 // Handles the mouse leaving a grid block
