@@ -36,16 +36,16 @@ function resetReviewModal() {
         document.getElementById('form-bottom-buttons-container').classList.remove('no-display');
 
         // Reset argument and secondary categories to no display because next idea might have less of either
-        var argumentEls = document.getElementsByClassName('idea-argument');
+        var argumentEls = document.getElementsByClassName('idea-argument-field');
         for (var i = 0; i < argumentEls.length; i++) {
-            argumentEls[i].classList.add('no-display');
             argumentEls[i].value = "";
+            argumentEls[i].classList.add('no-display');
         }
 
         var secondaryCategoryEls = document.getElementsByClassName('idea-secondary-category');
-        for (var i = 0; i < secondaryCategoryEls; i++) {
-            secondaryCategoryEls[i].classList.add('no-display');
+        for (var i = 0; i < secondaryCategoryEls.length; i++) {
             secondaryCategoryEls[i].value = "";
+            secondaryCategoryEls[i].classList.add('no-display');
         }
 
         var idea = result[0];
@@ -108,20 +108,22 @@ $("#form").submit(function(event) {
     var secondaryCategory3 = document.getElementById('idea-secondary-category-field-3').value;
 
     $.getJSON("../../data/data_under_review.json", function(results) {
+        if (results == undefined || results == null || results.length == 0) {
+            return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Tarkastettavien ideoiden tiedosto oli tyhjä.)");
+        }
+
         var ideaID = results[0][Object.keys(results[0])[0]].id;
-        
-        /*
-        $.ajax({
-            url: '../../php/save_data.php',
-            type: 'POST',
-            data: {"file_path": "../data/data_under_review.json", "data": JSON.stringify(results.slice(1))},
-            success: function(data) {}
-        });*/
-    
-        // Store declined ideas so they can be revived if necessary
+
+	    // Store declined ideas so they can be revived if necessary
         var fileToSaveTo = (isAcceptBtn) ? "../data/data.json" : "../data/data_trashed.json";
     
         $.getJSON("../" + fileToSaveTo, function(result) {
+            if (isAcceptBtn) {
+                if (result == undefined || result == null || result.length == 0 || JSON.stringify(result).length <= 10) {
+                    return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Ideat olivat tyhjiä)");
+                }
+            }
+
             var newIdeaObj = {};
             newIdeaObj[ideaName] = {};
             newIdeaObj[ideaName]["description"] = ideaDesc;
@@ -130,75 +132,68 @@ $("#form").submit(function(event) {
             newIdeaObj[ideaName]["secondary_categories"] = [];
             newIdeaObj[ideaName]["id"] = ideaID;
 
-            if (ideaArgument1 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument1);
-            if (ideaArgument2 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument2);
-            if (ideaArgument3 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument3);
-            if (ideaArgument4 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument4);
-            if (ideaArgument5 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument5);
+            // Only save values that contain characters
+            if (/\S/.test(ideaArgument1)) newIdeaObj[ideaName]["arguments"].push(ideaArgument1);
+            if (/\S/.test(ideaArgument2)) newIdeaObj[ideaName]["arguments"].push(ideaArgument2);
+            if (/\S/.test(ideaArgument3)) newIdeaObj[ideaName]["arguments"].push(ideaArgument3);
+            if (/\S/.test(ideaArgument4)) newIdeaObj[ideaName]["arguments"].push(ideaArgument4);
+            if (/\S/.test(ideaArgument5)) newIdeaObj[ideaName]["arguments"].push(ideaArgument5);
 
-            if (mainCategory != "") newIdeaObj[ideaName]["main_category"] = mainCategory;
+            if (/\S/.test(mainCategory)) newIdeaObj[ideaName]["main_category"] = mainCategory;
 
-            if (secondaryCategory1 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1);
-            if (secondaryCategory2 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2);
-            if (secondaryCategory3 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
+            if (/\S/.test(secondaryCategory1)) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1);
+            if (/\S/.test(secondaryCategory2)) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2);
+            if (/\S/.test(secondaryCategory3)) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
 
             result.push(newIdeaObj);
     
-            console.log(newIdeaObj);
-            /*
             $.ajax({
                 url: '../../php/save_data.php',
                 type: 'POST',
                 data: {"file_path": fileToSaveTo, "data": JSON.stringify(result)},
-                success: function(data) {}
-            });*/
+                success: function(data) {
+                    // Check that the idea saved
+                    $.getJSON("../" + fileToSaveTo, function(new_results) {
+                        var found = false;
+                        for (var i = 0; i < new_results.length; i++) {
+                            if (String(new_results[i][Object.keys(new_results[i])[0]].id) == String(results[0][Object.keys(results[0])[0]].id)) {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            afterIdeaSave();
+                            return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Ideaa ei löytynyt tallennuksen jälkeen.)");
+                        }
+
+                        // Remove from reviewed ideas file
+                        $.ajax({
+                            url: '../../php/save_data.php',
+                            type: 'POST',
+                            data: {"file_path": "../data/data_under_review.json", "data": JSON.stringify(results.slice(1))},
+                            success: function(data) {
+                                afterIdeaSave();
+                            },
+                            error: function(err) {
+                                afterIdeaSave();
+                                return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Second ajax request failed)");
+                            }
+                        });
+                    });
+                },
+                error: function(err) {
+                    afterIdeaSave();
+                    return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: First ajax request failed)");
+                }
+            });
         });
-    })
+    });
+});
 
-    /*
-    // Add new idea to reviewed ideas
-    $.getJSON(dataFilePath, function(result) {
-        var newIdeaObj = {};
-        newIdeaObj[ideaName] = {};
-        newIdeaObj[ideaName]["description"] = ideaDesc;
-        newIdeaObj[ideaName]["arguments"] = [];
-        newIdeaObj[ideaName]["likes"] = "0";
-        newIdeaObj[ideaName]["secondary_categories"] = [];
-        newIdeaObj[ideaName]["id"] = uuid();
-
-        if (ideaArgument1 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument1);
-        if (ideaArgument2 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument2);
-        if (ideaArgument3 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument3);
-        if (ideaArgument4 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument4);
-        if (ideaArgument5 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument5);
-
-        if (mainCategory != "") newIdeaObj[ideaName]["main_category"] = mainCategory;
-
-        if (secondaryCategory1 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1);
-        if (secondaryCategory2 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2);
-        if (secondaryCategory3 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
-
-        result.push(newIdeaObj);
-
-        $.ajax({
-            url: '../php/save_data.php',
-            type: 'POST',
-            data: {"file_path": dataFilePath, "data": JSON.stringify(result)},
-            success: function(data) {
-                setTimeout(() => {
-                    afterIdeaSent(true);
-                }, 1500);
-            },
-            error: function(err) {
-                setTimeout(() => {
-                    afterIdeaSent(false);
-                }, 1500);
-            }
-        });
-    });*/
-
+function afterIdeaSave() {
     formContainer.classList.add('faded-out');
     setTimeout(() => {
         resetReviewModal();
     }, 500);
-});
+}
