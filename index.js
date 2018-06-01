@@ -641,13 +641,14 @@ function initGrid() {
                     likedIdeas.splice(likeIdx, 1);
                 }
 
-                // Save the liked ideas in a cookie to prevent like spamming by using page refresh
-                setCookie("liked_ideas", JSON.stringify(likedIdeas));
-
                 gridBlockObject.heart.firstChild.innerHTML = (likedIdeas.indexOf(gridBlockObject.id) == -1) ? "favorite_border" : "favorite";
 
                 var likesText = gridBlockObject.likesText;
                 var likesCount = parseInt(likesText.innerHTML);
+                if (isNaN(likesCount)) {
+                    event.preventDefault();
+                    return;
+                }
 
                 // Update heart color
                 var change = 0;
@@ -662,28 +663,34 @@ function initGrid() {
                 }
 
                 // Update HTML and data file
-                likesText.innerHTML = String(likesCount);
+                likesText.innerHTML = String(Math.max(likesCount, 0));
                 $.getJSON("data/data.json", function(result) {
                     var ideaName = gridBlockObject.headerText.innerHTML;
 
                     // Update likes
+                    var found = false;
                     for (var i = 0; i < result.length; i++) {
-                        if (Object.keys(result[i])[0] == ideaName) {
-                            var r = result[i][ideaName];
+                        var r = result[i][Object.keys(result[i])[0]];
+                        if (r == undefined) return;
 
-                            if (r.id == gridBlockObject.id) {
-                                result[i][ideaName]["likes"] = parseInt(result[i][ideaName]["likes"]) + change;
-                                break;
-                            }
+                        if (r.id == gridBlockObject.id) {
+                            result[i][ideaName]["likes"] = Math.max(parseInt(result[i][ideaName]["likes"]) + change, 0);
+                            found = true;
+                            break;
                         }
                     }
+
+                    if (!found || result == undefined || result == null || result.length == 0) return;
                     
                     // Save to file
                     $.ajax({
                         url: 'php/save_data.php',
                         type: 'POST',     // ../data/data.json because php file is located one dir up
                         data: {"file_path": "../data/data.json", "data": JSON.stringify(result)},
-                        success: function(data) {}
+                        success: function(data) {
+                            // Save the liked ideas in a cookie to prevent like spamming by using page refresh
+                            setCookie("liked_ideas", JSON.stringify(likedIdeas));
+                        }
                     });
                 });
             }
