@@ -63,6 +63,13 @@ form.addEventListener("submit", function(event) {
 
     // Add new idea to reviewed ideas
     $.getJSON(dataFilePath, function(result) {
+        if (result == undefined || result == null) {
+            setTimeout(() => {
+                afterIdeaSent(false);
+            }, 1500);
+            return;
+        }
+
         var newIdeaObj = {};
         newIdeaObj[ideaName] = {};
         newIdeaObj[ideaName]["description"] = ideaDesc;
