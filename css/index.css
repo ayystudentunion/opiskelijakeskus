@@ -55,6 +55,11 @@ p {
      background-color: rgba(200, 200, 200, 0.25);
 }
 
+#site-container {
+    /* For mobile */
+    overflow-x: hidden;
+}
+
 #content-title-container {
     padding: 1rem;
     text-align: center;
@@ -127,27 +132,27 @@ form {
     height: auto;
 }
 
-#filters-title, #sorts-title, #page-title, #filter-buttons-dropdown-text {
+#filters-title, #sorts-title, .page-title, #filter-buttons-dropdown-text {
     font-family: 'Value';
     font-size: 1.3em;
     margin-bottom: 0.25rem;
     color: #666666;
 }
 
-#page-title {
+.page-title {
     text-align: center;
     font-family: inherit;
     font-size: 1.2em;
 }
 
 @media only screen and (max-width: 450px) {
-    #filters-title, #sorts-title, #page-title {
+    #filters-title, #sorts-title, .page-title {
         font-size: 1.10em !important;
     }
 }
 
 @media only screen and (max-width: 350px) {
-    #filters-title, #sorts-title, #page-title {
+    #filters-title, #sorts-title, .page-title {
         font-size: 0.95em !important;
     }
 }
@@ -171,11 +176,11 @@ form {
     margin-top: 5px;
 }
 
-#prev-page-btn {
+.prev-page-btn {
     float: right;
 }
 
-#next-page-btn {
+.next-page-btn {
     float: left;
 }
 
@@ -513,6 +518,12 @@ input:checked + .settings-label:after {
 
 .grid-block-heart-selected {
     background-image: url('../images/heart_filled.png') !important;
+}
+
+@media only screen and (max-width: 450px) {
+    #page-buttons-bottom-container {
+        display: block !important;
+    }
 }
 
 .bottom-spacetaker {
