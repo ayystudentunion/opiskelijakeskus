@@ -34,17 +34,19 @@ var lastMouseX = -1, lastMouseY = -1;
 var mouseX = -1, mouseY = -1;
 var animationDurationsMS = 200;
 var lastHeartClickMS = 0;
+var lastFilterClickMS = 0;
+var lastSortClickMS = 0;
 var currentLikeID = 0;
 
 // HTML DOM elements
 var formContainer = document.getElementById('form-container');
 var formCloseBtn = document.getElementById('form-close-btn');
-var prevPageBtn = document.getElementById('prev-page-btn');
-var nextPageBtn = document.getElementById('next-page-btn');
+var prevPageBtns = document.getElementsByClassName('prev-page-btn');
+var nextPageBtns = document.getElementsByClassName('next-page-btn');
 var sortByLikesBtn = document.getElementById('sort-by-likes-btn');
 var filterButtonsContainer = document.getElementById('filter-buttons-container');
-var currentPageText = document.getElementById('current-page-text');
-var totalPagesText = document.getElementById('total-pages-text');
+var currentPageTexts = document.getElementsByClassName('current-page-text');
+var totalPagesTexts = document.getElementsByClassName('total-pages-text');
 var filtersDropdown = document.getElementById('filter-buttons-dropdown');
 var filtersTitle = document.getElementById('filters-title');
 var filtersTitleArrow = document.getElementById('filters-title-arrow');
@@ -172,7 +174,9 @@ function setupFilterButtons() {
 
     // Fade out next page button if there are too few ideas
     if ((2 * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
-        nextPageBtn.classList.add('faded-out', 'no-events');
+        for (var i = 0; i < nextPageBtns.length; i++) {
+            nextPageBtns[i].classList.add('faded-out', 'no-events');
+        }
     }
 
     for (var key in categoryIcons) {
@@ -187,10 +191,14 @@ function setupFilterButtons() {
             var category = key;
 
             btn.onclick = function(event) {
-                if (pageButtonsDisabled) {
+                var currentMS = performance.now();
+                
+                if (pageButtonsDisabled || (nrColumns == 1 && currentMS - lastFilterClickMS < 2000)) {
                     event.preventDefault();
                     return;
                 }
+
+                lastFilterClickMS = currentMS;
 
                 btn.classList.toggle('selected');
 
@@ -247,23 +255,45 @@ formCloseBtn.onclick = function() {
     document.getElementById('content-title-container').style.borderBottom = "1px solid black";
 }
 
-prevPageBtn.onclick = function() {
-    moveToPage(currentPage - 1, function(err) {
-        // Handle error if needed
-    });
+for (var i = 0; i < prevPageBtns.length; i++) {
+    (function() {
+        var idx = i;
+        
+        prevPageBtns[i].onclick = function() {
+            if (idx == 1 && nrColumns == 1) {
+                $(window).scrollTop($('#options-container').position().top);
+            }
+
+            moveToPage(currentPage - 1, function(err) {
+                // Handle error if needed
+            });
+        }
+    }());
 }
 
-nextPageBtn.onclick = function() {
-    moveToPage(currentPage + 1, function(err) {
-        // Handle error if needed
-    });
+for (var i = 0; i < nextPageBtns.length; i++) {
+    (function() {
+        var idx = i;
+        nextPageBtns[idx].onclick = function() {
+            if (idx == 1 && nrColumns == 1) {
+                $(window).scrollTop($('#options-container').position().top);
+            }
+
+            moveToPage(currentPage + 1, function(err) {
+                // Handle error if needed
+            });
+        }
+    }());
 }
 
 sortByLikesBtn.onclick = function(event) {
-    if (pageButtonsDisabled) {
+    var currentMS = performance.now();
+    if (pageButtonsDisabled || (nrColumns == 1 && currentMS - lastSortClickMS < 2000)) {
         event.preventDefault();
         return;
     }
+
+    lastSortClickMS = currentMS;
 
     sortByLikes = !sortByLikes;
 
@@ -299,8 +329,11 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
     var blockElements = [];
     var startRemoveIdx = currentPage * maxBlocksInPage;
     var wantedBlocks = gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length));
+
     for (var i = 0; i < wantedBlocks.length; i++) {
         blockElements.push(wantedBlocks[i].block);
+        //shuffleInstance.remove([wantedBlocks[i].block]);
+        //shuffleInstance.element.removeChild(wantedBlocks[i].block);
     }
 
     shuffleInstance.remove(blockElements);
@@ -315,35 +348,41 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
         var blocksToAdd = [];
         for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
             gridBlocks[i].block.classList.add('faded-out');
-            shuffleContainer.appendChild(gridBlocks[i].block, shuffleContainer.firstChild);
             shuffleInstance.element.appendChild(gridBlocks[i].block, shuffleInstance.element.firstChild);
             blocksToAdd.push(gridBlocks[i].block);
 
             ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, gridBlocks[i], true);
         }
 
+        console.log(blocksToAdd);
         shuffleInstance.add(blocksToAdd);
 
         // Fade out button if on the first page
         if (wantedIdx == 0) {
-            prevPageBtn.classList.add('faded-out', 'no-events');
+            for (var i = 0; i < prevPageBtns.length; i++) {
+                prevPageBtns[i].classList.add('faded-out', 'no-events');
+            }
         } else {
-            prevPageBtn.classList.remove('faded-out', 'no-events');
+            for (var i = 0; i < prevPageBtns.length; i++) {
+                prevPageBtns[i].classList.remove('faded-out', 'no-events');
+            }
         }
 
         // Fade out button if on the last page
         if (((wantedIdx + 2) * maxBlocksInPage) - gridBlocks.length >= maxBlocksInPage) {
-            nextPageBtn.classList.add('faded-out', 'no-events');
+            for (var i = 0; i < nextPageBtns.length; i++) {
+                nextPageBtns[i].classList.add('faded-out', 'no-events');
+            }
         } else {
-            nextPageBtn.classList.remove('faded-out', 'no-events');
+            for (var i = 0; i < nextPageBtns.length; i++) {
+                nextPageBtns[i].classList.remove('faded-out', 'no-events');
+            }
         }
 
         updatePageTexts(wantedIdx);
 
         setTimeout(() => {
             currentPage = wantedIdx;
-
-            shuffleInstance.update();
 
             pageButtonsDisabled = false;
 
@@ -356,8 +395,14 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
             }
 
             cb();
-        }, 150);
-    }, 400);
+
+            if (nrColumns > 1) {
+                shuffleInstance.update();
+            } else {
+                shuffleInstance.layout();
+            }
+        }, (nrColumns == 1) ? 0 : 150);
+    }, (nrColumns == 1) ? 200 : 400);
 }
 
 // Initializes the grid system. Creates all HTML elements for the grid
@@ -718,10 +763,11 @@ function onBlockMouseClickMobile(blockObject) {
 
         if (gridBlocks[i].bodyContainer.classList.contains('grid-block-body-container-tall')) {
             gridBlocks[i].bodyContainer.classList.remove('grid-block-body-container-tall');
-            gridBlocks[i].bigIcon.classList.add('faded-out');
-            gridBlocks[i].bigIcon.classList.add('no-display');
-            gridBlocks[i].mainIcon.classList.remove('no-display');
-            gridBlocks[i].mainIcon.classList.remove('faded-out');
+            gridBlocks[i].bigIcon.classList.add('faded-out', 'no-display');
+            gridBlocks[i].bigIcon.classList.remove('faded-out');
+            gridBlocks[i].bigIcon.classList.remove('no-display');
+            gridBlocks[i].mainIcon.classList.add('no-display');
+            gridBlocks[i].mainIcon.classList.add('faded-out');
             updateGridBlockText(gridBlocks[i].index);
 
             gridBlocks[i].reasonContainer.classList.add('no-display', 'faded-out');
@@ -771,7 +817,7 @@ function onBlockMouseClick(blockObject) {
 
     // Check if block is on the edge. If it is, it needs to be pushed
     //   one position to the left so it doesn't jump to the next row when it expands
-    if (nrColumns > 1 && (colNr + 1) % nrColumns == 0) {
+    if ((colNr + 1) % nrColumns == 0) {
         // Swap edge block and the one before it and resort all blocks
         gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr);
         blockObject.block.setAttribute('grid-position', colNr - 1);
@@ -784,12 +830,10 @@ function onBlockMouseClick(blockObject) {
     }
 
     // Timeout so that the edge cases (above) get to update the sorting before they expand
-    if (nrColumns > 1) {
-        setTimeout(() => {
-            blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
-            blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
-        });
-    }
+    setTimeout(() => {
+        blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
+        blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
+    });
 
     // Expand vertically
     blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
@@ -798,21 +842,14 @@ function onBlockMouseClick(blockObject) {
     fadeGridBlockContent(0.0, blockObject);
 
     // Smooth position animations for grid blocks
-    if (nrColumns > 1) {
-        for (var j = 0; j <= 200; j += 20) {
-            setTimeout(() => {
-                shuffleInstance.update();
-                updateGridBlockText(blockObject.index);
-            }, j);
-        }
+    for (var j = 0; j <= 200; j += 20) {
+        setTimeout(() => {
+            shuffleInstance.update();
+            updateGridBlockText(blockObject.index);
+        }, j);
     }
 
     setTimeout(() => {
-        if (nrColumns == 1) {
-            shuffleInstance.update();
-            updateGridBlockText(blockObject.index);
-        }
-
         if (blockObject.arguments.length > 0) {
             blockObject.reasonContainer.classList.remove('no-display');
             setTimeout(() => {
@@ -1053,8 +1090,13 @@ function sortGridBlocksByLikes() {
 function updatePageTexts(currPageIdx = currentPage) {
     var totalPages = Math.floor((gridBlocks.length - 1) / maxBlocksInPage + 1);
 
-    currentPageText.innerHTML = (totalPages == 0) ? 0 : currPageIdx + 1;
-    totalPagesText.innerHTML = totalPages;
+    for (var i = 0; i < currentPageTexts.length; i++) {
+        currentPageTexts[i].innerHTML = (totalPages == 0) ? 0 : currPageIdx + 1;
+    }
+    
+    for (var i = 0; i < totalPagesTexts.length; i++) {
+        totalPagesTexts[i].innerHTML = totalPages;
+    }
 }
 
 String.prototype.replaceAll = function(search, replacement) {
