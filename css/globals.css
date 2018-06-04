@@ -247,19 +247,33 @@ select * {
     padding: 0 16px;
 }
 
-.simple-btn:hover {
-    box-shadow: none;
-    background-color: #033649 !important;
-    color: rgb(245, 245, 245);
+@media (hover: hover) {
+    .simple-btn:hover {
+        box-shadow: none;
+        background-color: #033649 !important;
+        color: rgb(245, 245, 245);
+    }
+
+    .simple-btn.selected:hover {
+        background-color: #355E6D !important;
+    }
+
+    nav ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    #submit-bugs:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    #ie-message-text-container a:hover {
+        text-decoration: underline;
+    }
 }
 
 .simple-btn.selected {
     background-color: #033649 !important;
     color: rgb(245, 245, 245) !important;
-}
-
-.simple-btn.selected:hover {
-    background-color: #355E6D !important;
 }
 
 .simple-btn i.material-icons {
@@ -290,10 +304,6 @@ nav ul.right a.has-icon {
 
 nav ul.right {
     margin-right: 1.25rem;
-}
-
-nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .page-footer {
@@ -353,10 +363,6 @@ nav ul li a:hover {
     display: block;
 }
 
-#submit-bugs:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
 #ie-message {
     width: 100vw;
     height: 100vh;
@@ -386,10 +392,6 @@ nav ul li a:hover {
 
 #ie-message-text-container span, #ie-message-text-container a {
     font-weight: 600;
-}
-
-#ie-message-text-container a:hover {
-    text-decoration: underline;
 }
 
 #chrome-text {
