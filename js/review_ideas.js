@@ -39,13 +39,13 @@ function resetReviewModal() {
         var argumentEls = document.getElementsByClassName('idea-argument-field');
         for (var i = 0; i < argumentEls.length; i++) {
             argumentEls[i].value = "";
-            argumentEls[i].classList.add('no-display');
+            document.getElementsByClassName('idea-argument')[i].classList.add('no-display');
         }
 
-        var secondaryCategoryEls = document.getElementsByClassName('idea-secondary-category');
+        var secondaryCategoryEls = document.getElementsByClassName('idea-secondary-category-field');
         for (var i = 0; i < secondaryCategoryEls.length; i++) {
             secondaryCategoryEls[i].value = "";
-            secondaryCategoryEls[i].classList.add('no-display');
+            document.getElementsByClassName('idea-secondary-category')[i].classList.add('no-display');
         }
 
         var idea = result[0];
@@ -61,6 +61,8 @@ function resetReviewModal() {
                 elField.value = ideaObj.arguments[i];
                 elContainer.classList.remove('no-display');
             }
+
+            $('#idea-desc-field').keydown();
             
             document.getElementById('idea-main-category').value = ideaObj.main_category;
 
