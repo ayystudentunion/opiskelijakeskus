@@ -193,7 +193,7 @@ function setupFilterButtons() {
             btn.onclick = function(event) {
                 var currentMS = performance.now();
                 
-                if (pageButtonsDisabled || (nrColumns == 1 && currentMS - lastFilterClickMS < 2000)) {
+                if (pageButtonsDisabled || (nrColumns == 1 && currentMS - lastFilterClickMS < 1500)) {
                     event.preventDefault();
                     return;
                 }
@@ -225,7 +225,7 @@ function setupFilterButtons() {
                     function() {
                         updateGridOnFilterChange();
                     }
-                )
+                );
             }
         }());
     }
@@ -332,14 +332,18 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
     for (var i = 0; i < wantedBlocks.length; i++) {
         blockElements.push(wantedBlocks[i].block);
-        //shuffleInstance.remove([wantedBlocks[i].block]);
-        //shuffleInstance.element.removeChild(wantedBlocks[i].block);
+        blockElements[i].classList.add('faded-out');
     }
-
-    shuffleInstance.remove(blockElements);
 
     // Wait for animation to finish (and add some extra timeout for nicer animation)
     setTimeout(() => {
+        for (var i = 0; i < blockElements.length; i++) {
+            shuffleContainer.removeChild(blockElements[i]);
+        }
+        
+        // Reset all shuffle items (empty them)
+        shuffleInstance.resetItems();
+        
         afterRemoveFunc();
 
         var startIdx = wantedIdx * maxBlocksInPage;
@@ -348,13 +352,12 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
         var blocksToAdd = [];
         for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
             gridBlocks[i].block.classList.add('faded-out');
-            shuffleInstance.element.appendChild(gridBlocks[i].block, shuffleInstance.element.firstChild);
+            shuffleContainer.appendChild(gridBlocks[i].block, shuffleContainer.firstChild);
             blocksToAdd.push(gridBlocks[i].block);
 
             ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, gridBlocks[i], true);
         }
 
-        console.log(blocksToAdd);
         shuffleInstance.add(blocksToAdd);
 
         // Fade out button if on the first page
@@ -394,13 +397,11 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
                 gridBlocks[i].block.classList.remove('faded-out');
             }
 
-            cb();
-
             if (nrColumns > 1) {
                 shuffleInstance.update();
-            } else {
-                shuffleInstance.layout();
             }
+
+            cb();
         }, (nrColumns == 1) ? 0 : 150);
     }, (nrColumns == 1) ? 200 : 400);
 }
@@ -755,24 +756,27 @@ function initGrid() {
     }, 150);
 }
 
+function closeGridBlockIfOpen(idx) {
+    if (gridBlocks[idx].bodyContainer.classList.contains('grid-block-body-container-tall')) {
+        gridBlocks[idx].bodyContainer.classList.remove('grid-block-body-container-tall');
+        gridBlocks[idx].bigIcon.classList.add('faded-out', 'no-display');
+        gridBlocks[idx].bigIcon.classList.remove('faded-out');
+        gridBlocks[idx].bigIcon.classList.remove('no-display');
+        gridBlocks[idx].mainIcon.classList.add('no-display');
+        gridBlocks[idx].mainIcon.classList.add('faded-out');
+        updateGridBlockText(gridBlocks[idx].index);
+
+        gridBlocks[idx].reasonContainer.classList.add('no-display', 'faded-out');
+    }
+}
+
 // Mobile-optimized handling for mouse enter (basically no animations or delays)
 function onBlockMouseClickMobile(blockObject) {
     var startIdx = currentPage * maxBlocksInPage;
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == blockObject.index) continue;
 
-        if (gridBlocks[i].bodyContainer.classList.contains('grid-block-body-container-tall')) {
-            gridBlocks[i].bodyContainer.classList.remove('grid-block-body-container-tall');
-            gridBlocks[i].bigIcon.classList.add('faded-out', 'no-display');
-            gridBlocks[i].bigIcon.classList.remove('faded-out');
-            gridBlocks[i].bigIcon.classList.remove('no-display');
-            gridBlocks[i].mainIcon.classList.add('no-display');
-            gridBlocks[i].mainIcon.classList.add('faded-out');
-            updateGridBlockText(gridBlocks[i].index);
-
-            gridBlocks[i].reasonContainer.classList.add('no-display', 'faded-out');
-            break;
-        }
+        closeGridBlockIfOpen(i);
     }
 
     blockObject.bigIcon.classList.add('faded-out', 'no-display');
