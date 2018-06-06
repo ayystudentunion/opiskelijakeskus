@@ -104,6 +104,8 @@ window.onload = function() {
         // Initialize events for materialize collapsibles
         setTimeout(() => {
             initMaterializeEvents();
+
+           // $(".dropdown-trigger").dropdown();
         }, 1000);
 
         // Add filter buttons to DOM and setup their events
@@ -168,8 +170,10 @@ function setupFilterButtons() {
     if (nrColumns == 1) {
         filterButtonsCollapse();
     } else {
+        filtersTitle.setAttribute('translation-en', 'Close Filters');
         filtersTitle.innerHTML = "Sulje Filtterit";
         filtersTitleArrow.innerHTML = "arrow_drop_up";
+        translateElement(filtersTitle);
     }
 
     // Fade out next page button if there are too few ideas
@@ -240,14 +244,18 @@ function filterButtonsCollapse() {
     
     if (isCollapsed) {
         filtersTitle.innerHTML = "Sulje Filtterit";
+        filtersTitle.setAttribute('translation-en', 'Close Filters');
         filtersTitleArrow.innerHTML = "arrow_drop_up";
         expandSection(filterButtonsContainer);
         filterButtonsContainer.setAttribute('data-collapsed', 'false');
     } else {
+        filtersTitle.setAttribute('translation-en', 'Show Filters');
         filtersTitle.innerHTML = "Näytä Filtterit";
         filtersTitleArrow.innerHTML = "arrow_drop_down";
         collapseSection(filterButtonsContainer);
     }
+
+    translateElement(filtersTitle);
 }
 
 formCloseBtn.onclick = function() {
@@ -1152,30 +1160,6 @@ function shuffleArr(a) {
         a[j] = x;
     }
     return a;
-}
-
-function setCookie(cname, cvalue) {
-    // Store cookie for 1 year
-    var expiration_date = new Date();
-    expiration_date.setFullYear(expiration_date.getFullYear() + 1);
-
-    document.cookie = cname + "=" + cvalue + ";" + " expires=" + expiration_date.toUTCString();
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
 
 function arraysEqual(arr1, arr2) {
