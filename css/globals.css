@@ -99,6 +99,14 @@ nav ul li.active {
     margin-left: -21px;
 }
 
+.sidenav .divider {
+    margin: 0 !important;
+}
+
+.logout-icon {
+    margin-top: 1px;
+}
+
 /* CSS states */
 .no-highlight {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -108,6 +116,8 @@ nav ul li.active {
         -ms-user-select: none;   /* Internet Explorer/Edge */
             user-select: none;   /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
+
+    outline: none;
 }
 
 .full-site {
@@ -294,16 +304,33 @@ select * {
 }
 
 /* Other general styles */
+.flag-icon {
+    font-size: 16px;
+}
+
+#mobile-nav .flag-icon {
+    height: 48px !important;
+    line-height: 48px !important;
+}
+
+#languages-dropdown i.flag-icon, #languages-dropdown-mobile i.flag-icon {
+    margin: 0 16px 0 0 !important;
+}
+
 nav {
     background-color: #033649 !important;
 }
 
-nav ul.right a.has-icon {
-    padding: 0 15px 0 35px;
-}
-
 nav ul.right {
     margin-right: 1.25rem;
+}
+
+nav ul.right .material-icons.left {
+    margin-right: 7px !important;
+}
+
+nav ul.right .material-icons.right {
+    margin-left: 7px !important;
 }
 
 .page-footer {
