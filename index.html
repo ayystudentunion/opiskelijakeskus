@@ -8,11 +8,59 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/globals.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/materialize.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="flag_icon/css/flag-icon.min.css" />
 
     <link rel="icon" type="image/png" href="images/favicon/favicon.png">
 </head>
 <body>
     <div id="site-container">
+        <!-- Dropdowns for language selection -->
+        <ul id="languages-dropdown" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
+        </ul>
+
+        <ul id="languages-dropdown-mobile" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
+        </ul>
+
         <nav id="navbar">
             <div class="nav-wrapper row">
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
@@ -21,10 +69,61 @@
                             <a href="/">Opiskelijakeskus</a>
                         </li>
                     </ul>
-                    <ul id="nav-mobile" class="right">
+
+                    <!-- Hamburger toggle for mobile nav -->
+                    <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+
+                    <!-- Desktop navbar -->
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li>
-                            <a href="new_idea/" class="has-icon"><i id="navbar-add-icon" class="material-icons">add_box</i> Lisää Idea</a>
+                            <a href="new_idea/">
+                                <i class="material-icons left">add_box</i> 
+                                <span translation-en="Add Idea" translation-se="Svenska Text">Lisää Idea</span>
+                            </a>
                         </li>
+                        <li>
+                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
+                                <span
+                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                >
+                                    <i class="left flag-icon flag-icon-fi">
+
+                                    </i>
+                                </span>
+                                <span translation-en="English" translation-se="Svenska">Suomi</span>
+                                <i class="material-icons right">
+                                    arrow_drop_down
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile navbar -->
+                    <ul class="sidenav" id="mobile-nav">
+                        <li>
+                            <a href="new_idea/">
+                                <span translation-en="Add Idea" translation-se="Svenska Text">Lisää Idea</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
+                                <span
+                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                >
+                                    <i class="left flag-icon flag-icon-fi">
+
+                                    </i>
+                                </span>
+                                <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
+                                <i class="material-icons">
+                                    arrow_drop_down
+                                </i>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
                     </ul>
                 </div>
             </div>
@@ -35,7 +134,7 @@
                 <!-- Main site title -->
                 <div class="row">
                     <div id="content-title-container" class="col s10 offset-s1 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
-                        <h1 id="content-title">Ideoita Opiskelijakeskukseen</h1>
+                        <h1 id="content-title" translation-en="Ideas to Opiskelijakeskus">Ideoita Opiskelijakeskukseen</h1>
                     </div>
                 </div>
 
@@ -58,7 +157,7 @@
                 <!-- Options for grid -->
                 <div id="options-container">
                     <div id="page-buttons-container" class="col s6">
-                        <p class="page-title">Sivu <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
+                        <p class="page-title"><span translation-en="Page">Sivu</span> <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
     
                         <div class="row">
                             <div id="prev-page-btn-container" class="col s6">
@@ -72,7 +171,7 @@
                     </div>
     
                     <div id="sorts-container" class="col s6">
-                        <div id="sorts-title">Tykätyimmät ensin</div>
+                        <div id="sorts-title" translation-en="Most liked first">Tykätyimmät ensin</div>
                         <input type="checkbox" id="sort-by-likes-btn" /><label id="sort-label" class="settings-label" for="sort-by-likes-btn">Toggle</label>
                     </div>
                 </div>
@@ -81,7 +180,14 @@
                 <div class="visible-mobile row">
                     <div class="col s3"></div>
                     <div id="filter-buttons-dropdown" class="col s6">
-                        <p id="filter-buttons-dropdown-text"><span id="filters-title">Näytä Filtterit</span> <i id="filters-title-arrow" class="material-icons">arrow_drop_down</i></p>
+                        <p id="filter-buttons-dropdown-text">
+                            <span id="filters-title" translation-en="Show Filters">
+                                Näytä Filtterit
+                            </span> 
+                            <i id="filters-title-arrow" class="material-icons">
+                                arrow_drop_down
+                            </i>
+                        </p>
                     </div>
                     <div class="col s3"></div>
                 </div>
@@ -99,7 +205,7 @@
         </div>
 
         <div id="page-buttons-bottom-container" class="col s6 show-on-small no-display">
-            <p class="page-title">Sivu <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
+            <p class="page-title"><span translation-en="Page">Sivu</span> <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
 
             <div class="row">
                 <div id="prev-page-btn-container" class="col s6">
@@ -119,7 +225,9 @@
             <div class="row">
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                     <p id="copyright_text" class="left"></p>
-                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right" translation-en="Report a bug">
+                        Ilmoita bugista
+                    </a>
                 </div>
             </div>
         </footer>
@@ -128,8 +236,8 @@
     <!-- Element to replace page if Internet Explorer is used -->
     <div id="ie-message" class="no-display">
         <div id="ie-message-text-container">
-            <p id="ie-message-text-title">Internet Explorer ei ole tuettu tällä sivulla.</p>
-            <p id="ie-message-text-browsers">Tuetut selaimet ovat <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> ja <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
+            <p id="ie-message-text-title" translation-en="Internet Explorer is not supported on this page.">Internet Explorer ei ole tuettu tällä sivulla.</p>
+            <p id="ie-message-text-browsers"><span translation-en="Supported browsers are">Tuetut selaimet ovat</span> <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> <span translation-en="and">ja</span> <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
         </div>
     </div>
 
@@ -138,6 +246,7 @@
     <script src="./js/materialize/materialize.min.js"></script>
     <script src="./js/globals.js"></script>
     <script src="./bundle.js"></script>
+    <script src="./js/translate.js"></script>
     <script src="./js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
 </body>
 </html>
