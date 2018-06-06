@@ -54,7 +54,7 @@ function resetReviewModal() {
             console.log(ideaObj);
 
             document.getElementById('idea-name-field').value = key;
-            document.getElementById('idea-desc-field').value = ideaObj.description;
+            $('#idea-desc-field').val(ideaObj.description);
             for (var i = 0; i < ideaObj.arguments.length; i++) {
                 var elField = document.getElementById('idea-argument-field-' + (i + 1));
                 var elContainer = document.getElementById('idea-argument-' + (i + 1));
@@ -74,6 +74,7 @@ function resetReviewModal() {
             }
 
             M.AutoInit();
+            M.textareaAutoResize($('#idea-desc-field'));
 
             var secondaryCategoriesTitleEl = document.getElementById('form-secondary-categories-title');
             if (ideaObj.secondary_categories != undefined && ideaObj.secondary_categories.length > 0) {
