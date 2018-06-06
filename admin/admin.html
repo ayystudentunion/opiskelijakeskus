@@ -9,27 +9,135 @@
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/materialize.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/globals.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/admin.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../../flag_icon/css/flag-icon.min.css" />
 
     <link rel="icon" type="image/png" href="../images/favicon/favicon.png">
 </head>
 <body>
     <div id="site-container">
+        <!-- Dropdowns for language selection -->
+        <ul id="languages-dropdown" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
+        </ul>
+
+        <ul id="languages-dropdown-mobile" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
+        </ul>
+
         <div id="page-container">
             <nav id="navbar" class="no-highlight">
                 <div class="nav-wrapper row">
                     <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                         <ul class="left">
                             <li>
-                                <a href="/">Opiskelijakeskus Admin</a>
+                                <a href="./">Opiskelijakeskus Admin</a>
                             </li>
                         </ul>
-                        <ul id="nav-mobile" class="right">
+
+                        <!-- Hamburger toggle for mobile nav -->
+                        <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+
+                        <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <li>
-                                <a href="review_ideas/">Moderoi Ideoita</a>
+                                <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
+                                    <span
+                                        translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                        translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                    >
+                                        <i class="left flag-icon flag-icon-fi">
+
+                                        </i>
+                                    </span>
+                                    <span translation-en="English" translation-se="Svenska">Suomi</span>
+                                    <i class="material-icons right">
+                                        arrow_drop_down
+                                    </i>
+                                </a>
                             </li>
                             <li>
-                                <a href="../logout">Kirjaudu Ulos</a>
+                                <a href="review_ideas/">
+                                    Moderoi Ideoita
+                                </a>
                             </li>
+                            <li>
+                                <a href="../logout">
+                                    Kirjaudu Ulos
+                                    <i class="material-icons right logout-icon">
+                                        exit_to_app
+                                    </i>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Mobile navbar -->
+                        <ul class="sidenav" id="mobile-nav">
+                            <li>
+                                <a href="review_ideas/">
+                                    Moderoi Ideoita
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
+                                    <span
+                                        translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                        translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                    >
+                                        <i class="left flag-icon flag-icon-fi">
+
+                                        </i>
+                                    </span>
+                                    <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
+                                    <i class="material-icons">
+                                        arrow_drop_down
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="../logout">
+                                    Kirjaudu Ulos
+                                </a>
+                            </li>
+                            <li class="divider"></li>
                         </ul>
                     </div>
                 </div>
@@ -58,9 +166,12 @@
     
     <script src="../../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
+    <script src="../../js/globals.js"></script>
     <script src="../../js/particles/particles.min.js"></script>
     <script src="../../js/init_particles.js"></script>
     <script src="../../js/admin.js"></script>
+    <script src="../../js/materialize/materialize.min.js"></script>
+    <script src="../../js/translate.js"></script>
     <script src="../../js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
 </body>
 </html>
