@@ -23,6 +23,30 @@ var categoryIcons = {
     "Villit ideat": "villit ideat"
 }
 
+var categoryTranslationsEN = {
+    "Harrastukset": "Hobbies",
+    "Hygieniatilat": "Hygiene Facilities",
+    "Juhlat": "Parties",
+    "Kahvila": "Cafeteria",
+    "Kokoukset": "Meetings",
+    "Muut": "Other",
+    "Palvelut": "Services",
+    "Pop-up -tapahtumat": "Pop-up -events",
+    "Rentoutuminen": "Relaxation",
+    "Ruoka": "Food",
+    "Säilytys": "Preservation",
+    "Sauna": "Sauna",
+    "Seminaarit": "Seminars",
+    "Sosiaalisuus": "Socializing",
+    "Tapahtumat": "Events",
+    "Tietopalvelut": "Information services",
+    "Työskentely": "Working",
+    "Ulkotilat": "Outdoors",
+    "Urheilu": "Sports",
+    "Vapaa-aika": "Free-time",
+    "Villit ideat": "Wild ideas"
+}
+
 // Sets the copyright text in page footer
 function setCopyrightText() {
     var copyrightTextEl = document.getElementById('copyright_text');
