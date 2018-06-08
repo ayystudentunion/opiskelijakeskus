@@ -25,8 +25,11 @@ window.onload = function() {
         for (var key in categoryIcons) {
             var option = document.createElement('option');
             option.setAttribute('data-icon', "../images/" + categoryIcons[key] + "_musta.png");
+            option.setAttribute('category-name', key);
+            option.setAttribute('translation-en', categoryTranslationsEN[key]);
             option.innerHTML = key;
             selectElements[i].appendChild(option);
+            translateElement(option);
         }
     }
 
@@ -44,13 +47,13 @@ form.addEventListener("submit", function(event) {
     var ideaArgument3 = document.getElementById('idea-argument-field-3').value;
     var ideaArgument4 = document.getElementById('idea-argument-field-4').value;
     var ideaArgument5 = document.getElementById('idea-argument-field-5').value;
-    var mainCategory = document.getElementById('idea-main-category').value;
-    var secondaryCategory1 = document.getElementById('idea-secondary-category-1').value;
-    var secondaryCategory2 = document.getElementById('idea-secondary-category-2').value;
-    var secondaryCategory3 = document.getElementById('idea-secondary-category-3').value;
+    var mainCategory = document.getElementById('idea-main-category');
+    var secondaryCategory1 = document.getElementById('idea-secondary-category-1');
+    var secondaryCategory2 = document.getElementById('idea-secondary-category-2');
+    var secondaryCategory3 = document.getElementById('idea-secondary-category-3');
 
     var checkedCategories = [];
-    var cats = [mainCategory, secondaryCategory1, secondaryCategory2, secondaryCategory3];
+    var cats = [mainCategory.value, secondaryCategory1.value, secondaryCategory2.value, secondaryCategory3.value];
     for (var i = 0; i < cats.length; i++) {
         if (cats[i] != "" && checkedCategories.indexOf(cats[i]) != -1) {
             return alert("Valitse jokaiseksi kategoriaksi eri kategoria.");
@@ -84,11 +87,11 @@ form.addEventListener("submit", function(event) {
         if (ideaArgument4 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument4);
         if (ideaArgument5 != "") newIdeaObj[ideaName]["arguments"].push(ideaArgument5);
 
-        if (mainCategory != "") newIdeaObj[ideaName]["main_category"] = mainCategory;
+        if (mainCategory.selectedIndex != -1) newIdeaObj[ideaName]["main_category"] = mainCategory.options[mainCategory.selectedIndex].getAttribute('category-name');
 
-        if (secondaryCategory1 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1);
-        if (secondaryCategory2 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2);
-        if (secondaryCategory3 != "") newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3);
+        if (secondaryCategory1.selectedIndex != -1) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory1.options[secondaryCategory1.selectedIndex].getAttribute('category-name'));
+        if (secondaryCategory2.selectedIndex != -1) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory2.options[secondaryCategory2.selectedIndex].getAttribute('category-name'));
+        if (secondaryCategory3.selectedIndex != -1) newIdeaObj[ideaName]["secondary_categories"].push(secondaryCategory3.options[secondaryCategory3.selectedIndex].getAttribute('category-name'));
 
         result.push(newIdeaObj);
         loadBar.style.width = "100vw";
