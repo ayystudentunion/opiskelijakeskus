@@ -236,8 +236,34 @@
     <!-- Element to replace page if Internet Explorer is used -->
     <div id="ie-message" class="no-display">
         <div id="ie-message-text-container">
-            <p id="ie-message-text-title" translation-en="Internet Explorer is not supported on this page.">Internet Explorer ei ole tuettu tällä sivulla.</p>
-            <p id="ie-message-text-browsers"><span translation-en="Supported browsers are">Tuetut selaimet ovat</span> <a href="https://www.google.com/chrome/" id="chrome-text">Google Chrome</a>, <a href="https://www.opera.com/" id="opera-text">Opera</a>, <span href="" id="edge-text">Microsoft Edge</span> <span translation-en="and">ja</span> <a href="https://www.mozilla.org/" id="firefox-text">Mozilla Firefox</a></p>
+            <p id="ie-message-text-title"
+               translation-en="Internet Explorer is not supported on this page.">
+               Internet Explorer ei ole tuettu tällä sivulla.
+            </p>
+            <p id="ie-message-text-browsers">
+                <span translation-en="Supported browsers are">
+                    Tuetut selaimet ovat
+                </span> 
+                <a href="https://www.google.com/chrome/"
+                   id="chrome-text">
+                   Google Chrome
+                </a>, 
+                <a href="https://www.opera.com/"
+                   id="opera-text">
+                   Opera
+                </a>, 
+                <span href=""
+                      id="edge-text">
+                      Microsoft Edge
+                </span> 
+                <span translation-en="and">
+                    ja
+                </span> 
+                <a href="https://www.mozilla.org/"
+                   id="firefox-text">
+                   Mozilla Firefox
+                </a>
+            </p>
         </div>
     </div>
 
@@ -245,6 +271,7 @@
     <script src="./js/jquery.js"></script>
     <script src="./js/materialize/materialize.min.js"></script>
     <script src="./js/globals.js"></script>
+    <script src="./js/ajax_requests.js"></script>
     <script src="./bundle.js"></script>
     <script src="./js/translate.js"></script>
     <script src="./js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
