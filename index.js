@@ -188,7 +188,9 @@ function setupFilterButtons() {
         var filterBtn = document.createElement('button');
         filterBtn.classList.add('filter-btn', 'simple-btn', 'large-padding', 'center', 'waves-effect', 'waves-light');
         filterBtn.innerHTML = key;
+        filterBtn.setAttribute('translation-en', categoryTranslationsEN[key]);
         filterButtonsContainer.appendChild(filterBtn);
+        translateElement(filterBtn);
 
         (function() {
             var btn = filterBtn;
@@ -719,7 +721,7 @@ function initGrid() {
                 // Update HTML and data file
                 likesText.innerHTML = String(Math.max(likesCount, 0));
                 $.getJSON("data/data.json", function(result) {
-                    var ideaName = gridBlockObject.headerText.innerHTML;
+                    var ideaName = gridBlockObject.title;
 
                     // Update likes
                     var found = false;
