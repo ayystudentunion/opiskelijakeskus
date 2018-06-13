@@ -34,7 +34,7 @@ var categoryTranslationsEN = {
     "Pop-up -tapahtumat": "Pop-up -events",
     "Rentoutuminen": "Relaxation",
     "Ruoka": "Food",
-    "Säilytys": "Preservation",
+    "Säilytys": "Storage",
     "Sauna": "Sauna",
     "Seminaarit": "Seminars",
     "Sosiaalisuus": "Socializing",
