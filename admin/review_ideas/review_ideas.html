@@ -68,7 +68,10 @@
                     <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                         <ul class="left">
                             <li>
-                                <a href="../">Opiskelijakeskus Admin</a>
+                                <a href="../"
+                                   translation-en="Student Centre Admin">
+                                   Opiskelijakeskus Admin
+                                </a>
                             </li>
                         </ul>
                         
@@ -93,13 +96,14 @@
                                 </a>
                             </li>
                             <li class="active">
-                                <a href="./">
+                                <a href="./"
+                                   translation-en="Moderate Ideas">
                                     Moderoi Ideoita
                                 </a>
                             </li>
                             <li>
                                 <a href="../../logout">
-                                    Kirjaudu Ulos
+                                    <span translation-en="Log Out">Kirjaudu Ulos</span>
                                     <i class="material-icons right logout-icon">
                                         exit_to_app
                                     </i>
@@ -110,7 +114,8 @@
                         <!-- Mobile navbar -->
                         <ul class="sidenav" id="mobile-nav">
                             <li class="active">
-                                <a href="./">
+                                <a href="./"
+                                   translation-en="Moderate Ideas">
                                     Moderoi Ideoita
                                 </a>
                             </li>
@@ -133,7 +138,8 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="../../logout">
+                                <a href="../../logout"
+                                   translation-en="Log Out">
                                     Kirjaudu Ulos
                                 </a>
                             </li>
@@ -144,16 +150,25 @@
             </nav>
         
             <div id="form-container" class="row form-container no-display faded-out">
-                <h1 id="form-title" class="form-title col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">Tarkistettavia ideoita jäljellä <span id="number-of-ideas">0</span></h1>
+                <h1 id="form-title" class="form-title col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
+                    <span translation-en="Ideas left to moderate:">Tarkistettavia ideoita jäljellä</span> 
+                    <span id="number-of-ideas">0</span>
+                </h1>
 
                 <form id="form" class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1">
-                    <h2 class="form-subtitle">Nimi & Kuvaus</h2>
+                    <h2 class="form-subtitle"
+                        translation-en="Name & Description">
+                        Nimi & Kuvaus
+                    </h2>
 
                     <!-- Idea Name Input -->
                     <div class="row">
                         <div id="idea-name" class="input-field col s12">
                             <input id="idea-name-field" type="text" class="validate" data-length="60" maxlength="60" required pattern=".*\S+.*" title="Anna idealle nimi">
-                            <label for="idea-name-field">Idean nimi</label>
+                            <label for="idea-name-field"
+                                   translation-en="Idea name">
+                                Idean nimi
+                            </label>
                         </div>
                     </div>
 
@@ -161,89 +176,141 @@
                     <div class="row">
                         <div id="idea-desc" class="input-field col s12">
                             <textarea id="idea-desc-field" class="materialize-textarea" data-length="300" maxlength="300" required></textarea>
-                            <label for="idea-desc-field">Idean kuvaus</label>
+                            <label for="idea-desc-field"
+                                   translation-en="Idea description">
+                                Idean kuvaus
+                            </label>
                         </div>
                     </div>
 
                     <!-- Arguments -->
-                    <h2 class="form-subtitle">Perustelut</h2>
+                    <h2 class="form-subtitle"
+                        translation-en="Arguments">
+                        Perustelut
+                    </h2>
 
                     <div class="row">
                         <div id="idea-argument-1" class="input-field col s12 idea-argument">
                             <input id="idea-argument-field-1" type="text" class="validate idea-argument-field" data-length="100" maxlength="100" required pattern=".*\S+.*" title="Anna idealle perustelu">
-                            <label for="idea-argument-field-1">Perustelu 1</label>
+                            <label for="idea-argument-field-1"
+                                   translation-en="Argument 1">
+                                Perustelu 1
+                            </label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div id="idea-argument-2" class="input-field col s12 idea-argument no-display">
                             <input id="idea-argument-field-2" type="text" class="validate idea-argument-field" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
-                            <label for="idea-argument-field-2">Perustelu 2</label>
+                            <label for="idea-argument-field-2"
+                                   translation-en="Argument 2">
+                                Perustelu 2
+                            </label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div id="idea-argument-3" class="input-field col s12 idea-argument no-display">
                             <input id="idea-argument-field-3" type="text" class="validate idea-argument-field" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
-                            <label for="idea-argument-field-3">Perustelu 3</label>
+                            <label for="idea-argument-field-3"
+                                   translation-en="Argument 3">
+                                Perustelu 3
+                            </label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div id="idea-argument-4" class="input-field col s12 idea-argument no-display">
                             <input id="idea-argument-field-4" type="text" class="validate idea-argument-field" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
-                            <label for="idea-argument-field-4">Perustelu 4</label>
+                            <label for="idea-argument-field-4"
+                                   translation-en="Argument 4">
+                                Perustelu 4
+                            </label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div id="idea-argument-5" class="input-field col s12 idea-argument no-display">
                             <input id="idea-argument-field-5" type="text" class="validate idea-argument-field" data-length="100" maxlength="100" pattern=".*\S+.*" title="Perustelussa täytyy olla kirjaimia.">
-                            <label for="idea-argument-field-5">Perustelu 5</label>
+                            <label for="idea-argument-field-5"
+                                   translation-en="Argument 5">
+                                Perustelu 5
+                            </label>
                         </div>
                     </div>
 
                     <!-- Categories -->
-                    <h2 class="form-subtitle">Pääkategoria</h2>
+                    <h2 class="form-subtitle"
+                        translation-en="Main category">
+                        Pääkategoria
+                    </h2>
 
                     <div class="row">
                         <div id="idea-main-category-field" class="input-field col s12 m6">
                             <select id="idea-main-category" class="icons" required>
-                                <option value="" disabled selected>Valitse pääkategoria</option>
+                                <option value=""
+                                        disabled
+                                        selected
+                                        translation-en="Choose main category">
+                                    Valitse pääkategoria
+                                </option>
                             </select>
                         </div>
                     </div>
 
                     <!-- Categories -->
-                    <h2 id="form-secondary-categories-title" class="form-subtitle">Alakategoriat</h2>
+                    <h2 id="form-secondary-categories-title"
+                        class="form-subtitle"
+                        translation-en="Subcategories">
+                        Alakategoriat
+                    </h2>
 
                     <div class="row">
                         <div id="idea-secondary-category-1" class="idea-secondary-category no-display input-field col s12 l4">
                             <select id="idea-secondary-category-field-1" class="idea-secondary-category-field icons">
-                                <option value="" disabled selected>Valitse alakategoria</option>
+                                <option value=""
+                                        disabled
+                                        selected
+                                        translation-en="Choose subcategory">
+                                    Valitse alakategoria
+                                </option>
                             </select>
                         </div>
                         <div id="idea-secondary-category-2" class="idea-secondary-category no-display input-field col s12 l4">
                             <select id="idea-secondary-category-field-2" class="idea-secondary-category-field icons">
-                                <option value="" disabled selected>Valitse alakategoria</option>
+                                <option value=""
+                                        disabled
+                                        selected
+                                        translation-en="Choose subcategory">
+                                    Valitse alakategoria
+                                </option>
                             </select>
                         </div>
                         <div id="idea-secondary-category-3" class="idea-secondary-category no-display input-field col s12 l4">
                             <select id="idea-secondary-category-field-3" class="idea-secondary-category-field icons">
-                                <option value="" disabled selected>Valitse alakategoria</option>
+                                <option value=""
+                                        disabled
+                                        selected
+                                        translation-en="Choose subcategory">
+                                    Valitse alakategoria
+                                </option>
                             </select>
                         </div>
                     </div>
 
                     <div id="form-bottom-buttons-container" class="no-display">
                         <div id="form-reject-button-container" class="col s6">
-                            <button id="reject-btn" class="simple-btn btn large-padding waves-effect waves-light center">
+                            <button id="reject-btn"
+                                    class="simple-btn btn large-padding waves-effect waves-light center"
+                                    translation-en="Reject Idea">
                                 Hylkää Idea
                             </button>
                         </div>
         
                         <div id="form-accept-button-container" class="col s6">
-                            <button id="accept-btn" class="simple-btn btn large-padding waves-effect waves-light center">
+                            <button id="accept-btn"
+                                    class="simple-btn btn large-padding waves-effect waves-light center"
+                                    translation-en="Accept Idea">
                                 Hyväksy Idea
                             </button>
                         </div>
@@ -257,7 +324,7 @@
                 <div class="row">
                     <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                         <p id="copyright_text" class="left"></p>
-                        <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right">Ilmoita bugista</a>
+                        <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right" translation-en="Report a bug">Ilmoita bugista</a>
                     </div>
                 </div>
             </footer>
