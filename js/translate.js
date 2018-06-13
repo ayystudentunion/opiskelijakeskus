@@ -47,6 +47,24 @@ $(document).ready(() => {
         for (var i = 0; i < translateEnEls.length; i++) {
             translateElement(translateEnEls[i]);
         }
+
+        // Cookie info element is loaded dynamically from 3rd party library so update it manually here
+        $(".cookieinfo").children().each(function () {
+            $(this).html($(this).html().replace(
+                "Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön.",
+                "We use cookies to enhance the functionality of our site. By continuing to use our site you accept the use of cookies."
+            ));
+
+            $(this).html($(this).html().replace(
+                "Lisätietoa",
+                "More Information"
+            ));
+
+            $(this).html($(this).html().replace(
+                "https://fi.wikipedia.org/wiki/Ev%C3%A4ste",
+                "https://en.wikipedia.org/wiki/HTTP_cookie"
+            ));
+        });
     } else if (currentLang == "se") {
         var translateSeEls = document.querySelectorAll('[translation-se]');
         for (var i = 0; i < translateSeEls.length; i++) {
@@ -59,4 +77,8 @@ $(document).ready(() => {
 function updateLang(lang) {
     setCookie("lang", lang);
     location.reload();
+}
+
+function getLang() {
+    return currentLang;
 }
