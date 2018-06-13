@@ -98,6 +98,12 @@ window.onload = function() {
         // Initialize main grid
         initGrid();
 
+        // Set the footer visible after a timeout because if it would
+        //   load before the grid, it would show in the wrong place after page load
+        setTimeout(() => {
+            document.getElementById('page-footer').classList.remove('no-display');
+        }, 150);
+
         // Initialize Materialize (has to be after grid init)
         M.AutoInit();
 
@@ -419,7 +425,16 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 // Initializes the grid system. Creates all HTML elements for the grid
 //   and adds the first page to the DOM and ShuffleJS. All other grid elements are stored.
 function initGrid() {
-    var likeCounts = [];
+    if (getLang() == "en") {
+        document.getElementById('options-container').classList.add('no-display');
+        document.getElementById('filter-buttons-dropdown').classList.add('no-display');
+        document.getElementById('page-buttons-bottom-container').innerHTML = "";
+        shuffleContainer.innerHTML =
+        "<div class='center-content'>\
+            <h1 id='no-english-ideas'>You may add new ideas from the upper corner. All the ideas will be available in English after they have been translanted.</h1>\
+        </div>";
+        return;
+    }
 
     // Shuffle ideas around for better diversity
     jsonData = shuffleArr(jsonData);
@@ -758,12 +773,6 @@ function initGrid() {
             }
         }());
     }
-
-    // Set the footer visible after a timeout because if it would
-    //   load before the grid, it would show in the wrong place after page load
-    setTimeout(() => {
-        document.getElementById('page-footer').classList.remove('no-display');
-    }, 150);
 }
 
 function closeGridBlockIfOpen(idx) {
