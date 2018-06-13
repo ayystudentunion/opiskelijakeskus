@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Opiskelijakeskus</title>
+    <title translation-en="Student Centre" translation-se="Studentcentrumet">Opiskelijakeskus</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/globals.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/materialize.min.css" />
@@ -66,7 +66,11 @@
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                     <ul class="left">
                         <li>
-                            <a href="/">Opiskelijakeskus</a>
+                            <a href="/"
+                               translation-en="Student Centre"
+                               translation-se="Studentcentrumet">
+                               Opiskelijakeskus
+                            </a>
                         </li>
                     </ul>
 
@@ -78,7 +82,7 @@
                         <li>
                             <a href="new_idea/">
                                 <i class="material-icons left">add_box</i> 
-                                <span translation-en="Add Idea" translation-se="Svenska Text">Lisää Idea</span>
+                                <span translation-en="Add Idea">Lisää Idea</span>
                             </a>
                         </li>
                         <li>
@@ -103,7 +107,7 @@
                     <ul class="sidenav" id="mobile-nav">
                         <li>
                             <a href="new_idea/">
-                                <span translation-en="Add Idea" translation-se="Svenska Text">Lisää Idea</span>
+                                <span translation-en="Add Idea">Lisää Idea</span>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -134,20 +138,29 @@
                 <!-- Main site title -->
                 <div class="row">
                     <div id="content-title-container" class="col s10 offset-s1 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
-                        <h1 id="content-title" translation-en="Ideas to Opiskelijakeskus">Ideoita Opiskelijakeskukseen</h1>
+                        <h1 id="content-title" translation-en="Ideas to Student Centre">Ideoita Opiskelijakeskukseen</h1>
                     </div>
                 </div>
 
                 <div class="row">
                     <div id="content-title-description-container" class="col s12">
                         <div id="form-container" class="form-container row">
-                    
+                            
                             <form id="form" class="form col s12">
                                 <i id="form-close-btn" class="material-icons">close</i>
-                                <p class="form-paragraph" style="text-align: center;">
+                                <p class="form-paragraph"
+                                   style="text-align: center;"
+                                   translation-en="The Student Centre is a joint venture by Aalto University Student Union (AYY), Aalto University Business Students (KY) and Teknologföreningen (TF). The plan is to build a building for all students to the Otaniemi campus, next to the metro station entrance and the Harald Herlin Learning Centre.
+                                   <br><br>
+                                   A Student Centre seminar was held in April 2018, which had participants from the Council of Special Status Associations, the Representative Council and from AYY’s sections. In the seminar participants brainstormed what kind of facilities, functions and services there could be in the Student Centre. Anyone can browse the ideas, like them and add their own ideas by the Friday 15th of June. What would you like to have in the Student Centre?"
+                                   
+                                   translation-se="Studentcentrumet är ett samprojekt mellan Aalto-universitetets studentkår (AUS), Aalto-universitetets ekonomistuderande (KY) och Teknologföreningen (TF) för att bygga ett gemensamt hus för studenterna på en central plats på Otnäs campus, invid metroingången och mittemot Harald Herlin-lärcentret. 
+                                   <br><br>
+                                   I början av april 2018 ordnades ett Studentcentrumsseminarium med deltagare från delegationen, AUS sektioner och rådet av ordförande för de särställda föreningarna. På seminariet behandlades olika idéer för lokalerna, funktionerna och servicen i Studentcentrumet. Idéerna finns på den här webbplatsen där vem som helst fram till den 15 juni kan bläddra bland dem, gilla dem eller lägga till sina egna. Vad önskar du dig av Studentcentrumet?"
+                                   >
                                     Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), Aalto-yliopiston kauppatieteiden ylioppilaiden (KY) ja Teknologföreningenin (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta Otaniemen kampuksen keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald Herlinin Oppimiskeskusta vastapäätä.
                                     <br><br>
-                                    Huhtikuun 2018 alussa järjestettiin Opiskelijakeskusseminaari, johon osallistui edustajia erityisasemayhdistysten puheenjohtajien Neuvostosta, edustajistosta ja AYY:n jaostoista. Seminaarissa työstettiin ideoita, mitä erilaisia tiloja, toimintoja ja palveluita Opiskelijakeskuksessa voisi olla. Esille nousseet ideat on listattu näille sivuille, joista kuka vaan voi selailla niitä läpi, lisätä oman idean ja tykätä olemassa olevista. Mitä sinä Opiskelijakeskukselta toivoisit?
+                                    Huhtikuun 2018 alussa järjestettiin Opiskelijakeskusseminaari, johon osallistui edustajia erityisasemayhdistysten puheenjohtajien Neuvostosta, edustajistosta ja AYY:n jaostoista. Seminaarissa työstettiin ideoita, mitä erilaisia tiloja, toimintoja ja palveluita Opiskelijakeskuksessa voisi olla. Esille nousseet ideat on listattu näille sivuille, joista kuka vaan voi selailla niitä läpi, lisätä oman idean ja tykätä olemassa olevista 15.6. mennessä. Mitä sinä Opiskelijakeskukselta toivoisit?
                                 </p>
                             </form>
                         </div>
@@ -271,9 +284,13 @@
     <script src="./js/jquery.js"></script>
     <script src="./js/materialize/materialize.min.js"></script>
     <script src="./js/globals.js"></script>
-    <script src="./js/ajax_requests.js"></script>
     <script src="./bundle.js"></script>
     <script src="./js/translate.js"></script>
-    <script src="./js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
+    <script src="./js/cookie_info.js"
+            id="cookieinfo"
+            data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
+            data-linkmsg="Lisätietoa"
+            data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste">
+    </script>
 </body>
 </html>
