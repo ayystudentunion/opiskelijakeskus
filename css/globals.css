@@ -145,9 +145,12 @@ nav ul li.active {
     display: none;
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 680px) {
     .visible-mobile {
         display: block !important;
+    }
+    .hidden-mobile {
+        display: none !important;
     }
 }
 
