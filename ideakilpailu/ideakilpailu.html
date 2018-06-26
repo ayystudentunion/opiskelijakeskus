@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title translation-en="Student Centre" translation-se="Studentcentrumet">Opiskelijakeskus Ideakilpailu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/globals.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/materialize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/index.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../css/ideakilpailu.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../flag_icon/css/flag-icon.min.css" />
+
+    <link rel="icon" type="image/png" href="images/favicon/favicon.png">
+</head>
+<body>
+    <div id="site-container">
+        <!-- Dropdowns for language selection -->
+        <ul id="languages-dropdown" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+        </ul>
+
+        <ul id="languages-dropdown-mobile" class="dropdown-content">
+            <li>
+                <a class="set-language-fi">
+                    <i class="left flag-icon flag-icon-fi"></i>
+                    Suomi
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-en">
+                    <i class="left flag-icon flag-icon-gb"></i>
+                    English
+                </a>
+            </li>
+        </ul>
+
+        <nav id="navbar">
+            <div class="nav-wrapper row">
+                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                    <ul class="left">
+                        <li>
+                            <a href="/"
+                               translation-en="Student Centre"
+                               translation-se="Studentcentrumet">
+                               Opiskelijakeskus
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Hamburger toggle for mobile nav -->
+                    <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+
+                    <!-- Desktop navbar -->
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li class="active">
+                            <a href="./">
+                                <span translation-en="Idea Competition">Ideakilpailu</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
+                                <span
+                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                >
+                                    <i class="left flag-icon flag-icon-fi">
+
+                                    </i>
+                                </span>
+                                <span translation-en="English" translation-se="Svenska">Suomi</span>
+                                <i class="material-icons right">
+                                    arrow_drop_down
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile navbar -->
+                    <ul class="sidenav" id="mobile-nav">
+                        <li class="active">
+                            <a href="./">
+                                <span translation-en="Idea Competition">Ideakilpailu</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
+                                <span
+                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                                >
+                                    <i class="left flag-icon flag-icon-fi">
+
+                                    </i>
+                                </span>
+                                <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
+                                <i class="material-icons">
+                                    arrow_drop_down
+                                </i>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <div class="row">
+            <div id="content-container" class="col xxxl8 xxl8 xl8 l8 m10 s10 offset-xxxl2 offset-xxl2 offset-xl2 offset-l2 offset-m1 offset-s1">
+                <!-- Main site title -->
+                <div class="row">
+                    <img id="site-banner" src="../images/banner.png">
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <h2 class="title">Opiskelijakeskus -ideakilpailu opiskelijoille</h1>
+                        <h2 class="title"><a class="pdf-link" href="#">Kilpailukutsu</a></h2>
+
+                        <h3 class="subtitle">Kilpailun järjestäjä, luonne ja tarkoitus</h3>
+                        <p>Ideakilpailun järjestää Aalto-yliopiston ylioppilaskunta ja sen tarkoituksena on visualisoida opiskelijakeskuksen tilojen tunnelmaa, aaltolaisuuden henkeä, yhteisöllisyyttä ja tuoda esiin ideoita opiskelijakeskuksen suunnittelussa.</p>
+                    
+                        <h3 class="subtitle">Kenelle?</h3>
+                        <p>Kilpailuun on oikeus osallistua kaikilla Aalto-yliopiston opiskelijoilla. Osallistua voi joko yksin tai ryhmässä tehdyllä ehdotuksella.</p>
+
+                        <h3 class="subtitle">Projektin taustaa</h3>
+                        <p>Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), Aalto-yliopiston kauppatieteiden ylioppilaiden (KY) ja Teknologföreningenin (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta Otaniemen kampuksen keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald Herlinin Oppimiskeskusta vastapäätä. <br><br>
+                            Opiskelijakeskus nähdään uudenlaisena mahdollisuutena luoda Aalto-yhteisöön ja kampukselle jotain uutta, synnyttää uudenlaista kulttuuria ja olla aito, kaikkien aaltolaisten kohtaamispaikka, johon jokaisella on syy tulla. Opiskelijakeskuksen kautta halutaan tukea ja synnyttää AYY:n yhteistä opiskelijakulttuuria – aaltolaisuutta – ja luoda poikkitieteellisiä kohtaamisia ja uudenlaisia toimintatapoja.<br><br>
+                            Opiskelijakeskuksen ei ole tarkoitus korvata olemassa olevia kulttuureita vaan rikastuttaa niitä ja luoda jotain uutta. Opiskelijakeskuksella AYY ei esimerkiksi tavoittele uuden keskustoimiston rakentamista (vaikka toteutuessaan nykyisen keskustoimiston toiminnot sinne siirtyisivätkin) tai esimerkiksi kiltahuoneiden korvaamista, vaan opiskelijakeskukselta haluttaisiin selkeästi jotain muuta lisäarvoa, mikä tekee sen rakentamisesta aatteellisesti kannattavaa.<br><br>
+                        </p>
+
+                        <h3 class="subtitle">Lisää tietoa</h3>
+                        <p>Lisää tietoa projektista löytyy kilpailun liitemateriaaleista. Liitemateriaalit ja ideakilpailun ohjeet löytyvät opiskelijakeskus.fi -sivustolta. Opiskelijakeskus.fi -sivustolta löytyy lisäksi listaus erilaisista ideoista, joita on noussut esiin yhteisöstä keväällä 2018 järjestetyn Opiskelijakeskusseminaarin yhteydessä sekä myöhemmin opiskelijakeskus.fi -nettisivujen kautta. Ideat kuvaavat erilaisia haaveita, unelmia ja toiveita, mitä opiskelijakeskuksessa voisi olla.</p>
+                    
+                        <h3 class="subtitle">Kysymykset</h3>
+                        <p>Kysymykset kilpailuun liittyen voi lähettää sähköpostilla kilpailun sihteerille, AYY:n kiinteistöasiantuntija Heidi Dufvalle osoitteeseen heidi.dufva(ät)ayy.fi. Kysymykset tulee lähettää 15.7. mennessä. Saapuneet kysymykset ja vastaukset kysymyksiin julkaistaan opiskelijakeskus.fi -sivustolla 20.7. mennessä.</p>
+                    
+                        <h3 class="subtitle">Aikataulu</h3>
+                        <p class="visible-mobile">
+                            27.6. Kilpailu alkaa <br>
+                            27.6.-15.7. Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille<br>
+                            20.7. Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla<br>
+                            13.8. Kilpailu päättyy klo 14.00<br>
+                            24.8. Voittajien julkistus<br>
+                            1.-10.9. Näyttely valikoiduista ehdotuksista <br>
+                        </p>
+
+                        <div style="overflow: hidden;" class="hidden-mobile">
+                            <div style="float: left; padding-right: 3rem;">
+                                <p>27.6.<br>
+                                   27.6.-15.7.<br>
+                                   20.7.<br>
+                                   13.8.<br>
+                                   24.8.<br>
+                                   1.-10.9.
+                                </p>
+                            </div>
+    
+                            <div style="float: left;">
+                                <p>Kilpailu alkaa <br>
+                                    Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille<br>
+                                    Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla<br>
+                                    Kilpailu päättyy klo 14.00<br>
+                                    Voittajien julkistus<br>
+                                    Näyttely valikoiduista ehdotuksista
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3 class="subtitle">Tuomaristo</h3>
+                        <p>Kilpailua arvioivaan työryhmään kuuluvat seuraavat henkilöt:<br>
+                            Emma Savela – AYY:n hallituksen Opiskelijakeskus-vastaava<br>
+                            Noora Tanska – AYY:n hallituksen Opiskelijakeskus-vastaava<br>
+                            Noora Vänttinen – AYY:n hallituksen puheenjohtaja<br>
+                            Aino Hautala – Kampusjaoston puheenjohtaja<br>
+                            Työryhmä esittää ehdotuksen kilpailun voittajista, jonka hyväksymisestä päättää AYY:n hallitus. <br>
+                            Kilpailun sihteerinä toimii AYY:n kiinteistöasiantuntija Heidi Dufva, joka ei osallistu töiden kommentointiin.<br>
+                        </p>
+
+                        <h3 class="subtitle">Ehdotuksen laadintaohjeet</h3>
+                        <p>Kilpailu päättyy 13.8. klo 14.00. Kilpailuehdotukset tulee palauttaa tähän mennessä A3-kokoisina tulosteina kuoressa tai paperiin käärittynä (taitettuna tai rullattuna). Kilpailuehdotusten palautus tehdään AYY:n palvelutoimistolle (Otakaari 11) aukioloaikojen puitteissa tai toimiston ollessa suljettuna Otakaaren puoleiseen postilaatikkoon. Myöhässä tulleita ehdotuksia ei huomioida.<br><br>
+                            Kilpailu on salainen. Kaikki kilpailuehdotuksen asiakirjat tulee palauttaa nimettöminä ja merkitä nimimerkillä. Nimimerkki kirjoitetaan jokaisen asiakirjan kääntöpuolelle, oikeaan alakulmaan. Kilpailuehdotuksiin tulee liittää nimimerkillä varustettu kirjekuori, joka sisältää tekijän/tekijöiden yhteystiedot (nimi, opintoala, opiskelijanumero, puhelinnumero, sähköposti). <br><br>
+                            Ehdotuksen tulee sisältää seuraavaa:
+                            <p style="padding-left: 20px;">
+                                1)	Konsepti-ideat ja visualisointi vähintään kolmesta eri tilatyypistä (kts. lisää liite 5).
+                                Visualisoinnista tulee käydä ilmi, mikä tilatyyppi on kyseessä. Tekniikka on vapaa.
+                            </p><br>
+                            <p style="padding-left: 20px;">
+                                Tilatyypit:
+                            </p>
+                            <p style="padding-left: 40px;">
+                                a.	Kokoustilat
+                            </p>
+                            <p style="padding-left: 40px;">
+                                b.	Toimistotilat (sis. vapaaehtoisten tilat & keittiö- ja taukotilat)
+                            </p>
+                            <p style="padding-left: 40px;">
+                                c.	Ravintola- /juhlatilat
+                            </p>
+                            <p style="padding-left: 40px;">
+                                d.	Julkiset aula-/ hengailutilat
+                            </p>
+                            <p style="padding-left: 40px;">
+                                e.	Kerho- / vapaa-ajantilat
+                            </p>
+                            <p style="padding-left: 40px;">
+                                f.	Muut
+                            </p><br>
+                            
+                            <p style="padding-left: 20px;">
+                                2)	Lyhyt kuvaus jokaisesta ideasta (yhteensä noin A4-arkin verran tekstiä)
+                            </p>
+                            <p style="padding-left: 20px;">
+                                3)	Tilakokonaisuuksien konsepti-ideoissa hyödynnetään tilaohjelmassa (liite 1) 
+                                osoitettuja neliömääriä ja tilojen suhteita. Uusia tiloja tai toiminnallisuuksia 
+                                on mahdollista lisätä, mikäli ne ovat relevantteja tilakokonaisuuden kannalta. 
+                                Visualisoinneissa on suotavaa hyödyntää opiskelijakeskus.fi -sivustolle listattuja 
+                                ideoita opiskelijakeskuksen toiminnoista.
+                            </p>
+                        </p>
+
+                        <h3 class="subtitle">Kilpailun tavoitteet ja arvostelu</h3>
+                        <p>
+                            <p>
+                                Kilpailun tavoitteena on kuvata visuaalisin elementein opiskelijakeskuksen 
+                                tunnelmaa ja yhteisöllisyyttä. Visualisoinnit ja konseptit auttavat hahmottamaan, 
+                                millainen opiskelijoiden yhteisestä rakennuksesta voisi todella tulla. Kilpailun 
+                                tarkoituksena ei niinkään ole keksiä täysin uusia ideoida, vaan pohtia miten 
+                                tilaohjelmassa ja opiskelijakeskus.fi -sivuston ideoissa olevilla tiloilla päästään 
+                                yhteisöllisyyteen ja uuden kulttuurin synnyttämiseen kiinni. Ideat toimivat konkreettisena 
+                                esittelymateriaalina sille, miltä opiskelijakeskus voisi näyttää ja ne antavat mielikuvia 
+                                tulevaa suunnitteluprosessia varten sekä tuovat projektia paremmin esille kaikille opiskelijoille.
+                            </p><br>
+                            <p>
+                                Kilpailutöiden arvostelussa huomioidaan erityisesti
+                            </p>	
+                            
+                            <p style="padding-left: 20px;">
+                                -	Yhteisöllisyyden tavoittaminen ja tunnelman välittäminen 
+                            </p>
+                            <p style="padding-left: 20px;">
+                                    -	Annettujen liitemateriaalien hyödyntäminen
+                            </p>
+                            <p style="padding-left: 20px;">
+                                -	Innovatiiviset konseptit (esimerkiksi tilojen yhdistämisessä ja muunneltavuudessa)
+                            </p><br>
+                        </p>
+
+                        <p class="subtitle">Palkinnot</p>
+                        <p>
+                            <p>
+                                Palkintoina jaetaan 2500 euroa seuraavasti:
+                            </p>
+                            <p style="padding-left: 20px;">
+                                I&nbsp;&nbsp; palkinto - 1700€
+                            </p>
+                            <p style="padding-left: 20px;">
+                                II&nbsp; palkinto - 500€
+                            </p>
+                            <p style="padding-left: 20px;">
+                                III palkinto - 300€
+                            </p><br>
+
+                            <p>
+                                Kilpailun tuomaristo voi yksimielisellä päätöksellään 
+                                poiketa jaettavista summista, kuitenkin niin, että yhteissummana 
+                                toimii 2500 euroa. Lisäksi tuomaristo voi halutessaan jakaa kunniamainintoja.
+                            </p>
+                        </p>
+
+                        <h3 class="subtitle">Tekijänoikeudet ja jatkotoimenpiteet</h3>
+                        <p>
+                            Kilpailun päätyttyä ehdotusten tekijänoikeudet säilyvät tekijällä, 
+                            kuitenkin niin, että AYY:llä on oikeus käyttää ehdotuksissa esitettyjä 
+                            ideoita suunnittelun apuvälineenä ja projektin esittelymateriaalina. 
+                            Voittajille voidaan tarjota mahdollisuus osallistua projektin jatkosuunnitteluun. 
+                        </p>
+
+                        <h3 class="subtitle">Liitteet</h3>
+                        <p>
+                            <p style="padding-left: 20px;">
+                                <a href="../pdf/Opiskelijakeskus tilaohjelma luonnos 28.5..pdf">
+                                    -	Tilaohjelman luonnos  
+                                </a>
+                            </p>
+                            <p style="padding-left: 20px;">
+                                <a href="../pdf/Opiskelijakeskuksen_reunaehdot_2017.pdf">
+                                    -	Opiskelijakeskuksen reunaehdot
+                                </a>
+                            </p>
+                            <p style="padding-left: 20px;">
+                                <a href="../pdf/Opiskelijakeskus_perusesittely_2018.pdf">
+                                    -	Opiskelijakeskus-perusesittely
+                                </a>
+                            </p>
+                            <p style="padding-left: 20px; display: none;">
+                                <a href="../pdf/#">
+                                    -	Opiskelijakeskus.fi -sivustolle kerätyt ideat
+                                </a>
+                            </p>
+                            <p style="padding-left: 20px;  display: none;">
+                                -	Kuvaus tilatyypeistä
+                            </p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Element that adds some whitespace for better looks -->
+        <div class="bottom-spacetaker"></div>
+        
+        <footer id="page-footer" class="page-footer no-display">
+            <div class="row">
+                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                    <p id="copyright_text" class="left"></p>
+                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right" translation-en="Report a bug">
+                        Ilmoita bugista
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Element to replace page if Internet Explorer is used -->
+    <div id="ie-message" class="no-display">
+        <div id="ie-message-text-container">
+            <p id="ie-message-text-title"
+               translation-en="Internet Explorer is not supported on this page.">
+               Internet Explorer ei ole tuettu tällä sivulla.
+            </p>
+            <p id="ie-message-text-browsers">
+                <span translation-en="Supported browsers are">
+                    Tuetut selaimet ovat
+                </span> 
+                <a href="https://www.google.com/chrome/"
+                   id="chrome-text">
+                   Google Chrome
+                </a>, 
+                <a href="https://www.opera.com/"
+                   id="opera-text">
+                   Opera
+                </a>, 
+                <span href=""
+                      id="edge-text">
+                      Microsoft Edge
+                </span> 
+                <span translation-en="and">
+                    ja
+                </span> 
+                <a href="https://www.mozilla.org/"
+                   id="firefox-text">
+                   Mozilla Firefox
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script src="../js/check_for_ie.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/materialize/materialize.min.js"></script>
+    <script src="../js/globals.js"></script>
+    <script src="../js/translate.js"></script>
+    <script src="../js/cookie_info.js"
+            id="cookieinfo"
+            data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
+            data-linkmsg="Lisätietoa"
+            data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste">
+    </script>
+</body>
+</html>
