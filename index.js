@@ -431,7 +431,7 @@ function initGrid() {
         document.getElementById('page-buttons-bottom-container').innerHTML = "";
         shuffleContainer.innerHTML =
         "<div class='center-content'>\
-            <h1 id='no-english-ideas'>You may add new ideas from the upper corner. All the ideas will be available in English after they have been translanted.</h1>\
+            <h1 id='no-english-ideas'>All ideas will be available in English once they have been translanted.</h1>\
         </div>";
         return;
     }
