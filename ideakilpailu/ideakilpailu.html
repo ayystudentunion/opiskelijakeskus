@@ -1,21 +1,37 @@
+<!--
+         __   __     __        ___                        ___  __             __  
+        /  \ |__) | /__` |__/ |__  |    |    |  /\  |__/ |__  /__` |__/ |  | /__` 
+        \__/ |    | .__/ |  \ |___ |___ | \__/ /~~\ |  \ |___ .__/ |  \ \__/ .__/ 
+                         
+        Page that has information about the idea competition of Opiskelijakeskus.
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title translation-en="Student Centre" translation-se="Studentcentrumet">Opiskelijakeskus Ideakilpailu</title>
+    <title translation-en="Student Centre Idea Competition" translation-se="Studentcentrumet">Opiskelijakeskus Ideakilpailu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global CSS styles and modules such as footer and buttons -->
     <link rel="stylesheet" type="text/css" media="screen" href="../css/globals.css" />
+
+    <!-- MaterializeCSS for dropdowns -->
     <link rel="stylesheet" type="text/css" media="screen" href="../css/materialize.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/index.css" />
+
+    <!-- CSS for this page -->
     <link rel="stylesheet" type="text/css" media="screen" href="../css/ideakilpailu.css" />
+
+    <!-- Styles for flag icons in header dropdown -->
     <link rel="stylesheet" type="text/css" media="screen" href="../flag_icon/css/flag-icon.min.css" />
 
-    <link rel="icon" type="image/png" href="images/favicon/favicon.png">
+    <!-- Site icon -->
+    <link rel="icon" type="image/png" href="../images/favicon/favicon.png">
 </head>
 <body>
     <div id="site-container">
-        <!-- Dropdowns for language selection -->
+        <!-- Desktop dropdown for language selection -->
         <ul id="languages-dropdown" class="dropdown-content">
             <li>
                 <a class="set-language-fi">
@@ -30,8 +46,16 @@
                     English
                 </a>
             </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
         </ul>
 
+        <!-- Mobile dropdown for language selection -->
         <ul id="languages-dropdown-mobile" class="dropdown-content">
             <li>
                 <a class="set-language-fi">
@@ -46,274 +70,639 @@
                     English
                 </a>
             </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
         </ul>
 
-        <nav id="navbar">
-            <div class="nav-wrapper row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <ul class="left">
-                        <li>
-                            <a href="/"
-                               translation-en="Student Centre"
-                               translation-se="Studentcentrumet">
-                               Opiskelijakeskus
-                            </a>
-                        </li>
-                    </ul>
+        <!-- Site navbar -->
+        <nav class="nav-wrapper row">
+            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                <ul class="left">
+                    <li>
+                        <a href="/"
+                            translation-en="Student Centre"
+                            translation-se="Studentcentrumet">
+                            Opiskelijakeskus
+                        </a>
+                    </li>
+                </ul>
 
-                    <!-- Hamburger toggle for mobile nav -->
-                    <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+                <!-- Hamburger toggle for mobile nav -->
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
 
-                    <!-- Desktop navbar -->
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li class="active">
-                            <a href="./">
-                                <span translation-en="Idea Competition">Ideakilpailu</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
-                                <span
-                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
-                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
-                                >
-                                    <i class="left flag-icon flag-icon-fi">
+                <!-- Desktop navbar -->
+                <ul class="desktop-nav right hide-on-med-and-down">
+                    <li class="active">
+                        <a href="./">
+                            <span translation-en="Idea Competition" translation-se="Idétävling">Ideakilpailu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
+                            <span
+                                translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                            >
+                                <i class="left flag-icon flag-icon-fi">
 
-                                    </i>
-                                </span>
-                                <span translation-en="English" translation-se="Svenska">Suomi</span>
-                                <i class="material-icons right">
-                                    arrow_drop_down
                                 </i>
-                            </a>
-                        </li>
-                    </ul>
+                            </span>
+                            <span translation-en="English" translation-se="Svenska">Suomi</span>
+                            <i class="material-icons right">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                    </li>
+                </ul>
 
-                    <!-- Mobile navbar -->
-                    <ul class="sidenav" id="mobile-nav">
-                        <li class="active">
-                            <a href="./">
-                                <span translation-en="Idea Competition">Ideakilpailu</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
-                                <span
-                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
-                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
-                                >
-                                    <i class="left flag-icon flag-icon-fi">
+                <!-- Mobile navbar -->
+                <ul class="sidenav" id="mobile-nav">
+                    <li class="active">
+                        <a href="./">
+                            <span translation-en="Idea Competition" translation-se="Idétävling">Ideakilpailu</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
+                            <span
+                                translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                            >
+                                <i class="left flag-icon flag-icon-fi">
 
-                                    </i>
-                                </span>
-                                <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
-                                <i class="material-icons">
-                                    arrow_drop_down
                                 </i>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                            </span>
+                            <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
+                            <i class="material-icons">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+            </div> <!-- /col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1 -->
+        </nav> <!-- /nav-wrapper -->
     
         <div class="row">
             <div id="content-container" class="col xxxl8 xxl8 xl8 l8 m10 s10 offset-xxxl2 offset-xxl2 offset-xl2 offset-l2 offset-m1 offset-s1">
-                <!-- Main site title -->
-                <div class="row">
+                
+                <!-- Banner image for the competition -->
+                <div class="row" translation-en="<img id='site-banner' src='../images/ideakilpailu_banner_en.jpg'>">
                     <img id="site-banner" src="../images/ideakilpailu_banner.jpg">
                 </div>
 
+                <!-- Container for page texts -->
                 <div class="row">
                     <div class="col s12">
-                        <h2 class="title"><a class="pdf-link" href="#">Kilpailukutsu</a></h2>
-
-                        <h3 class="subtitle">Kilpailun järjestäjä, luonne ja tarkoitus</h3>
-                        <p>Ideakilpailun järjestää Aalto-yliopiston ylioppilaskunta ja sen tarkoituksena on visualisoida opiskelijakeskuksen tilojen tunnelmaa, aaltolaisuuden henkeä, yhteisöllisyyttä ja tuoda esiin ideoita opiskelijakeskuksen suunnittelussa.</p>
-                    
-                        <h3 class="subtitle">Kenelle?</h3>
-                        <p>Kilpailuun on oikeus osallistua kaikilla Aalto-yliopiston opiskelijoilla. Osallistua voi joko yksin tai ryhmässä tehdyllä ehdotuksella.</p>
-
-                        <h3 class="subtitle">Projektin taustaa</h3>
-                        <p>Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), Aalto-yliopiston kauppatieteiden ylioppilaiden (KY) ja Teknologföreningenin (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta Otaniemen kampuksen keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald Herlinin Oppimiskeskusta vastapäätä. <br><br>
-                            Opiskelijakeskus nähdään uudenlaisena mahdollisuutena luoda Aalto-yhteisöön ja kampukselle jotain uutta, synnyttää uudenlaista kulttuuria ja olla aito, kaikkien aaltolaisten kohtaamispaikka, johon jokaisella on syy tulla. Opiskelijakeskuksen kautta halutaan tukea ja synnyttää AYY:n yhteistä opiskelijakulttuuria – aaltolaisuutta – ja luoda poikkitieteellisiä kohtaamisia ja uudenlaisia toimintatapoja.<br><br>
-                            Opiskelijakeskuksen ei ole tarkoitus korvata olemassa olevia kulttuureita vaan rikastuttaa niitä ja luoda jotain uutta. Opiskelijakeskuksella AYY ei esimerkiksi tavoittele uuden keskustoimiston rakentamista (vaikka toteutuessaan nykyisen keskustoimiston toiminnot sinne siirtyisivätkin) tai esimerkiksi kiltahuoneiden korvaamista, vaan opiskelijakeskukselta haluttaisiin selkeästi jotain muuta lisäarvoa, mikä tekee sen rakentamisesta aatteellisesti kannattavaa.<br><br>
+                        <p id="quote-text">”
+                            <span translation-en="The Student Centre is a place for students to meet and spend their time, 
+                                                  a place that all Aalto people have a reason to visit"
+                                  translation-se="Studentcentrumet är en mötes- och vistelseort för studerande 
+                                                  dit alla Aaltostudenter har anledning att komma.">
+                                Opiskelijakeskus on opiskelijoiden kohtaamis- ja oleskelupaikka, johon jokaisella aaltolaisella on syy tulla.
+                            </span>
+                            ”
                         </p>
 
-                        <h3 class="subtitle">Lisää tietoa</h3>
-                        <p>Lisää tietoa projektista löytyy kilpailun liitemateriaaleista. Liitemateriaalit ja ideakilpailun ohjeet löytyvät opiskelijakeskus.fi -sivustolta. Opiskelijakeskus.fi -sivustolta löytyy lisäksi listaus erilaisista ideoista, joita on noussut esiin yhteisöstä keväällä 2018 järjestetyn Opiskelijakeskusseminaarin yhteydessä sekä myöhemmin opiskelijakeskus.fi -nettisivujen kautta. Ideat kuvaavat erilaisia haaveita, unelmia ja toiveita, mitä opiskelijakeskuksessa voisi olla.</p>
-                    
-                        <h3 class="subtitle">Kysymykset</h3>
-                        <p>Kysymykset kilpailuun liittyen voi lähettää sähköpostilla kilpailun sihteerille, AYY:n kiinteistöasiantuntija Heidi Dufvalle osoitteeseen heidi.dufva(ät)ayy.fi. Kysymykset tulee lähettää 15.7. mennessä. Saapuneet kysymykset ja vastaukset kysymyksiin julkaistaan opiskelijakeskus.fi -sivustolla 20.7. mennessä.</p>
-                    
-                        <h3 class="subtitle">Aikataulu</h3>
-                        <p class="visible-mobile">
-                            27.6. Kilpailu alkaa <br>
-                            27.6.-15.7. Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille<br>
-                            20.7. Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla<br>
-                            13.8. Kilpailu päättyy klo 14.00<br>
-                            24.8. Voittajien julkistus<br>
-                            1.-10.9. Näyttely valikoiduista ehdotuksista <br>
+                        <h2 class="title"
+                            translation-en="<a href='../pdf/Student Centre_idea competition_EN.pdf'>Competition program</a>"
+                            translation-se=""
+                            ><a class="pdf-link" href="../pdf/Opiskelijakeskus_ideakilpailu_FI.pdf">Kilpailukutsu</a>
+                        </h2>
+
+                        <h2 class="title"
+                            translation-en="<a href='../pdf/Questions_Answers.pdf'>Questions & answers</a>"
+                            translation-se="<a href='../pdf/Kysymykset_vastaukset_sv.pdf'>Frågor & svar</a>"
+                            ><a class="pdf-link" href="../pdf/Kysymykset_vastaukset.pdf">Kysymykset & vastaukset</a>
+                        </h2>
+
+                        <h3 class="subtitle"
+                            translation-en="Organizer, purpose and meaning of the competition"
+                            translation-se="Tävlingens arrangör, art och syfte"
+                            >Kilpailun järjestäjä, luonne ja tarkoitus
+                        </h3>
+
+                        <p translation-en="The organizer of the competition is Aalto University Student Union – AYY. 
+                                           The purpose of the competition is to visualize the atmosphere of the facilities, 
+                                           the spirit of Aalto people and the Aalto community, and to bring up ideas for 
+                                           the planning process of the Student Centre."
+                           translation-se="Idétävlingen ordnas av Aalto-universitetets studentkår. Syftet är att
+                                            visualisera stämningen, Aalto-andan och gemenskapen i Studentcentrumets
+                                            lokaler och att ta fram idéer för planeringen av studentcentrumet."
+                            >Ideakilpailun järjestää Aalto-yliopiston ylioppilaskunta. 
+                            Sen tarkoituksena on visualisoida Opiskelijakeskuksen 
+                            tilojen tunnelmaa, aaltolaisuuden henkeä ja yhteisöllisyyttä 
+                            sekä tuoda esiin ideoita Opiskelijakeskuksen suunnittelua varten.
                         </p>
+                    
+                        <h3 class="subtitle"
+                            translation-en="To whom?"
+                            translation-se="För vem?"
+                            >Kenelle?
+                        </h3>
+
+                        <p translation-en="The competition is open for all Aalto University students. You can participate as an 
+                                           individual or as a group."
+                           translation-se="Alla Aalto-universitetets studenter har rätt att delta i tävlingen. Det går att delta
+                                            antingen ensam eller som grupp."
+                            >Kaikilla Aalto-yliopiston opiskelijoilla on oikeus osallistua kilpailuun. 
+                            Osallistua voi joko yksin tai ryhmässä tehdyllä ehdotuksella.
+                        </p>
+
+                        <h3 class="subtitle"
+                            translation-en="Project background"
+                            translation-se="Projektets bakgrund"
+                            >Projektin taustaa
+                        </h3>
+
+                        <p>
+                            <p translation-en="The Student Centre is a joint venture by Aalto University Student Union (AYY), 
+                                               Aalto University Business Students (KY) and Teknologföreningen (TF). The plan 
+                                               is to build a building for all Aalto students on the Otaniemi campus, next to 
+                                               the metro station entrance and the Harald Herlin Learning Centre."
+                                translation-se="Studentcentrumet är ett samprojekt mellan Aalto-universitetets studentkår (AUS),
+                                                Aalto-universitetets ekonomistuderande (KY) och Teknologföreningen (TF) för att
+                                                bygga ett gemensamt hus för studenterna på en central plats på Otnäs campus,
+                                                invid metroingången och mittemot Harald Herlin-lärcentret."
+                                >Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), 
+                                Aalto-yliopiston kauppatieteiden ylioppilaiden (KY) ja Teknologföreningenin 
+                                (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta Otaniemen kampuksen 
+                                keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald 
+                                Herlin -oppimiskeskusta vastapäätä. 
+                            </p><br>
+
+                            <p translation-en="The Student Center is seen as a possibility to create something new for the Aalto 
+                                               community and the campus. The aim of the project is to create new student culture 
+                                               and a real meeting spot for all Aalto community members to which every member of 
+                                               the community has a reason to come to. The goal of the Student Center project is 
+                                               to support and create the common student culture of AYY and to create 
+                                               cross-disciplinary meetings and new ways of operating."
+                                translation-se="Studentcentrumet betraktas som en ny möjlighet att skapa något nytt i Aaltogemenskapen
+                                                och på campuset. Målet är att Studentcentrumet ska vara en genuin mötesplats för alla
+                                                Aaltostudenter där en ny slags studentkultur uppstår och dit alla har anledning att
+                                                komma. Studentcentrumet ska stödja och ge upphov till en gemensam studentkultur vid
+                                                Aalto – en Aalto-identitet – och möjliggöra tvärvetenskapliga möten och nya verksamhetssätt."
+                                >Opiskelijakeskus nähdään uudenlaisena mahdollisuutena luoda Aalto-yhteisöön 
+                                ja kampukselle jotain uutta, synnyttää uudenlaista kulttuuria ja olla aito, 
+                                kaikkien aaltolaisten kohtaamispaikka, johon jokaisella on syy tulla. 
+                                Opiskelijakeskuksen kautta halutaan tukea ja synnyttää AYY:n yhteistä 
+                                opiskelijakulttuuria – aaltolaisuutta – ja luoda poikkitieteellisiä 
+                                kohtaamisia ja uudenlaisia toimintatapoja.
+                            </p><br>
+
+                            <p translation-en="The Student Center is not supposed to supplant existing student cultures, but to 
+                                               enrich them and to create something new. With the project, AYY is not aiming to 
+                                               build a new central office (even if the office should move to the new building 
+                                               if it will be built) or to replace guild clubrooms – instead, the Student Center 
+                                               should bring new extra value to the community that would justify its construction."
+                                translation-se="Avsikten med Studentcentrumet är inte att ersätta de befintliga studentkulturerna,
+                                                utan att berika dem och skapa något nytt. AUS mål med Studentcentrumet är till exempel inte att
+                                                bygga ett nytt huvudkontor (även om det nuvarande kontorets funktioner skulle flyttas dit) eller
+                                                att ersätta gillesrummen. Det som eftersträvas är ett tydligt mervärde som gör det ideellt sett
+                                                lönsamt att bygga Studentcentrumet."
+                                >Opiskelijakeskuksen ei ole tarkoitus korvata olemassa olevia kulttuureita 
+                                vaan rikastuttaa niitä ja luoda jotain uutta. Opiskelijakeskuksella AYY ei 
+                                esimerkiksi tavoittele uuden keskustoimiston rakentamista (vaikka toteutuessaan 
+                                nykyisen keskustoimiston toiminnot sinne siirtyisivätkin) tai esimerkiksi 
+                                kiltahuoneiden korvaamista, vaan opiskelijakeskukselta haluttaisiin selkeästi 
+                                jotain muuta lisäarvoa, mikä tekee sen rakentamisesta aatteellisesti kannattavaa.
+                            </p>
+                        </p>
+
+                        <h3 class="subtitle"
+                            translation-en="More info"
+                            translation-se="Mer info"
+                            >Lisää tietoa
+                        </h3>
+
+                        <p translation-en="More information about the project is available in the attached files which include 
+                                           the facility plan, Preconditions to the Student Centre, basic presentation and list 
+                                           of facility types. In addition, a list of ideas for the spaces and facilities can be 
+                                           found at the website frontpage. The ideas are brought up by the community – through 
+                                           the website and the Student Centre seminar held in the spring of 2018. The ideas 
+                                           illustrate different wishes, hopes and dreams regarding the Student Centre and what 
+                                           it could be like."
+                            translation-se="Mer info om projektet finns i det bifogade materialet för tävlingen, som inkluderar
+                                            utkastet till lokalprogram, Studentcentrumets ramvillkor, en grundläggande
+                                            projektpresentation och en beskrivning av lokaltyperna. Som stödmaterial kan man
+                                            också använda den lista över idéer som finns på den här webbplatsens startsida och
+                                            som samlats in i samband med vårens Studentcentrumsseminarium och senare via webbplatsen.
+                                            Idéerna beskriver olika drömmar och önskemål om egenskaper och lokaler som kunde
+                                            finnas i Studentcentrumet."
+                            >Lisää tietoa projektista löytyy kilpailun liitemateriaaleista, joissa mukana 
+                            tilaohjelman luonnos, Opiskelijakeskuksen reunaehdot, projektin perusesittely 
+                            sekä kuvaus tilatyypeistä. Liitemateriaalina on myös mahdollista hyödyntää tämän 
+                            sivuston etusivulta löytyvää listausta erilaisista ideoista, joita on noussut 
+                            esiin yhteisöstä keväällä 2018 järjestetyn Opiskelijakeskusseminaarin yhteydessä 
+                            ja myöhemmin nettisivujen kautta. Ideat kuvaavat erilaisia haaveita, unelmia ja 
+                            toiveita ominaisuuksista ja tiloista, joita Opiskelijakeskuksessa voisi olla.   
+                        </p>
+                    
+                        <h3 class="subtitle"
+                            translation-en="Questions"
+                            translation-se="Frågor"
+                            >Kysymykset
+                        </h3>
+
+                        <p translation-en="Please send questions about the competition to the competition secretary, AYY Real 
+                                           Estate Specialist Heidi Dufva (heidi.dufva(ät)ayy.fi) by July 15th, 2018. Answers 
+                                           to the questions will be uploaded on the competition website by July 20th, 2018."
+                            translation-se="Frågor om tävlingen kan skickas per e-post till tävlingens sekreterare, AUS
+                                            fastighetssakkunniga Heidi Dufva på adressen heidi.dufva(at)ayy.fi. Frågorna
+                                            ska skickas senast den 15 juli. De inkomna frågorna och svaren på dem publiceras
+                                            på webbplatsen Opiskelijakeskus.fi senast den 20 juli."
+                            >Kysymykset kilpailuun liittyen voi lähettää sähköpostilla kilpailun sihteerille, 
+                            AYY:n kiinteistöasiantuntija Heidi Dufvalle osoitteeseen heidi.dufva(ät)ayy.fi. 
+                            Kysymykset tulee lähettää 15.7. mennessä. Saapuneet kysymykset ja vastaukset 
+                            kysymyksiin julkaistaan Opiskelijakeskus.fi-sivustolla 20.7. mennessä.
+                        </p>
+                    
+                        <h3 class="subtitle"
+                            translation-en="Schedule"
+                            translation-se="Tidsplan"
+                            >Aikataulu
+                        </h3>
+
+                        <div class="visible-mobile">
+                            <p translation-en="27.6. Competition starts"
+                               translation-se="Den 26 juni Tävlingen inleds"
+                               >27.6. Kilpailu alkaa
+                            </p>
+                            <p translation-en="27.6. - 15.7. Possibility to send questions to competition secretary"
+                               translation-se="Den 27 juni–den 15 juli Eventuella frågor kan ställas per e-post till tävlingens sekreterare"
+                               >27.6.-15.7. Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille
+                            </p>
+                            <p translation-en="20.7. The answers to the questions will be uploaded to the website"
+                               translation-se="Den 20 juli Svaren på de frågor som ställts publiceras på webbplatsen"
+                               >20.7. Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla
+                            </p>
+                            <p translation-en="13.8. Deadline for proposals at 14.00"
+                               translation-se="Den 13 augusti Tävlingen avslutas kl. 14.00"
+                               >13.8. Kilpailu päättyy klo 14.00
+                            </p>
+                            <p translation-en="24.8. Competition results announced"
+                               translation-se="Den 24 augusti Vinnarna offentliggörs"
+                               >24.8. Voittajien julkistus
+                            </p>
+                            <p translation-en="1. - 10.9. Display of selected proposals"
+                               translation-se="Den 1–10 september Utställning med utvalda bidrag"
+                               >1.-10.9. Näyttely valikoiduista ehdotuksista
+                            </p>
+                        </div>
 
                         <div style="overflow: hidden;" class="hidden-mobile">
                             <div style="float: left; padding-right: 3rem;">
-                                <p>27.6.<br>
-                                   27.6.-15.7.<br>
-                                   20.7.<br>
-                                   13.8.<br>
-                                   24.8.<br>
-                                   1.-10.9.
+                                <p>27.6.</p>
+                                <p>27.6.-15.7.</p>
+                                <p>20.7.</p>
+                                <p>13.8.</p>
+                                <p>24.8.</p>
+                                <p>1.-10.9.</p>
                                 </p>
                             </div>
     
                             <div style="float: left;">
-                                <p>Kilpailu alkaa <br>
-                                    Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille<br>
-                                    Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla<br>
-                                    Kilpailu päättyy klo 14.00<br>
-                                    Voittajien julkistus<br>
-                                    Näyttely valikoiduista ehdotuksista
+                                <p>
+                                    <p translation-en="Competition starts"
+                                       translation-se="Tävlingen inleds"
+                                       >Kilpailu alkaa
+                                    </p>
+                                    <p translation-en="Possibility to send questions to competition secretary"
+                                       translation-se="Eventuella frågor kan ställas per e-post till tävlingens sekreterare"
+                                       >Mahdollisia kysymyksiä voi esittää sähköpostitse kilpailun sihteerille
+                                    </p>
+                                    <p translation-en="The answers to the questions will be uploaded to the website"
+                                       translation-se="Svaren på de frågor som ställts publiceras på webbplatsen"
+                                       >Vastaukset esitettyihin kysymyksiin julkaistaan nettisivuilla
+                                    </p>
+                                    <p translation-en="Deadline for proposals at 14.00"
+                                       translation-se="Tävlingen avslutas kl. 14.00"
+                                       >Kilpailu päättyy klo 14.00
+                                    </p>
+                                    <p translation-en="Competition results announced"
+                                       translation-se="Vinnarna offentliggörs"
+                                       >Voittajien julkistus
+                                    </p>
+                                    <p translation-en="Display of selected proposals"
+                                       translation-se="Utställning med utvalda bidrag"
+                                       >Näyttely valikoiduista ehdotuksista
+                                    </p>
                                 </p>
                             </div>
                         </div>
 
-                        <h3 class="subtitle">Tuomaristo</h3>
-                        <p>Kilpailua arvioivaan työryhmään kuuluvat seuraavat henkilöt:<br>
-                            Emma Savela – AYY:n hallituksen Opiskelijakeskus-vastaava<br>
-                            Noora Tanska – AYY:n hallituksen Opiskelijakeskus-vastaava<br>
-                            Noora Vänttinen – AYY:n hallituksen puheenjohtaja<br>
-                            Aino Hautala – Kampusjaoston puheenjohtaja<br>
-                            Työryhmä esittää ehdotuksen kilpailun voittajista, jonka hyväksymisestä päättää AYY:n hallitus. <br>
-                            Kilpailun sihteerinä toimii AYY:n kiinteistöasiantuntija Heidi Dufva, joka ei osallistu töiden kommentointiin.<br>
+                        <h3 class="subtitle"
+                            translation-en="Jury"
+                            translation-se="Jury"
+                            >Tuomaristo
+                        </h3>
+
+                        <p>
+                            <p translation-en="The competition entries will be judged by the following jury members:"
+                               translation-se="Till arbetsgruppen som bedömer bidragen hör följande personer:"
+                               >Kilpailua arvioivaan työryhmään kuuluvat seuraavat henkilöt:
+                            </p><br>
+                            <p translation-en="Emma Savela – Student Centre responsible in AYY"
+                               translation-se="Emma Savela – ansvarig för Studentcentrumet i AUS styrelse"
+                               >Emma Savela – AYY:n hallituksen Opiskelijakeskus-vastaava
+                            </p>
+                            <p translation-en="Noora Tanska – Student Centre responsible in AYY"
+                               translation-se="Noora Tanska – ansvarig för Studentcentrumet i AUS styrelse"
+                               >Noora Tanska – AYY:n hallituksen Opiskelijakeskus-vastaava
+                            </p>
+                            <p translation-en="Noora Vänttinen – Chair of the Board in AYY"
+                               translation-se="Noora Vänttinen – AUS styrelseordförande"
+                               >Noora Vänttinen – AYY:n hallituksen puheenjohtaja
+                            </p>
+                            <p translation-en="Aino Hautala – Chairperson of Campus Section"
+                               translation-se="Aino Hautala – Campussektionens ordförande"
+                               >Aino Hautala – Kampusjaoston puheenjohtaja
+                            </p><br>
+                            <p translation-en="The jury suggests the competition winners which the AYY Board confirms."
+                               translation-se="Arbetsgruppen lägger fram ett förslag till vinnare för beslut i AUS styrelse."
+                               >Työryhmä esittää ehdotuksen kilpailun voittajista, jonka hyväksymisestä päättää AYY:n hallitus.
+                            </p>
+                            <p translation-en="AYY’s Real Estate Specialist works as the competition secretary and doesn’t participate in commenting the proposals."
+                               translation-se="Tävlingens sekreterare är AUS fastighetssakkunniga Heidi Dufva, som inte deltar i bedömningen av bidragen."
+                               >Kilpailun sihteerinä toimii AYY:n kiinteistöasiantuntija Heidi Dufva, joka ei osallistu töiden kommentointiin.
+                            </p>
                         </p>
 
-                        <h3 class="subtitle">Ehdotuksen laadintaohjeet</h3>
-                        <p>Kilpailu päättyy 13.8. klo 14.00. Kilpailuehdotukset tulee palauttaa tähän mennessä A3-kokoisina tulosteina kuoressa tai paperiin käärittynä (taitettuna tai rullattuna). Kilpailuehdotusten palautus tehdään AYY:n palvelutoimistolle (Otakaari 11) aukioloaikojen puitteissa tai toimiston ollessa suljettuna Otakaaren puoleiseen postilaatikkoon. Myöhässä tulleita ehdotuksia ei huomioida.<br><br>
-                            Kilpailu on salainen. Kaikki kilpailuehdotuksen asiakirjat tulee palauttaa nimettöminä ja merkitä nimimerkillä. Nimimerkki kirjoitetaan jokaisen asiakirjan kääntöpuolelle, oikeaan alakulmaan. Kilpailuehdotuksiin tulee liittää nimimerkillä varustettu kirjekuori, joka sisältää tekijän/tekijöiden yhteystiedot (nimi, opintoala, opiskelijanumero, puhelinnumero, sähköposti). <br><br>
-                            Ehdotuksen tulee sisältää seuraavaa:
-                            <p style="padding-left: 20px;">
-                                1)	Konsepti-ideat ja visualisointi vähintään kolmesta eri tilatyypistä (kts. lisää liite 5).
+                        <h3 class="subtitle"
+                            translation-en="Guidelines for proposals"
+                            translation-se="Anvisningar för bidragen"
+                            >Ehdotuksen laadintaohjeet
+                        </h3>
+
+                        <p>
+                            <p translation-en="The competition ends on August 13th, 2018, at 2 pm. All competition entries 
+                                               must be submitted at the AYY Central Office (Otakaari 11) by the deadline. You can submit your 
+                                               entry in the Central Office during the office's opening hours or, outside the opening hours, 
+                                               by leaving it in the upstairs letterbox. The entries should be A3 prints in an envelope or 
+                                               wrapped in a paper cover (fold up or rolled)."
+                                translation-se="Tävlingen avslutas den 13 augusti kl. 14.00. Bidragen ska lämnas in före tidsfristen går
+                                                ut som utskrifter i storlek A3 i ett kuvert eller inslagna i papper (vikta eller rullade).
+                                                Tävlingsbidragen lämnas in till AUS servicebyrå (Otsvängen 11) under öppettiderna eller i
+                                                postlådan vid Otsvängen om kontoret är stängt. Försenade bidrag beaktas inte."
+                                >Kilpailu päättyy 13.8. klo 14.00. Kilpailuehdotukset tulee palauttaa tähän mennessä A3-kokoisina 
+                                tulosteina kuoressa tai paperiin käärittynä (taitettuna tai rullattuna). Kilpailuehdotukset 
+                                palautetaan AYY:n palvelutoimistolle (Otakaari 11) aukioloaikojen puitteissa tai toimiston 
+                                ollessa suljettuna Otakaaren puoleiseen postilaatikkoon. Myöhässä tulleita ehdotuksia ei huomioida.
+                            </p><br>
+                            <p translation-en="The competition is anonymous. All competition entries must be submitted 
+                                               anonymously and marked with an alias, which should be written on the back of each sheet, on 
+                                               the lower-right corner. The proposals should include a separate envelope with the contact 
+                                               information of the author/authors (name, study field in Aalto, student number, phone number, 
+                                               e-mail)."
+                                translation-se="Tävlingen är anonym. Alla handlingar ska lämnas in anonymt och märkas med en pseudonym.
+                                                Pseudonymen antecknas i nedre högra hörnet på baksidan av varje handling. Till bidragen
+                                                bifogas ett kuvert märkt med pseudonymen, som innehåller kontaktuppgifterna till
+                                                upphovspersonerna (namn, studieinriktning, studentnummer, telefonnummer, e-post)."
+                                >Kilpailu on salainen. Kaikki kilpailuehdotuksen asiakirjat tulee palauttaa nimettöminä ja 
+                                merkitä nimimerkillä. Nimimerkki kirjoitetaan jokaisen asiakirjan kääntöpuolelle oikeaan 
+                                alakulmaan. Kilpailuehdotuksiin tulee liittää nimimerkillä varustettu kirjekuori, joka 
+                                sisältää tekijän/tekijöiden yhteystiedot (nimi, opintoala, opiskelijanumero, 
+                                puhelinnumero, sähköposti).
+                            </p><br>
+                            <p translation-en="The proposal should include:"
+                               translation-se="Bidraget ska innehålla:"
+                               >Ehdotuksen tulee sisältää seuraavaa:
+                            </p>
+                            <p style="padding-left: 20px;"
+                               translation-en="1) Concept ideas and visualizations of at least three different 
+                                                  facility types (see more: attachment 5). The visualization should 
+                                                  inform what facility type it illustrates. Technique is free."
+                               translation-se="1) Konceptidéer och visualisering av minst tre olika lokaltyper
+                                               (se bilaga 5). Av visualiseringen ska framgå vilken lokaltyp det
+                                               är fråga om. Tekniken är fri."
+                               >1)	Konsepti-ideat ja visualisointi vähintään kolmesta eri tilatyypistä (kts. lisää liite 5).
                                 Visualisoinnista tulee käydä ilmi, mikä tilatyyppi on kyseessä. Tekniikka on vapaa.
                             </p><br>
-                            <p style="padding-left: 20px;">
-                                Tilatyypit:
+                            <p style="padding-left: 20px;"
+                               translation-en="The facility types"
+                               translation-se="Lokaltyper:"
+                               >Tilatyypit:
                             </p>
-                            <p style="padding-left: 40px;">
-                                a.	Kokoustilat
+                            <p style="padding-left: 40px;"
+                               translation-en="a.	Meeting rooms"
+                               translation-se="a.	Mötesrum"
+                               >a.	Kokoustilat
                             </p>
-                            <p style="padding-left: 40px;">
-                                b.	Toimistotilat (sis. vapaaehtoisten tilat & keittiö- ja taukotilat)
+                            <p style="padding-left: 40px;"
+                               translation-en="b.	Office spaces (including volunteer working spaces, break room and kitchen)"
+                               translation-se="b.	Kontorslokaler (inkl. frivilliglokaler och köks- och pauslokaler)"
+                               >b.	Toimistotilat (sis. vapaaehtoisten tilat & keittiö- ja taukotilat)
                             </p>
-                            <p style="padding-left: 40px;">
-                                c.	Ravintola- /juhlatilat
+                            <p style="padding-left: 40px;"
+                               translation-en="c.	Restaurant/party facilities"
+                               translation-se="c.	Restauranger/festlokaler"
+                               >c.	Ravintoltilat/juhlatilat
                             </p>
-                            <p style="padding-left: 40px;">
-                                d.	Julkiset aula-/ hengailutilat
+                            <p style="padding-left: 40px;"
+                               translation-en="d.	Lobby/services"
+                               translation-se="d.	Offentliga entrélokaler/lokaler att vistas i"
+                               >d.	Julkiset aulatilat/hengailutilat
                             </p>
-                            <p style="padding-left: 40px;">
-                                e.	Kerho- / vapaa-ajantilat
+                            <p style="padding-left: 40px;"
+                               translation-en="e.	Club rooms/recreation"
+                               translation-se="e.	Klubbrum/fritidslokaler "
+                               >e.	Kerhotilat/vapaa-ajan tilat
                             </p>
-                            <p style="padding-left: 40px;">
-                                f.	Muut
+                            <p style="padding-left: 40px;"
+                               translation-en="f.	Others"
+                               translation-se="f.	Övriga"
+                               >f.	Muut
                             </p><br>
                             
-                            <p style="padding-left: 20px;">
-                                2)	Lyhyt kuvaus jokaisesta ideasta (yhteensä noin A4-arkin verran tekstiä)
+                            <p style="padding-left: 20px;"
+                               translation-en="2)	Short text about each visualization (approximately one 
+                                                    A4 sheet text in total)."
+                               translation-se="2)	Kort beskrivning av varje idé (totalt cirka en A4 med text)"
+                               >2) Lyhyt kuvaus jokaisesta ideasta (yhteensä noin A4-arkin verran tekstiä)
                             </p>
-                            <p style="padding-left: 20px;">
-                                3)	Tilakokonaisuuksien konsepti-ideoissa hyödynnetään tilaohjelmassa (liite 1) 
-                                osoitettuja neliömääriä ja tilojen suhteita. Uusia tiloja tai toiminnallisuuksia 
-                                on mahdollista lisätä, mikäli ne ovat relevantteja tilakokonaisuuden kannalta. 
-                                Visualisoinneissa on suotavaa hyödyntää opiskelijakeskus.fi -sivustolle listattuja 
-                                ideoita opiskelijakeskuksen toiminnoista.
+                            <p style="padding-left: 20px;"
+                               translation-en="3)	In the concept ideas of facility types, it is advised 
+                                                    to use the dimensions and the relations of the spaces shown 
+                                                    in the facility plan (attachment 1). New spaces and facilities 
+                                                    can be added if it is relevant to the whole. It is advisable 
+                                                    to use ideas listed on the Opiskelijakeskus.fi website as part 
+                                                    of the visualizations."
+                               translation-se="3)	Konceptidéerna för lokalhelheterna utnyttjar det antal kvadratmeter
+                                                    och de förhållanden mellan lokalerna som anvisas i lokalprogrammet
+                                                    (bilaga 1). Nya lokaler eller funktioner kan infogas om de är relevanta
+                                                    för lokalhelheten. Det rekommenderas att de idéer för Studentcentrumets
+                                                    funktioner som finns i listan på webbplatsen Opiskelijakeskus.fi
+                                                    utnyttjas i visualiseringarna. ">
+                                3) Tilakokonaisuuksien konsepti-ideoissa hyödynnetään tilaohjelmassa
+                                (liite 1) osoitettuja neliömääriä ja tilojen suhteita. Uusia tiloja tai 
+                                toiminnallisuuksia on mahdollista lisätä, mikäli ne ovat relevantteja 
+                                tilakokonaisuuden kannalta. Visualisoinneissa on suotavaa hyödyntää 
+                                Opiskelijakeskus.fi-sivustolle listattuja ideoita Opiskelijakeskuksen toiminnoista.
                             </p>
                         </p>
 
-                        <h3 class="subtitle">Kilpailun tavoitteet ja arvostelu</h3>
+                        <h3 class="subtitle"
+                            translation-en="The aim of the competition & evaluation"
+                            translation-se="Mål och bedömning"
+                            >Kilpailun tavoitteet ja arvostelu
+                        </h3>
+
                         <p>
-                            <p>
-                                Kilpailun tavoitteena on kuvata visuaalisin elementein opiskelijakeskuksen 
+                            <p translation-en="The aim of this competition is to visualize the atmosphere and the feeling of community 
+                                               that can be experienced in the Student Centre. Visualized ideas and concepts will help 
+                                               all involved parties to picture what kind of building the Student Centre could be. The 
+                                               aim isn’t necessarily to create completely new ideas but to apply new kind of thinking 
+                                               to the ideas and spaces found on the website and facility plan. The competition proposals 
+                                               work as a concrete visual material and give the community an idea of what the Student 
+                                               Centre could be like."
+                               translation-se="Tävlingens mål är att med visuella element beskriva stämningen och gemenskapen i
+                                               Studentcentrumet. Visualiseringarna och koncepten bidrar till en bild av hurdan
+                                               studenternas gemensamma byggnad verkligen kan bli. Syftet med tävlingen är inte
+                                               främst att ta fram helt nya idéer, utan snarare att fundera på hur gemenskap och
+                                               en ny kultur kan uppnås med de lokaler som ingår i lokalprogrammet och idéerna på
+                                               webbplatsen Opiskelijakeskus.fi. Idéerna fungerar som ett konkret presentationsmaterial
+                                               för hur Studentcentrumet kan se ut, ger en uppfattning för den kommande planeringsprocessen
+                                               och för fram projektet för alla studenter."
+                               >Kilpailun tavoitteena on kuvata visuaalisin elementein Opiskelijakeskuksen 
                                 tunnelmaa ja yhteisöllisyyttä. Visualisoinnit ja konseptit auttavat hahmottamaan, 
                                 millainen opiskelijoiden yhteisestä rakennuksesta voisi todella tulla. Kilpailun 
-                                tarkoituksena ei niinkään ole keksiä täysin uusia ideoida, vaan pohtia miten 
-                                tilaohjelmassa ja opiskelijakeskus.fi -sivuston ideoissa olevilla tiloilla päästään 
-                                yhteisöllisyyteen ja uuden kulttuurin synnyttämiseen kiinni. Ideat toimivat konkreettisena 
-                                esittelymateriaalina sille, miltä opiskelijakeskus voisi näyttää ja ne antavat mielikuvia 
-                                tulevaa suunnitteluprosessia varten sekä tuovat projektia paremmin esille kaikille opiskelijoille.
+                                tarkoituksena ei niinkään ole keksiä täysin uusia ideoita, vaan pohtia, miten 
+                                tilaohjelmassa ja Opiskelijakeskus.fi-sivuston ideoissa olevilla tiloilla päästään 
+                                kiinni yhteisöllisyyteen ja uuden kulttuurin synnyttämiseen. Ideat toimivat 
+                                konkreettisena esittelymateriaalina sille, miltä Opiskelijakeskus voisi näyttää, 
+                                antavat mielikuvia tulevaa suunnitteluprosessia varten ja tuovat projektia paremmin 
+                                esille kaikille opiskelijoille.
                             </p><br>
-                            <p>
-                                Kilpailutöiden arvostelussa huomioidaan erityisesti
+                            <p translation-en="At the evaluation of the proposals, the following are considered:"
+                               translation-se="I bedömningen av bidragen beaktas särskilt"
+                               >Kilpailutöiden arvostelussa huomioidaan erityisesti:
                             </p>	
                             
-                            <p style="padding-left: 20px;">
-                                -	Yhteisöllisyyden tavoittaminen ja tunnelman välittäminen 
+                            <p style="padding-left: 20px;"
+                               translation-en="-	Feeling of community and expression of the atmosphere"
+                               translation-se="-	i vlken grad gemenskapsaspekten uppnås och stämningen förmedlas "
+                               >-	Yhteisöllisyyden tavoittaminen ja tunnelman välittäminen 
                             </p>
-                            <p style="padding-left: 20px;">
-                                    -	Annettujen liitemateriaalien hyödyntäminen
+                            <p style="padding-left: 20px;"
+                               translation-en="-	Utilization of the material given"
+                               translation-se="-	hur materialet i bilagorna utnyttjas"
+                               >-	Annettujen liitemateriaalien hyödyntäminen
                             </p>
-                            <p style="padding-left: 20px;">
-                                -	Innovatiiviset konseptit (esimerkiksi tilojen yhdistämisessä ja muunneltavuudessa)
+                            <p style="padding-left: 20px;"
+                               translation-en="-	Innovative concepts (for example in combining and modifying spaces)"
+                               translation-se="-	innovativa koncept (till exempel i fråga om kombinationer av lokaler och möjligheter att anpassa lokaler)"
+                               >-	Innovatiiviset konseptit (esimerkiksi tilojen yhdistämisessä ja muunneltavuudessa)
                             </p><br>
                         </p>
 
-                        <p class="subtitle">Palkinnot</p>
+                        <p class="subtitle"
+                           translation-en="Prizes"
+                           translation-se="Priser"
+                           >Palkinnot
+                        </p>
                         <p>
-                            <p>
-                                Palkintoina jaetaan 2500 euroa seuraavasti:
+                            <p translation-en="The winners of the competition will receive a total sum of €2,500, divided as follows:"
+                               translation-se="2 500 euro delas ut enligt följande:"
+                               >Palkintoina jaetaan 2500 euroa seuraavasti:
                             </p>
-                            <p style="padding-left: 20px;">
-                                I&nbsp;&nbsp; palkinto - 1700€
+                            <p style="padding-left: 20px;"
+                               translation-en="I&nbsp;&nbsp; prize - 1700€"
+                               translation-se="I&nbsp;&nbsp; pris - 1700€"
+                               >I&nbsp;&nbsp; palkinto - 1700€
                             </p>
-                            <p style="padding-left: 20px;">
-                                II&nbsp; palkinto - 500€
+                            <p style="padding-left: 20px;"
+                               translation-en="II&nbsp; prize - 500€"
+                               translation-se="II&nbsp; pris - 500€"
+                               >II&nbsp; palkinto - 500€
                             </p>
-                            <p style="padding-left: 20px;">
-                                III palkinto - 300€
+                            <p style="padding-left: 20px;"
+                               translation-en="III prize - 300€"
+                               translation-se="III pris - 300€"
+                               >III palkinto - 300€
                             </p><br>
 
-                            <p>
-                                Kilpailun tuomaristo voi yksimielisellä päätöksellään 
-                                poiketa jaettavista summista, kuitenkin niin, että yhteissummana 
-                                toimii 2500 euroa. Lisäksi tuomaristo voi halutessaan jakaa kunniamainintoja.
+                            <p translation-en="With an unanimous decision, the jury can also decide to divide the amount in a different way. 
+                                               The jury can also give out honourable mentions."
+                               translation-se="Juryn kan enhälligt besluta att avvika från fördelningen ovan, dock så att det totala
+                                               beloppet är 2 500 euro. Dessutom kan juryn dela ut hedersomnämnanden. "
+                               >Kilpailun tuomaristo voi yksimielisellä päätöksellään poiketa jaettavista summista, 
+                                kuitenkin niin, että yhteissumma on 2 500 euroa. Lisäksi tuomaristo voi halutessaan 
+                                jakaa kunniamainintoja. 
                             </p>
                         </p>
 
-                        <h3 class="subtitle">Tekijänoikeudet ja jatkotoimenpiteet</h3>
-                        <p>
-                            Kilpailun päätyttyä ehdotusten tekijänoikeudet säilyvät tekijällä, 
-                            kuitenkin niin, että AYY:llä on oikeus käyttää ehdotuksissa esitettyjä 
-                            ideoita suunnittelun apuvälineenä ja projektin esittelymateriaalina. 
-                            Voittajille voidaan tarjota mahdollisuus osallistua projektin jatkosuunnitteluun. 
+                        <h3 class="subtitle"
+                            translation-en="Copyright and follow-up"
+                            translation-se="Upphovsrätt och fortsatta åtgärder"
+                            >Tekijänoikeudet ja jatkotoimenpiteet
+                        </h3>
+                        <p translation-en="After the competition ends, the author has copyright of the proposal, however in agreement that 
+                                           AYY has the right to use the proposal ideas as a planning aid and display material of the project. The winners of 
+                                           the competition can be offered a chance to participate on the follow-up planning of the project."
+                           translation-se="Efter tävlingen behåller upphovspersonen upphovsrätten, dock så att AUS har rätt att utnyttja idéerna
+                                           i bidragen som hjälp i planeringen och som presentationsmaterial för projektet. Vinnarna kan erbjudas
+                                           möjlighet att delta i den fortsatta projektplaneringen."
+                            >Kilpailun päätyttyä ehdotusten tekijänoikeudet säilyvät tekijällä, kuitenkin niin, 
+                            että AYY:lla on oikeus käyttää ehdotuksissa esitettyjä ideoita suunnittelun apuvälineenä 
+                            ja projektin esittelymateriaalina. Voittajille voidaan tarjota mahdollisuus osallistua 
+                            projektin jatkosuunnitteluun.
                         </p>
 
-                        <h3 class="subtitle">Liitteet</h3>
+                        <h3 class="subtitle"
+                            translation-en="Attachments"
+                            translation-se="Bilagor"
+                            >Liitteet
+                        </h3>
                         <p>
-                            <p style="padding-left: 20px;">
+                            <p style="padding-left: 20px;"
+                               translation-en="<a href='../pdf/Student_Centre Facility_plan_draft 05_2018.pdf'>- Facilities plan, draft May 28, 2018</a>"
+                               translation-se="<a href='../pdf/Opiskelijakeskus tilaohjelma luonnos 28.5_SV.pdf'>- Lokalprogram för Studentcentrumet</a>"
+                               >
                                 <a href="../pdf/Opiskelijakeskus tilaohjelma luonnos 28.5..pdf">
                                     -	Tilaohjelman luonnos  
                                 </a>
                             </p>
-                            <p style="padding-left: 20px;">
+                            <p style="padding-left: 20px;"
+                               translation-en="<a href='../pdf/Preconditions_of_the_Student_Center_2017_ENG.pdf'>- Preconditions to the Student Centre</a>"
+                               translation-se="<a href='../pdf/Randvillkor_2017_SVE.pdf'>- Randvillkor</a>"
+                               >
                                 <a href="../pdf/Opiskelijakeskuksen_reunaehdot_2017.pdf">
                                     -	Opiskelijakeskuksen reunaehdot
                                 </a>
                             </p>
-                            <p style="padding-left: 20px;">
+                            <p style="padding-left: 20px;"
+                               translation-en="<a href='../pdf/Student_Centre_Project presentation_04_2018.pdf'>- Student Centre - basic info presentation</a>"
+                               translation-se="<a href='../pdf/Opiskelijakeskus_perusesittely_SV.pdf'>- Projektpresentation om Studentcentrumet</a>"
+                               >
                                 <a href="../pdf/Opiskelijakeskus_perusesittely_2018.pdf">
                                     -	Opiskelijakeskus-perusesittely
                                 </a>
                             </p>
-                            <p style="padding-left: 20px; display: none;">
-                                <a href="../pdf/#">
-                                    -	Opiskelijakeskus.fi -sivustolle kerätyt ideat
+                            <p style="padding-left: 20px;">
+                                <a href="/"
+                                   translation-en="- The ideas listed on the Opiskelijakeskus.fi website"
+                                   translation-se="- Opiskelijakeskus.fi-sidans samlades idéer"
+                                   >-	Opiskelijakeskus.fi -sivustolle kerätyt ideat
+                                </a>
+                            </p> 
+                            <p style="padding-left: 20px;"
+                               translation-en="<a href='../pdf/Facility types_idea competition.pdf'>- List of the facility types</a>"
+                               translation-se="<a href='../pdf/Tilatyypit_ideakilpailu_SV.pdf'>- Lokaltyper</a>">
+                                <a href="../pdf/Tilatyypit_ideakilpailu.pdf">
+                                    -	Kuvaus tilatyypeistä
                                 </a>
                             </p>
-                            <p style="padding-left: 20px;  display: none;">
-                                -	Kuvaus tilatyypeistä
-                            </p>
+                        </p><br>
+
+                        <p translation-en="The competition organizer reserves the right to changes."
+                           translation-se="Tävlingsarrangören förbehåller sig rätten till ändringar."
+                           >Kilpailun järjestäjä pidättää oikeudet muutoksiin.
                         </p>
                     </div>
                 </div>
@@ -323,63 +712,34 @@
         <!-- Element that adds some whitespace for better looks -->
         <div class="bottom-spacetaker"></div>
         
+        <!-- Page footer -->
         <footer id="page-footer" class="page-footer">
             <div class="row">
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                     <p id="copyright_text" class="left"></p>
-                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right" translation-en="Report a bug">
-                        Ilmoita bugista
-                    </a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Element to replace page if Internet Explorer is used -->
-    <div id="ie-message" class="no-display">
-        <div id="ie-message-text-container">
-            <p id="ie-message-text-title"
-               translation-en="Internet Explorer is not supported on this page.">
-               Internet Explorer ei ole tuettu tällä sivulla.
-            </p>
-            <p id="ie-message-text-browsers">
-                <span translation-en="Supported browsers are">
-                    Tuetut selaimet ovat
-                </span> 
-                <a href="https://www.google.com/chrome/"
-                   id="chrome-text">
-                   Google Chrome
-                </a>, 
-                <a href="https://www.opera.com/"
-                   id="opera-text">
-                   Opera
-                </a>, 
-                <span href=""
-                      id="edge-text">
-                      Microsoft Edge
-                </span> 
-                <span translation-en="and">
-                    ja
-                </span> 
-                <a href="https://www.mozilla.org/"
-                   id="firefox-text">
-                   Mozilla Firefox
-                </a>
-            </p>
-        </div>
-    </div>
-
-    <script src="../js/check_for_ie.js"></script>
     <script src="../js/jquery.js"></script>
     <script src="../js/materialize/materialize.min.js"></script>
+
+    <!-- Some global utility functions and variables -->
     <script src="../js/globals.js"></script>
+
+    <!-- Script to translate the page if non-finnish language is selected -->
     <script src="../js/translate.js"></script>
+
+    <!-- Cookie information script -->
     <script src="../js/cookie_info.js"
             id="cookieinfo"
             data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
             data-linkmsg="Lisätietoa"
             data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste">
     </script>
+
+    <!-- Initialize copyright text in footer -->
     <script>
         setCopyrightText();
     </script>
