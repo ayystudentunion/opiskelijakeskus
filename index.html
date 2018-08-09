@@ -1,3 +1,12 @@
+<!--
+         __   __     __        ___                        ___  __             __  
+        /  \ |__) | /__` |__/ |__  |    |    |  /\  |__/ |__  /__` |__/ |  | /__` 
+        \__/ |    | .__/ |  \ |___ |___ | \__/ /--\ |  \ |___ .__/ |  \ \__/ .__/ 
+                        
+        Idea page for Opiskelijakeskus which was used to vote on ideas for Opiskelijakeskus.
+        Now has an archive of ideas and the amount of likes they gathered during the voting phase.
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,16 +14,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title translation-en="Student Centre" translation-se="Studentcentrumet">Opiskelijakeskus</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global CSS styles and modules such as footer and buttons -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/globals.css" />
+
+    <!-- MaterializeCSS for dropdowns -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/materialize.min.css" />
+
+    <!-- CSS for this page -->
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+
+    <!-- Styles for flag icons in header dropdown -->
     <link rel="stylesheet" type="text/css" media="screen" href="flag_icon/css/flag-icon.min.css" />
 
+    <!-- Site icon -->
     <link rel="icon" type="image/png" href="images/favicon/favicon.png">
 </head>
 <body>
     <div id="site-container">
-        <!-- Dropdowns for language selection -->
+        <!-- Desktop dropdown for language selection -->
         <ul id="languages-dropdown" class="dropdown-content">
             <li>
                 <a class="set-language-fi">
@@ -29,8 +47,16 @@
                     English
                 </a>
             </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
         </ul>
 
+        <!-- Mobile dropdown for language selection -->
         <ul id="languages-dropdown-mobile" class="dropdown-content">
             <li>
                 <a class="set-language-fi">
@@ -45,85 +71,100 @@
                     English
                 </a>
             </li>
+            <li class="divider"></li>
+            <li>
+                <a class="set-language-se">
+                    <i class="left flag-icon flag-icon-se"></i>
+                    Svenska
+                </a>
+            </li>
         </ul>
 
-        <nav id="navbar">
-            <div class="nav-wrapper row">
-                <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
-                    <ul class="left">
-                        <li>
-                            <a href="/"
-                               translation-en="Student Centre"
-                               translation-se="Studentcentrumet">
-                               Opiskelijakeskus
-                            </a>
-                        </li>
-                    </ul>
+        <!-- Site navbar -->
+        <nav class="nav-wrapper row">
+            <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
+                <ul class="left">
+                    <!-- Site/nav title -->
+                    <li>
+                        <a href="/"
+                            translation-en="Student Centre"
+                            translation-se="Studentcentrumet">
+                            Opiskelijakeskus
+                        </a>
+                    </li>
+                </ul>
 
-                    <!-- Hamburger toggle for mobile nav -->
-                    <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+                <!-- Hamburger toggle for mobile nav -->
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger right">
+                    <i class="material-icons">
+                        menu
+                    </i>
+                </a>
 
-                    <!-- Desktop navbar -->
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li>
-                            <a href="ideakilpailu/">
-                                <span translation-en="Idea Competition">Ideakilpailu</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
-                                <span
-                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
-                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
-                                >
-                                    <i class="left flag-icon flag-icon-fi">
+                <!-- Desktop navbar -->
+                <ul class="desktop-nav right hide-on-med-and-down">
+                    <li>
+                        <a href="ideakilpailu/">
+                            <span translation-en="Idea Competition" translation-se="Idétävling">Ideakilpailu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
+                            <span
+                                translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                            >
+                                <i class="left flag-icon flag-icon-fi">
 
-                                    </i>
-                                </span>
-                                <span translation-en="English" translation-se="Svenska">Suomi</span>
-                                <i class="material-icons right">
-                                    arrow_drop_down
                                 </i>
-                            </a>
-                        </li>
-                    </ul>
+                            </span>
+                            <span translation-en="English" translation-se="Svenska">Suomi</span>
+                            <i class="material-icons right">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                    </li>
+                </ul>
 
-                    <!-- Mobile navbar -->
-                    <ul class="sidenav" id="mobile-nav">
-                        <li>
-                            <a href="ideakilpailu/">
-                                <span translation-en="Idea Competition">Ideakilpailu</span>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
-                                <span
-                                    translation-en="<i class='left flag-icon flag-icon-gb'></li>"
-                                    translation-se="<i class='left flag-icon flag-icon-se'></li>"
-                                >
-                                    <i class="left flag-icon flag-icon-fi">
+                <!-- Mobile navbar -->
+                <ul id="mobile-nav" class="sidenav">
+                    <li>
+                        <a href="ideakilpailu/">
+                            <span translation-en="Idea Competition" translation-se="Idétävling">Ideakilpailu</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown-mobile">
+                            <span
+                                translation-en="<i class='left flag-icon flag-icon-gb'></li>"
+                                translation-se="<i class='left flag-icon flag-icon-se'></li>"
+                            >
+                                <i class="left flag-icon flag-icon-fi">
 
-                                    </i>
-                                </span>
-                                <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
-                                <i class="material-icons">
-                                    arrow_drop_down
                                 </i>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                            </span>
+                            <span class="left" translation-en="English" translation-se="Svenska">Suomi</span>
+                            <i class="material-icons">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+            </div> <!-- /col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1 -->
+        </nav> <!-- /nav-wrapper -->
     
         <div class="row">
             <div id="content-container" class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                 <!-- Main site title -->
                 <div class="row">
                     <div id="content-title-container" class="col s10 offset-s1 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
-                        <h1 id="content-title" translation-en="Ideas to Student Centre">Ideoita Opiskelijakeskukseen</h1>
+                        <h1 id="content-title"
+                            translation-en="Ideas to Student Centre"
+                            translation-se="Idéer om Studentcentrumet"
+                            >Ideoita Opiskelijakeskukseen
+                        </h1>
                     </div>
                 </div>
 
@@ -131,21 +172,46 @@
                     <div id="content-title-description-container" class="col s12">
                         <div id="form-container" class="form-container row">
                             
+                            <!-- Introduction form -->
                             <form id="form" class="form col s12">
                                 <i id="form-close-btn" class="material-icons">close</i>
                                 <p class="form-paragraph"
                                    style="text-align: center;"
-                                   translation-en="The Student Centre is a joint venture by Aalto University Student Union (AYY), Aalto University Business Students (KY) and Teknologföreningen (TF). The plan is to build a building for all students to the Otaniemi campus, next to the metro station entrance and the Harald Herlin Learning Centre.
-                                   <br><br>
-                                   A Student Centre seminar was held in April 2018, which had participants from the Council of Special Status Associations, the Representative Council and from AYY’s sections. In the seminar participants brainstormed what kind of facilities, functions and services there could be in the Student Centre. Anyone can browse the ideas, like them and add their own ideas by the Friday 15th of June. What would you like to have in the Student Centre?"
+                                   translation-en="The Student Centre is a joint venture by Aalto University Student Union (AYY), 
+                                                   Aalto University Business Students (KY) and Teknologföreningen (TF). The plan 
+                                                   is to build a building for all students to the Otaniemi campus, next to the metro 
+                                                   station entrance and the Harald Herlin Learning Centre.
+                                                   <br><br>
+                                                   A Student Centre seminar was held in April 2018, which had participants from the 
+                                                   Council of Special Status Associations, the Representative Council and from AYY’s 
+                                                   sections. In the seminar participants brainstormed what kind of facilities, 
+                                                   functions and services there could be in the Student Centre. Anyone can browse 
+                                                   the ideas, like them and add their own ideas by the Friday 15th of June. What 
+                                                   would you like to have in the Student Centre?"
                                    
-                                   translation-se="Studentcentrumet är ett samprojekt mellan Aalto-universitetets studentkår (AUS), Aalto-universitetets ekonomistuderande (KY) och Teknologföreningen (TF) för att bygga ett gemensamt hus för studenterna på en central plats på Otnäs campus, invid metroingången och mittemot Harald Herlin-lärcentret. 
-                                   <br><br>
-                                   I början av april 2018 ordnades ett Studentcentrumsseminarium med deltagare från delegationen, AUS sektioner och rådet av ordförande för de särställda föreningarna. På seminariet behandlades olika idéer för lokalerna, funktionerna och servicen i Studentcentrumet. Idéerna finns på den här webbplatsen där vem som helst fram till den 15 juni kan bläddra bland dem, gilla dem eller lägga till sina egna. Vad önskar du dig av Studentcentrumet?"
+                                   translation-se="Studentcentrumet är ett samprojekt mellan Aalto-universitetets studentkår (AUS), 
+                                                   Aalto-universitetets ekonomistuderande (KY) och Teknologföreningen (TF) för att 
+                                                   bygga ett gemensamt hus för studenterna på en central plats på Otnäs campus, 
+                                                   invid metroingången och mittemot Harald Herlin-lärcentret. 
+                                                   <br><br>
+                                                   I början av april 2018 ordnades ett Studentcentrumsseminarium med deltagare från 
+                                                   delegationen, AUS sektioner och rådet av ordförande för de särställda föreningarna. 
+                                                   På seminariet behandlades olika idéer för lokalerna, funktionerna och servicen i 
+                                                   Studentcentrumet. Idéerna finns på den här webbplatsen där vem som helst fram till 
+                                                   den 15 juni kan bläddra bland dem, gilla dem eller lägga till sina egna. Vad 
+                                                   önskar du dig av Studentcentrumet?"
                                    >
-                                    Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), Aalto-yliopiston kauppatieteiden ylioppilaiden (KY) ja Teknologföreningenin (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta Otaniemen kampuksen keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald Herlinin Oppimiskeskusta vastapäätä.
+                                    Opiskelijakeskus on Aalto-yliopiston ylioppilaskunnan (AYY), Aalto-yliopiston kauppatieteiden 
+                                    ylioppilaiden (KY) ja Teknologföreningenin (TF) yhteishanke opiskelijoiden yhteisestä rakennuksesta 
+                                    Otaniemen kampuksen keskeiselle paikalle, metroaseman sisäänkäynnin viereen ja Harald Herlinin 
+                                    Oppimiskeskusta vastapäätä.
                                     <br><br>
-                                    Huhtikuun 2018 alussa järjestettiin Opiskelijakeskusseminaari, johon osallistui edustajia erityisasemayhdistysten puheenjohtajien Neuvostosta, edustajistosta ja AYY:n jaostoista. Seminaarissa työstettiin ideoita, mitä erilaisia tiloja, toimintoja ja palveluita Opiskelijakeskuksessa voisi olla. Esille nousseet ideat on listattu näille sivuille, joista kuka vaan voi selailla niitä läpi, lisätä oman idean ja tykätä olemassa olevista 15.6. mennessä. Mitä sinä Opiskelijakeskukselta toivoisit?
+                                    Huhtikuun 2018 alussa järjestettiin Opiskelijakeskusseminaari, johon osallistui edustajia 
+                                    erityisasemayhdistysten puheenjohtajien Neuvostosta, edustajistosta ja AYY:n jaostoista. 
+                                    Seminaarissa työstettiin ideoita, mitä erilaisia tiloja, toimintoja ja palveluita 
+                                    Opiskelijakeskuksessa voisi olla. Esille nousseet ideat on listattu näille sivuille, 
+                                    joista kuka vaan voi selailla niitä läpi, lisätä oman idean ja tykätä olemassa olevista 
+                                    15.6. mennessä. Mitä sinä Opiskelijakeskukselta toivoisit?
                                 </p>
                             </form>
                         </div>
@@ -154,22 +220,43 @@
     
                 <!-- Options for grid -->
                 <div id="options-container">
+                    <!-- Buttons used for browsing pages -->
                     <div id="page-buttons-container" class="col s6">
-                        <p class="page-title"><span translation-en="Page">Sivu</span> <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
+                        <p class="page-title">
+                            <span translation-en="Page" translation-se="Sida">
+                                Sivu
+                            </span> 
+                            <span class="current-page-text">1</span>
+                             / 
+                            <span class="total-pages-text">1</span>
+                        </p>
     
                         <div class="row">
+                            <!-- Previous page button -->
                             <div id="prev-page-btn-container" class="col s6">
-                                <div id="prev-page-btn" class="prev-page-btn simple-btn center waves-effect waves-light faded-out no-events"><i class="material-icons">chevron_left</i></div>
+                                <div id="prev-page-btn"
+                                     class="prev-page-btn simple-btn center waves-effect waves-light faded-out no-events">
+                                     <i class="material-icons">chevron_left</i>
+                                </div>
                             </div>
                     
+                            <!-- Next page button -->
                             <div id="next-page-btn-container" class="col s6">
-                                <div id="next-page-btn" class="next-page-btn simple-btn center waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
+                                <div id="next-page-btn"
+                                     class="next-page-btn simple-btn center waves-effect waves-light">
+                                     <i class="material-icons">chevron_right</i>
+                                </div>
                             </div>
                         </div>
                     </div>
     
+                    <!-- Container for 'sort by likes' -button -->
                     <div id="sorts-container" class="col s6">
-                        <div id="sorts-title" translation-en="Most liked first">Tykätyimmät ensin</div>
+                        <div id="sorts-title"
+                             translation-en="Most liked first"
+                             translation-se="Mest gillande först"
+                             >Tykätyimmät ensin
+                        </div>
                         <input type="checkbox" id="sort-by-likes-btn" /><label id="sort-label" class="settings-label" for="sort-by-likes-btn">Toggle</label>
                     </div>
                 </div>
@@ -191,25 +278,38 @@
                 </div>
 
                 <!-- Container for filter buttons; buttons are loaded from JavaScript -->
-                <div id="filter-buttons-container" data-collapse="false" class="col s12">
-
-                </div>
+                <div id="filter-buttons-container" data-collapse="false" class="col s12"></div>
         
-                <!-- Main ShuffleJS grid container -->
+                <!-- ShuffleJS grid container -->
                 <div id="shuffle-container" class="row">
+                    <!-- Sizer elements that ShuffleJS uses to get the size of shuffle elements (the idea cards) -->
                     <div class="col s12 m6 l4 xl4 xxl3 sizer" style="pointer-events: none; position: absolute; top: -10000px;"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Page buttons for mobile after the grid so mobile users don't have to scroll up to change pages -->
         <div id="page-buttons-bottom-container" class="col s6 show-on-small no-display">
-            <p class="page-title"><span translation-en="Page">Sivu</span> <span class="current-page-text">1</span> / <span class="total-pages-text">1</span></p>
+            <p class="page-title">
+                <span translation-en="Page" translation-se="Sida">
+                    Sivu
+                </span> 
+                <span class="current-page-text">
+                    1
+                </span>
+                 / 
+                <span class="total-pages-text">
+                    1
+                </span>
+            </p>
 
             <div class="row">
+                <!-- Previous page button -->
                 <div id="prev-page-btn-container" class="col s6">
                     <div id="prev-page-btn" class="prev-page-btn simple-btn center waves-effect waves-light faded-out no-events"><i class="material-icons">chevron_left</i></div>
                 </div>
         
+                <!-- Next page button -->
                 <div id="next-page-btn-container" class="col s6">
                     <div id="next-page-btn" class="next-page-btn simple-btn center waves-effect waves-light"><i class="material-icons">chevron_right</i></div>
                 </div>
@@ -219,13 +319,11 @@
         <!-- Element that adds some whitespace for better looks -->
         <div class="bottom-spacetaker"></div>
         
+        <!-- Footer -->
         <footer id="page-footer" class="page-footer no-display">
             <div class="row">
                 <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
                     <p id="copyright_text" class="left"></p>
-                    <a href="https://github.com/Zentryn/Opiskelijakeskus/issues" target="_blank" id="submit-bugs" class="right" translation-en="Report a bug">
-                        Ilmoita bugista
-                    </a>
                 </div>
             </div>
         </footer>
@@ -234,12 +332,11 @@
     <!-- Element to replace page if Internet Explorer is used -->
     <div id="ie-message" class="no-display">
         <div id="ie-message-text-container">
-            <p id="ie-message-text-title"
-               translation-en="Internet Explorer is not supported on this page.">
+            <p id="ie-message-text-title">
                Internet Explorer ei ole tuettu tällä sivulla.
             </p>
             <p id="ie-message-text-browsers">
-                <span translation-en="Supported browsers are">
+                <span>
                     Tuetut selaimet ovat
                 </span> 
                 <a href="https://www.google.com/chrome/"
@@ -254,7 +351,7 @@
                       id="edge-text">
                       Microsoft Edge
                 </span> 
-                <span translation-en="and">
+                <span>
                     ja
                 </span> 
                 <a href="https://www.mozilla.org/"
@@ -265,12 +362,24 @@
         </div>
     </div>
 
+    <!-- Script to show an error message if IE is used -->
     <script src="./js/check_for_ie.js"></script>
     <script src="./js/jquery.js"></script>
     <script src="./js/materialize/materialize.min.js"></script>
+
+    <!-- Some global utility functions and variables -->
     <script src="./js/globals.js"></script>
+
+    <!-- Utility methods for this page -->
+    <script src="./js/idea_page_utility/idea_page_utility.js"></script>
+
+    <!-- Bundled JS file from index.js; use browserify to bundle -->
     <script src="./bundle.js"></script>
+
+    <!-- Script to translate the page if non-finnish language is selected -->
     <script src="./js/translate.js"></script>
+
+    <!-- Cookie information script -->
     <script src="./js/cookie_info.js"
             id="cookieinfo"
             data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
