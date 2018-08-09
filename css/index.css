@@ -1,3 +1,7 @@
+/*
+    Styles for main idea page
+*/
+
 :root {
     --grid-block-margin: 25px;
     --grid-block-body-container-height: 145px;
@@ -83,6 +87,11 @@ p {
     padding-right: 0.75rem;
 }
 
+#content-title-description {
+    text-align: center;
+    font-family: 'Value';
+}
+
 #form {
     position: relative;
 }
@@ -93,11 +102,6 @@ p {
     right: 8px;
     cursor: pointer;
     font-size: 24px !important;
-}
-
-#content-title-description {
-    text-align: center;
-    font-family: 'Value';
 }
 
 #form-container {
@@ -228,12 +232,6 @@ input:checked + .settings-label:after {
 
 .settings-label:active:after {
 	width: 40px;
-}
-
-#content-container {
-    margin-top: 10vh;
-    padding-left: 1rem;
-    padding-right: 1rem;
 }
 
 #shuffle-container {
@@ -503,7 +501,6 @@ input:checked + .settings-label:after {
     width: 22px;
     height: 22px;
 
-    cursor: pointer;
     color: black;
 
     transition: color 0.05s;
