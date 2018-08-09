@@ -2,6 +2,38 @@ var setLanguageFiEls = document.getElementsByClassName('set-language-fi');
 var setLanguageEnEls = document.getElementsByClassName('set-language-en');
 var setLanguageSeEls = document.getElementsByClassName('set-language-se');
 
+function translatePage() {
+    if (currentLang == "en") {
+        var translateEnEls = document.querySelectorAll('[translation-en]');
+        for (var i = 0; i < translateEnEls.length; i++) {
+            translateElement(translateEnEls[i]);
+        }
+
+        // Cookie info element is loaded dynamically from 3rd party library so update it manually here
+        $(".cookieinfo").children().each(function () {
+            $(this).html($(this).html().replace(
+                "Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön.",
+                "We use cookies to enhance the functionality of our site. By continuing to use our site you accept the use of cookies."
+            ));
+
+            $(this).html($(this).html().replace(
+                "Lisätietoa",
+                "More Information"
+            ));
+
+            $(this).html($(this).html().replace(
+                "https://fi.wikipedia.org/wiki/Ev%C3%A4ste",
+                "https://en.wikipedia.org/wiki/HTTP_cookie"
+            ));
+        });
+    } else if (currentLang == "se") {
+        var translateSeEls = document.querySelectorAll('[translation-se]');
+        for (var i = 0; i < translateSeEls.length; i++) {
+            translateElement(translateSeEls[i]);
+        }
+    }
+}
+
 var currentLang = "";
 $(document).ready(() => {
     try {
@@ -42,35 +74,7 @@ $(document).ready(() => {
         }
     }
 
-    if (currentLang == "en") {
-        var translateEnEls = document.querySelectorAll('[translation-en]');
-        for (var i = 0; i < translateEnEls.length; i++) {
-            translateElement(translateEnEls[i]);
-        }
-
-        // Cookie info element is loaded dynamically from 3rd party library so update it manually here
-        $(".cookieinfo").children().each(function () {
-            $(this).html($(this).html().replace(
-                "Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön.",
-                "We use cookies to enhance the functionality of our site. By continuing to use our site you accept the use of cookies."
-            ));
-
-            $(this).html($(this).html().replace(
-                "Lisätietoa",
-                "More Information"
-            ));
-
-            $(this).html($(this).html().replace(
-                "https://fi.wikipedia.org/wiki/Ev%C3%A4ste",
-                "https://en.wikipedia.org/wiki/HTTP_cookie"
-            ));
-        });
-    } else if (currentLang == "se") {
-        var translateSeEls = document.querySelectorAll('[translation-se]');
-        for (var i = 0; i < translateSeEls.length; i++) {
-            translateElement(translateSeEls[i]);
-        }
-    }
+    translatePage();
 });
 
 // Sets current language cookie
