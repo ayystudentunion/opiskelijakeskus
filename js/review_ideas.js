@@ -1,8 +1,19 @@
+/**
+ * @file Handles admin idea review page form handling.
+ * @description Fetches submitted ideas from server and displays then in a form for the admin to
+ *              either accept or reject the ideas. If they are accepted, they are saved to the file
+ *              that contains all current ideas. If they are rejected, they are stored in another file
+ *              for possible restoration.
+ * @author Zentryn <https://github.com/Zentryn>
+ */
+
 var formContainer = document.getElementById('form-container');
 
 window.onload = function() {
+    // Update copyright text in footer
     setCopyrightText();
 
+    // Create options for each category in select elements
     var selectElements = document.getElementsByTagName('select');
     for (var i = 0; i < selectElements.length; i++) {
         for (var key in categoryIcons) {
@@ -13,13 +24,17 @@ window.onload = function() {
         }
     }
 
+    // Initialize materiaze select elements
     $('select').formSelect();
 
     resetReviewModal();
 }
 
+// Resets the review form modal to display latest idea in review queue
 function resetReviewModal() {
+    // Fetch ideas from file
     $.getJSON("../../data/data_under_review.json", function(result) {
+        // No ideas available?
         if (result.length == 0) {
             if (formContainer.classList.contains('no-display')) {
                 alert("Ei moderoitavia ideoita.");
@@ -32,6 +47,7 @@ function resetReviewModal() {
             return;
         }
 
+        // Show number of ideas left to moderate
         document.getElementById('number-of-ideas').innerHTML = result.length;
         document.getElementById('form-bottom-buttons-container').classList.remove('no-display');
 
@@ -48,10 +64,10 @@ function resetReviewModal() {
             document.getElementsByClassName('idea-secondary-category')[i].classList.add('no-display');
         }
 
+        // Set values of form elements to the idea's values
         var idea = result[0];
         for (var key in idea) {
             var ideaObj = idea[key];
-            console.log(ideaObj);
 
             document.getElementById('idea-name-field').value = key;
             $('#idea-desc-field').val(ideaObj.description);
@@ -62,6 +78,7 @@ function resetReviewModal() {
                 elContainer.classList.remove('no-display');
             }
 
+            // This resets the materialize description input field
             $('#idea-desc-field').keydown();
             
             document.getElementById('idea-main-category').value = ideaObj.main_category;
@@ -73,9 +90,11 @@ function resetReviewModal() {
                 elContainer.classList.remove('no-display');
             }
 
+            // Re-initialize materialize input fields
             M.AutoInit();
             M.textareaAutoResize($('#idea-desc-field'));
 
+            // Hide secondary categories if there are none
             var secondaryCategoriesTitleEl = document.getElementById('form-secondary-categories-title');
             if (ideaObj.secondary_categories != undefined && ideaObj.secondary_categories.length > 0) {
                 secondaryCategoriesTitleEl.classList.remove('no-display');
@@ -84,8 +103,10 @@ function resetReviewModal() {
             }
         }
 
+        // Update materialize text fields since they now have new text
         M.updateTextFields();
 
+        // Fade in form modal
         document.getElementById('form-container').classList.remove('no-display');
         setTimeout(() => {
             document.getElementById('form-container').classList.remove('faded-out');
@@ -93,8 +114,12 @@ function resetReviewModal() {
     });
 }
 
+// On submit
 $("#form").submit(function(event) {
+    // Prevent page from refreshing (this happens by default when a form is submitted)
     event.preventDefault();
+
+    // Check whether the user pressed the accept or reject button
     var isAcceptBtn = document.activeElement.getAttribute('id') == 'accept-btn';
 
     // Get values from input fields
@@ -111,22 +136,26 @@ $("#form").submit(function(event) {
     var secondaryCategory3 = document.getElementById('idea-secondary-category-field-3').value;
 
     $.getJSON("../../data/data_under_review.json", function(results) {
+        // Do some error checking
         if (results == undefined || results == null || results.length == 0) {
             return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Tarkastettavien ideoiden tiedosto oli tyhjä.)");
         }
 
+        // Get ID of submitted idea
         var ideaID = results[0][Object.keys(results[0])[0]].id;
 
-	    // Store declined ideas so they can be revived if necessary
+	    // Choose appropriate file to save to according to which button the user clicked
         var fileToSaveTo = (isAcceptBtn) ? "../data/data.json" : "../data/data_trashed.json";
     
         $.getJSON("../" + fileToSaveTo, function(result) {
             if (isAcceptBtn) {
+                // Check for unusual but possible errors
                 if (result == undefined || result == null || result.length == 0 || JSON.stringify(result).length <= 10) {
                     return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Ideat olivat tyhjiä)");
                 }
             }
 
+            // Create a new object for the submitted idea
             var newIdeaObj = {};
             newIdeaObj[ideaName] = {};
             newIdeaObj[ideaName]["description"] = ideaDesc;
@@ -150,6 +179,7 @@ $("#form").submit(function(event) {
 
             result.push(newIdeaObj);
     
+            // Send ajax request and save new contents to file
             $.ajax({
                 url: '../../php/save_data.php',
                 type: 'POST',
@@ -165,8 +195,9 @@ $("#form").submit(function(event) {
                             }
                         }
 
+                        // Idea wasn't found in the file after saving
                         if (!found) {
-                            afterIdeaSave();
+                            afterIdeaSubmit();
                             return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Ideaa ei löytynyt tallennuksen jälkeen.)");
                         }
 
@@ -176,17 +207,17 @@ $("#form").submit(function(event) {
                             type: 'POST',
                             data: {"file_path": "../data/data_under_review.json", "data": JSON.stringify(results.slice(1))},
                             success: function(data) {
-                                afterIdeaSave();
+                                afterIdeaSubmit();
                             },
                             error: function(err) {
-                                afterIdeaSave();
+                                afterIdeaSubmit();
                                 return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: Second ajax request failed)");
                             }
                         });
                     });
                 },
                 error: function(err) {
-                    afterIdeaSave();
+                    afterIdeaSubmit();
                     return alert("Jotakin meni pieleen idean tallennuksessa. (ErrorMSG: First ajax request failed)");
                 }
             });
@@ -194,7 +225,8 @@ $("#form").submit(function(event) {
     });
 });
 
-function afterIdeaSave() {
+// Fades out modal and then resets it after idea is submitted
+function afterIdeaSubmit() {
     formContainer.classList.add('faded-out');
     setTimeout(() => {
         resetReviewModal();
