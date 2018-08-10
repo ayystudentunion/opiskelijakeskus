@@ -1,9 +1,39 @@
 /**
+ *    __   __     __        ___                        ___  __             __  
+ *   /  \ |__) | /__` |__/ |__  |    |    |  /\  |__/ |__  /__` |__/ |  | /__` 
+ *   \__/ |    | .__/ |  \ |___ |___ | \__/ /--\ |  \ |___ .__/ |  \ \__/ .__/ 
+ * 
  * @file Handles idea page grid including sorting, filtering, opening and moving ideas around as well as switching pages.
  * @author Zentryn <https://github.com/Zentryn>
  * 
+ * @description Handles a grid system using ShuffleJS to show ideas sent to Opiskelijakeskus.
+ * 
  * @requires ShuffleJS
  * @requires jQuery
+ * 
+ * There are several issues with this implementation. These issues include at least:
+ * 
+ * 1. The whole script handling the idea page is contained in this file
+ *    (excluding some utility methods and variables in external files).
+ *    This quickly leads to big difficulties if this project is wanted to be further developed.
+ * 
+ * 2. There are some naming inconsistensies. For example both "argument" and "reason"
+ *    are used in variable names that refer to the same functionality/elements.
+ * 
+ * 3. All variables and functions are global.
+ * 
+ * 4. Browserify is required to bundle this script into a file that has the
+ *    required modules that natively work in a browser.
+ * 
+ * 5. Previously used saving method was by sending an AJAX request to a php file to save
+ *    ideas to server after a user clicked on a like button on an idea. There was no server-side
+ *    safety built on this which allowed users to send an AJAX request from the devtools console
+ *    in a browser to modify likes and ideas as they wanted.
+ * 
+ * Possible solutions would be to switch to full NodeJS class-based module implementation
+ * where each distinct part of the application is its own module. This makes the code more
+ * readable, expandable and safer. Also a database should possibly be used for storing ideas
+ * and a better way to ensure that users can't modify ideas should be implemented.
  */
 
 var shuffle = require('shufflejs');
@@ -74,9 +104,7 @@ window.onmousemove = function(event) {
 // Load ideas from JSON
 window.onload = initializeSystems;
 
-/**
- * Initializes all needed systems/components of the page
- */
+// Initializes all needed systems and components of the page
 function initializeSystems() {
     // Firefox leaves checkboxes checked over page refresh so de-select like checkbox here
     if (sortByLikesBtn.checked) {
@@ -118,14 +146,6 @@ function initializeSystems() {
         setTimeout(() => {
             document.getElementById('page-footer').classList.remove('no-display');
         }, 150);
-
-        // Initialize Materialize (has to be after grid init)
-        M.AutoInit();
-
-        // Initialize events for materialize collapsibles
-        setTimeout(() => {
-            initMaterializeEvents();
-        }, 1000);
 
         // Add filter buttons to DOM and setup their events
         setupFilterButtons();
@@ -274,16 +294,19 @@ function filterButtonsCollapse() {
 // Setup mobile filter buttons collapse element
 filtersDropdown.onclick = filterButtonsCollapse;
 
+// Setup form close button event
 formCloseBtn.onclick = function() {
     formContainer.classList.add('no-display');
     document.getElementById('content-title-container').style.borderBottom = "1px solid black";
 }
 
+// Setup previous page button events
 for (var i = 0; i < prevPageBtns.length; i++) {
     (function() {
         var idx = i;
         
         prevPageBtns[i].onclick = function() {
+            // Scroll to top of the ideas on mobile so the user doesn't have to scroll themselves
             if (idx == 1 && nrColumns == 1) {
                 $(window).scrollTop($('#options-container').position().top);
             }
@@ -295,10 +318,12 @@ for (var i = 0; i < prevPageBtns.length; i++) {
     }());
 }
 
+// Setup next page button events
 for (var i = 0; i < nextPageBtns.length; i++) {
     (function() {
         var idx = i;
         nextPageBtns[idx].onclick = function() {
+            // Scroll to top of the ideas on mobile so the user doesn't have to scroll themselves
             if (idx == 1 && nrColumns == 1) {
                 $(window).scrollTop($('#options-container').position().top);
             }
@@ -310,17 +335,20 @@ for (var i = 0; i < nextPageBtns.length; i++) {
     }());
 }
 
+// Setup like sort button click event
 sortByLikesBtn.onclick = function(event) {
     var currentMS = performance.now();
+
+    // Prevent button spamming (it can break the grid)
     if (pageButtonsDisabled || (nrColumns == 1 && currentMS - lastSortClickMS < 2000)) {
         event.preventDefault();
         return;
     }
 
     lastSortClickMS = currentMS;
-
     sortByLikes = !sortByLikes;
 
+    // Reset pages (move to first page)
     moveToPage(
         0,
         
@@ -335,7 +363,13 @@ sortByLikesBtn.onclick = function(event) {
     );
 }
 
-// Changes to wanted page in the grid if possible
+/**
+ * Moves to a page in the idea grid
+ * @param {Number} wantedIdx Index of the page to be moved to
+ * @param {function} errorCB Callback function to be called if an error occurs
+ * @param {function} afterRemoveFunc Callback function to be called after current grid blocks have been removed
+ * @param {function} cb Callback function to be called once the user is on the new page
+ */
 function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = function() {}) {
     if (pageButtonsDisabled) return errorCB("Already switching pages");
 
@@ -354,6 +388,7 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
     var startRemoveIdx = currentPage * maxBlocksInPage;
     var wantedBlocks = gridBlocks.slice(startRemoveIdx, Math.min(startRemoveIdx + maxBlocksInPage, gridBlocks.length));
 
+    // Fade out all blocks
     for (var i = 0; i < wantedBlocks.length; i++) {
         blockElements.push(wantedBlocks[i].block);
         blockElements[i].classList.add('faded-out');
@@ -361,13 +396,14 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
 
     // Wait for animation to finish (and add some extra timeout for nicer animation)
     setTimeout(() => {
+        // Remove HTML elements from DOM
         for (var i = 0; i < blockElements.length; i++) {
             shuffleContainer.removeChild(blockElements[i]);
         }
         
         // Reset all shuffle items (empty them)
         shuffleInstance.resetItems();
-        
+
         afterRemoveFunc();
 
         var startIdx = wantedIdx * maxBlocksInPage;
@@ -380,14 +416,17 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
             blocksToAdd.push(gridBlocks[i].block);
         }
 
+        // Re-translate everything (everything is in finnish by default)
         translatePage();
 
+        // Wait a bit for text to show and then ellipsize them
         setTimeout(() => {
             for (var i = startIdx; (i < gridBlocks.length) && (i < startIdx + maxBlocksInPage); i++) {
                 ellipsizeElement(gridBlocks[i].bodyContainer, gridBlocks[i].descriptionText, gridBlocks[i], true);
             }
         });
 
+        // Add new blocks to ShuffleJS
         shuffleInstance.add(blocksToAdd);
 
         // Fade out button if on the first page
@@ -412,27 +451,23 @@ function moveToPage(wantedIdx, errorCB, afterRemoveFunc = function() {}, cb = fu
             }
         }
 
+        // Update the page button texts
         updatePageTexts(wantedIdx);
 
-        setTimeout(() => {
-            currentPage = wantedIdx;
+        currentPage = wantedIdx;
 
-            pageButtonsDisabled = false;
+        pageButtonsDisabled = false;
 
-            // Initialize collapsibles for current page
-            M.AutoInit();
-            initMaterializeEvents();
+        // Fade new blocks in
+        for (var i = 0; i < gridBlocks.length; i++) {
+            gridBlocks[i].block.classList.remove('faded-out');
+        }
 
-            for (var i = 0; i < gridBlocks.length; i++) {
-                gridBlocks[i].block.classList.remove('faded-out');
-            }
+        if (nrColumns > 1) {
+            shuffleInstance.update();
+        }
 
-            if (nrColumns > 1) {
-                shuffleInstance.update();
-            }
-
-            cb();
-        }, (nrColumns == 1) ? 0 : 150);
+        cb();
     }, (nrColumns == 1) ? 200 : 400);
 }
 
@@ -458,9 +493,10 @@ function initGrid() {
         var primaryCategory = null;
         var secondaryCategories = [];
 
+        // Object that stores all needed information and elements of this idea
         var blockObject = {};
 
-        // Get data
+        // Get idea data
         for (var key in jsonData[i]) {
             title = key;
             title_en = jsonData[i][key].name_en;
@@ -477,6 +513,7 @@ function initGrid() {
             secondaryCategories = jsonData[i][key].secondary_categories;
         }
 
+        // Reset translations if they're not available
         if (title_en == undefined) title_en = "";
         if (title_se == undefined) title_se = "";
         if (description_en == undefined) description_en = "";
@@ -499,220 +536,233 @@ function initGrid() {
         // Convert to JSON format
         categoriesText = categoriesText.replaceAll(",", "\",\"");
 
-        /* Create all grid elements */
-        var gridBlock = document.createElement('div');
-        gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3', 'faded-out');
+        /**
+         * Create HTML DOM elements for this grid block
+         */
+        {
+            var gridBlock = document.createElement('div');
+            gridBlock.classList.add('grid-block', 'col', 's12', 'm6', 'l4', 'xl4', 'xxl3', 'faded-out');
+    
+            // Set grid position for sorting
+            gridBlock.setAttribute('grid-position', i);
+            gridBlock.setAttribute('data-groups', '["' + categoriesText + '"]');
+    
+            // Extra shadow element needed for Edge browser
+            var gridBlockEdgeShadow = document.createElement('div');
+            gridBlockEdgeShadow.classList.add('grid-block-edge-shadow');
+    
+            // Content element that has the hover shadow effect
+            var gridBlockContent = document.createElement('div');
+            gridBlockContent.classList.add('grid-block-content', 'hoverable');
+            blockObject.blockContent = gridBlockContent;
+            
+            // Select a color for the block randomly
+            var colorIdx;
+            do {
+                colorIdx = Math.floor(Math.random() * gridBlockColors.length);
+            } while (colorIdx == lastColorIdx);
+            lastColorIdx = colorIdx;
+    
+            gridBlockContent.style.backgroundColor = gridBlockColors[colorIdx];
 
-        // Set grid position for sorting
-        gridBlock.setAttribute('grid-position', i);
-        gridBlock.setAttribute('data-groups', '["' + categoriesText + '"]');
+            // Create header
+            {
+                var gridBlockHeaderContainer = document.createElement('div');
+                gridBlockHeaderContainer.classList.add('grid-block-header-container');
+                blockObject.headerContainer = gridBlockHeaderContainer;
 
-        var gridBlockEdgeShadow = document.createElement('div');
-        gridBlockEdgeShadow.classList.add('grid-block-edge-shadow');
-
-        var gridBlockContent = document.createElement('div');
-        gridBlockContent.classList.add('grid-block-content', 'hoverable');
-        blockObject.blockContent = gridBlockContent;
-        
-        // Select a color for the block randomly
-        var colorIdx;
-        do {
-            colorIdx = Math.floor(Math.random() * gridBlockColors.length);
-        } while (colorIdx == lastColorIdx);
-        lastColorIdx = colorIdx;
-
-        gridBlockContent.style.backgroundColor = gridBlockColors[colorIdx];
-
-        var gridBlockHeaderContainer = document.createElement('div');
-        gridBlockHeaderContainer.classList.add('grid-block-header-container');
-        blockObject.headerContainer = gridBlockHeaderContainer;
-
-        var gridBlockHeaderText = document.createElement('p');
-        gridBlockHeaderText.classList.add('grid-block-header-text');
-        gridBlockHeaderText.innerHTML = title;
-        gridBlockHeaderText.setAttribute('translation-en', title_en);
-        gridBlockHeaderText.setAttribute('translation-se', title_se);
-        blockObject.headerText = gridBlockHeaderText;
-
-        var gridBlockBodyContainer = document.createElement('div');
-        gridBlockBodyContainer.classList.add('grid-block-body-container');
-        blockObject.bodyContainer = gridBlockBodyContainer;
-
-        var gridBlockDescriptionContainer = document.createElement('div');
-        gridBlockDescriptionContainer.classList.add('grid-block-description-container');
-
-        var gridBlockDescriptionText = document.createElement('p');
-        gridBlockDescriptionText.classList.add('grid-block-description-text');
-        gridBlockDescriptionText.setAttribute('translation-en', description_en);
-        gridBlockDescriptionText.setAttribute('translation-se', description_se);
-        gridBlockDescriptionText.innerHTML = description;
-
-        var gridBlockBigIcon = document.createElement('div');
-        gridBlockBigIcon.classList.add('grid-block-icon-big');
-        gridBlockBigIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
-        blockObject.bigIcon = gridBlockBigIcon;
-
-        var gridBlockReasonsContainer = document.createElement('div');
-        gridBlockReasonsContainer.classList.add('grid-block-reasons-container', 'no-display', 'faded-out');
-
-        var gridBlockReasonsTitle = document.createElement('p');
-        gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
-        gridBlockReasonsTitle.innerHTML = "Perustelut";
-        gridBlockReasonsTitle.setAttribute('translation-en', "Arguments");
-        gridBlockReasonsTitle.setAttribute('translation-se', "Argumentationer");
-        gridBlockReasonsContainer.appendChild(gridBlockReasonsTitle);
-        blockObject.reasonContainer = gridBlockReasonsContainer;
-
-        var gridBlockReasonsCollapsible = document.createElement('ul');
-        gridBlockReasonsCollapsible.classList.add('collapsible');
-
-        blockObject.collapsibleHeaders = [];
-
-        // Create argument elements
-        for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
-            var reasonBlock = document.createElement('li');
-
-            // Open first block by default
-            if (j == 0) reasonBlock.classList.add('active');
-
-            var reasonBlockHeader = document.createElement('div');
-            reasonBlockHeader.classList.add('collapsible-header', 'has-content', 'waves-effect', 'waves-light');
-            reasonBlockHeader.style.backgroundColor = gridBlockColors[colorIdx];
-
-            /* The collapsibles are still here if at some point they want to be reverted to */
-
-            // Also add icon accordingly
-            // See https://materializecss.com/icons.html for information about icons
-            //var reasonBlockIcon = document.createElement('i');
-            //reasonBlockIcon.classList.add('material-icons');
-            //reasonBlockIcon.innerHTML = (j == 0) ? "arrow_drop_up" : "arrow_drop_down";
-            //reasonBlockHeader.appendChild(reasonBlockIcon);
-            reasonBlockHeader.innerHTML = idea_arguments[j];
-            reasonBlockHeader.setAttribute('translation-en', idea_arguments_en[j]);
-            reasonBlockHeader.setAttribute('translation-se', idea_arguments_se[j]);
-            reasonBlock.appendChild(reasonBlockHeader);
-            blockObject.collapsibleHeaders.push(reasonBlockHeader);
-            //blockObject.collapsibleIcons.push(reasonBlockIcon);
-
-            var reasonBlockBody = document.createElement('div');
-            reasonBlockBody.classList.add('collapsible-body');
-            blockObject.reasonBody = reasonBlockBody;
-
-            var reasonBlockBodyText = document.createElement('span');
-            reasonBlockBodyText.innerHTML = idea_arguments[j];
-            reasonBlockBodyText.setAttribute('translation-en', idea_arguments_en[j]);
-            reasonBlockBodyText.setAttribute('translation-se', idea_arguments_se[j]);
-            reasonBlockBody.appendChild(reasonBlockBodyText);
-
-            gridBlockReasonsCollapsible.appendChild(reasonBlock);
-        }
-
-        gridBlockReasonsContainer.appendChild(gridBlockReasonsCollapsible);
-
-        var gridBlockFooter = document.createElement('div');
-        gridBlockFooter.classList.add('grid-block-footer');
-        
-        var gridBlockIconsContainer = document.createElement('div');
-        gridBlockIconsContainer.classList.add('grid-block-icons-container');
-        blockObject.iconsContainer = gridBlockIconsContainer;
-
-        var gridBlockCategoryIconsContainer = document.createElement('div');
-        gridBlockCategoryIconsContainer.classList.add('grid-block-category-icons-container');
-
-        var mainIcon = document.createElement('div');
-        mainIcon.classList.add('grid-block-icon', 'no-display', 'faded-out');
-        mainIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
-        gridBlockCategoryIconsContainer.appendChild(mainIcon);
-        blockObject.mainIcon = mainIcon;
-        blockObject.footerIcons.push(mainIcon);
-
-        if (secondaryCategories.length > 0 && secondaryCategories[0] != "") {
-            for (var j = 0; j < secondaryCategories.length; j++) {
-                var icon = document.createElement('div');
-                icon.classList.add('grid-block-icon');
-                icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
-                gridBlockCategoryIconsContainer.appendChild(icon);
-                blockObject.footerIcons.push(icon);
+                var gridBlockHeaderText = document.createElement('p');
+                gridBlockHeaderText.classList.add('grid-block-header-text');
+                gridBlockHeaderText.innerHTML = title;
+                gridBlockHeaderText.setAttribute('translation-en', title_en);
+                gridBlockHeaderText.setAttribute('translation-se', title_se);
+                blockObject.headerText = gridBlockHeaderText;
             }
-        }
-
-        var gridBlockHeartContainer = document.createElement('div');
-        gridBlockHeartContainer.classList.add('grid-block-heart-container');
-
-        var gridBlockLikes = document.createElement('div');
-        gridBlockLikes.classList.add('grid-block-likes');
-        gridBlockLikes.innerHTML = String(likes);
-        blockObject.likesText = gridBlockLikes;
-
-        var gridBlockHeart = document.createElement('div');
-        gridBlockHeart.classList.add('grid-block-heart');
-
-        var gridBlockHeartIcon = document.createElement('i');
-        gridBlockHeartIcon.classList.add('material-icons');
-        gridBlockHeartIcon.innerHTML = "favorite_border";
-        gridBlockHeart.appendChild(gridBlockHeartIcon);
-        blockObject.heart = gridBlockHeart;
-        blockObject.heartIcon = gridBlockHeartIcon;
-
-        gridBlockHeartContainer.appendChild(gridBlockLikes);
-        gridBlockHeartContainer.appendChild(gridBlockHeart);
-
-        gridBlockIconsContainer.appendChild(gridBlockCategoryIconsContainer);
-        gridBlockIconsContainer.appendChild(gridBlockHeartContainer);
-
-        gridBlockFooter.appendChild(gridBlockIconsContainer);
-
-        // Add elements to DOM
-        gridBlockHeaderContainer.appendChild(gridBlockHeaderText);
-        gridBlockDescriptionContainer.appendChild(gridBlockDescriptionText);
-        gridBlockBodyContainer.appendChild(gridBlockDescriptionContainer);
-        gridBlockBodyContainer.appendChild(gridBlockBigIcon);
-        gridBlockBodyContainer.appendChild(gridBlockReasonsContainer);
-
-        gridBlockContent.appendChild(gridBlockHeaderContainer);
-        gridBlockContent.appendChild(gridBlockBodyContainer);
-        gridBlockContent.appendChild(gridBlockFooter);
-
-        // Edge doesn't support shadows on table elements,
-        //    so add additional element for edge to put shadows on
-        if (isBrowserEdge) {
-            gridBlockEdgeShadow.appendChild(gridBlockContent);
-            gridBlock.appendChild(gridBlockEdgeShadow);
-        } else {
-            gridBlock.appendChild(gridBlockContent);
-        }
+    
+            // Create body, reasons container, description text and big icon
+            {
+                var gridBlockBodyContainer = document.createElement('div');
+                gridBlockBodyContainer.classList.add('grid-block-body-container');
+                blockObject.bodyContainer = gridBlockBodyContainer;
         
-        blockObject.descriptionText = gridBlockDescriptionText;
-        blockObject.block = gridBlock;
-        blockObject.index = i;
-        blockObject.originalIndex = i;
-        originalGridBlocks.push(blockObject);
-        gridBlocks.push(blockObject);
+                var gridBlockDescriptionContainer = document.createElement('div');
+                gridBlockDescriptionContainer.classList.add('grid-block-description-container');
         
-        if (i < maxBlocksInPage) {
-            shuffleContainer.appendChild(gridBlock, shuffleContainer.firstChild);
-
-            // Add new element to shuffle
-            shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
-        }
+                var gridBlockDescriptionText = document.createElement('p');
+                gridBlockDescriptionText.classList.add('grid-block-description-text');
+                gridBlockDescriptionText.setAttribute('translation-en', description_en);
+                gridBlockDescriptionText.setAttribute('translation-se', description_se);
+                gridBlockDescriptionText.innerHTML = description;
         
-        // Cut texts in the block if they overflow
-        ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, blockObject, true);
+                var gridBlockBigIcon = document.createElement('div');
+                gridBlockBigIcon.classList.add('grid-block-icon-big');
 
-        (function() {
-            var blockObj = blockObject;
+                // Get appropriate file name by category name and set as background for category icon
+                gridBlockBigIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
+                blockObject.bigIcon = gridBlockBigIcon;
+        
+                // Container for arguments
+                var gridBlockReasonsContainer = document.createElement('div');
+                gridBlockReasonsContainer.classList.add('grid-block-reasons-container', 'no-display', 'faded-out');
+        
+                var gridBlockReasonsTitle = document.createElement('p');
+                gridBlockReasonsTitle.classList.add('grid-block-reasons-title');
+                gridBlockReasonsTitle.innerHTML = "Perustelut";
+                gridBlockReasonsTitle.setAttribute('translation-en', "Arguments");
+                gridBlockReasonsTitle.setAttribute('translation-se', "Argumentationer");
+                gridBlockReasonsContainer.appendChild(gridBlockReasonsTitle);
+                blockObject.reasonContainer = gridBlockReasonsContainer;
+        
+                var gridBlockReasonsCollapsible = document.createElement('ul');
+        
+                blockObject.collapsibleHeaders = [];
+        
+                // Create argument elements
+                for (var j = 0; idea_arguments != null && j < idea_arguments.length; j++) {
+                    var reasonBlock = document.createElement('li');
+        
+                    var reasonBlockHeader = document.createElement('div');
+                    reasonBlockHeader.classList.add('collapsible-header', 'has-content', 'waves-effect', 'waves-light');
 
-            blockObj.bodyContainer.onclick = function() {
-                onBlockMouseClick(blockObj);
+                    // Set randomly selected color as background
+                    reasonBlockHeader.style.backgroundColor = gridBlockColors[colorIdx];
+                    reasonBlockHeader.innerHTML = idea_arguments[j];
+
+                    // Add translations
+                    reasonBlockHeader.setAttribute('translation-en', idea_arguments_en[j]);
+                    reasonBlockHeader.setAttribute('translation-se', idea_arguments_se[j]);
+                    reasonBlock.appendChild(reasonBlockHeader);
+                    blockObject.collapsibleHeaders.push(reasonBlockHeader);
+        
+                    // Create argument body
+                    var reasonBlockBody = document.createElement('div');
+                    reasonBlockBody.classList.add('collapsible-body');
+                    blockObject.reasonBody = reasonBlockBody;
+        
+                    var reasonBlockBodyText = document.createElement('span');
+                    reasonBlockBodyText.innerHTML = idea_arguments[j];
+                    reasonBlockBodyText.setAttribute('translation-en', idea_arguments_en[j]);
+                    reasonBlockBodyText.setAttribute('translation-se', idea_arguments_se[j]);
+                    reasonBlockBody.appendChild(reasonBlockBodyText);
+        
+                    gridBlockReasonsCollapsible.appendChild(reasonBlock);
+                }
+        
+                gridBlockReasonsContainer.appendChild(gridBlockReasonsCollapsible);
             }
-
-            blockObj.blockContent.onmouseleave = function() {
-                onBlockMouseLeave(blockObj);
+    
+            // Create footer
+            var gridBlockFooter = document.createElement('div');
+            gridBlockFooter.classList.add('grid-block-footer');
+            
+            // Create icon and like button in footer
+            {
+                var gridBlockIconsContainer = document.createElement('div');
+                gridBlockIconsContainer.classList.add('grid-block-icons-container');
+                blockObject.iconsContainer = gridBlockIconsContainer;
+        
+                var gridBlockCategoryIconsContainer = document.createElement('div');
+                gridBlockCategoryIconsContainer.classList.add('grid-block-category-icons-container');
+        
+                var mainIcon = document.createElement('div');
+                mainIcon.classList.add('grid-block-icon', 'no-display', 'faded-out');
+                mainIcon.style.backgroundImage = "url('images/" + categoryIcons[primaryCategory] + "_musta.png')";
+                gridBlockCategoryIconsContainer.appendChild(mainIcon);
+                blockObject.mainIcon = mainIcon;
+                blockObject.footerIcons.push(mainIcon);
+        
+                if (secondaryCategories.length > 0 && secondaryCategories[0] != "") {
+                    for (var j = 0; j < secondaryCategories.length; j++) {
+                        var icon = document.createElement('div');
+                        icon.classList.add('grid-block-icon');
+                        icon.style.backgroundImage = "url('images/" + categoryIcons[secondaryCategories[j]] + "_musta.png')";
+                        gridBlockCategoryIconsContainer.appendChild(icon);
+                        blockObject.footerIcons.push(icon);
+                    }
+                }
+        
+                var gridBlockHeartContainer = document.createElement('div');
+                gridBlockHeartContainer.classList.add('grid-block-heart-container');
+        
+                var gridBlockLikes = document.createElement('div');
+                gridBlockLikes.classList.add('grid-block-likes');
+                gridBlockLikes.innerHTML = String(likes);
+                blockObject.likesText = gridBlockLikes;
+        
+                var gridBlockHeart = document.createElement('div');
+                gridBlockHeart.classList.add('grid-block-heart');
+        
+                var gridBlockHeartIcon = document.createElement('i');
+                gridBlockHeartIcon.classList.add('material-icons');
+                gridBlockHeartIcon.innerHTML = "favorite_border";
+                gridBlockHeart.appendChild(gridBlockHeartIcon);
+                blockObject.heart = gridBlockHeart;
+                blockObject.heartIcon = gridBlockHeartIcon;
+        
+                gridBlockHeartContainer.appendChild(gridBlockLikes);
+                gridBlockHeartContainer.appendChild(gridBlockHeart);
+        
+                gridBlockIconsContainer.appendChild(gridBlockCategoryIconsContainer);
+                gridBlockIconsContainer.appendChild(gridBlockHeartContainer);
             }
-        }());
+    
+            gridBlockFooter.appendChild(gridBlockIconsContainer);
+    
+            // Add elements to DOM
+            gridBlockHeaderContainer.appendChild(gridBlockHeaderText);
+            gridBlockDescriptionContainer.appendChild(gridBlockDescriptionText);
+            gridBlockBodyContainer.appendChild(gridBlockDescriptionContainer);
+            gridBlockBodyContainer.appendChild(gridBlockBigIcon);
+            gridBlockBodyContainer.appendChild(gridBlockReasonsContainer);
+    
+            gridBlockContent.appendChild(gridBlockHeaderContainer);
+            gridBlockContent.appendChild(gridBlockBodyContainer);
+            gridBlockContent.appendChild(gridBlockFooter);
+    
+            // Edge doesn't support shadows on table elements,
+            //    so add additional element for edge to put shadows on
+            if (isBrowserEdge) {
+                gridBlockEdgeShadow.appendChild(gridBlockContent);
+                gridBlock.appendChild(gridBlockEdgeShadow);
+            } else {
+                gridBlock.appendChild(gridBlockContent);
+            }
+            
+            blockObject.descriptionText = gridBlockDescriptionText;
+            blockObject.block = gridBlock;
+            blockObject.index = i;
+            blockObject.originalIndex = i;
+            originalGridBlocks.push(blockObject);
+            gridBlocks.push(blockObject);
+            
+            if (i < maxBlocksInPage) {
+                shuffleContainer.appendChild(gridBlock, shuffleContainer.firstChild);
+    
+                // Add new element to shuffle
+                shuffleInstance.element.appendChild(gridBlock, shuffleInstance.element.firstChild);
+            }
+            
+            // Cut texts in the block if they overflow
+            ellipsizeElement(blockObject.bodyContainer, blockObject.descriptionText, blockObject, true);
+    
+            (function() {
+                var blockObj = blockObject;
+    
+                blockObject.bodyContainer.onclick = function() {
+                    onBlockMouseClick(blockObj);
+                }
+    
+                blockObject.blockContent.onmouseleave = function() {
+                    onBlockMouseLeave(blockObj);
+                }
+            }());
+        }
     }
 
+    // Translate page if different language than Finnish is used
     translatePage();
+
+    // Reposition grid items
     setTimeout(() => {
         $(window).trigger('resize');
     });
@@ -726,6 +776,8 @@ function initGrid() {
     }
 
     shuffleInstance.add(blocks);
+
+    // Update shuffle with new items
     shuffleInstance.update();
 
     // Setup hearts (liking functionality)
@@ -736,6 +788,10 @@ function initGrid() {
             gridBlockObject.heart.onclick = function(event) {
                 event.preventDefault();
                 return;
+
+                /**
+                 * Here saving functionality can be added. The clicked idea ID is available from "gridBlockObject.id".
+                 */
             }
 
             // Set liked ideas from cookie to be already liked
@@ -747,6 +803,10 @@ function initGrid() {
     }
 }
 
+/**
+ * Closes a grid block if it's open (used for mobile)
+ * @param {Number} idx Index of the grid block that should be closed
+ */
 function closeGridBlockIfOpen(idx) {
     if (gridBlocks[idx].bodyContainer.classList.contains('grid-block-body-container-tall')) {
         gridBlocks[idx].bodyContainer.classList.remove('grid-block-body-container-tall');
@@ -761,8 +821,12 @@ function closeGridBlockIfOpen(idx) {
     }
 }
 
-// Mobile-optimized handling for mouse enter (basically no animations or delays)
+/**
+ * Mobile-optimized handling for mouse enter (no animations or delays)
+ * @param {Object} blockObject The block object that was clicked on
+ */
 function onBlockMouseClickMobile(blockObject) {
+    // Close all other blocks (they stay open on mobile since there are no mouseleave events)
     var startIdx = currentPage * maxBlocksInPage;
     for (var i = startIdx; i < Math.min(startIdx + maxBlocksInPage, gridBlocks.length); i++) {
         if (i == blockObject.index) continue;
@@ -770,21 +834,30 @@ function onBlockMouseClickMobile(blockObject) {
         closeGridBlockIfOpen(i);
     }
 
+    // Show big icon instead of small one and expand vertically
     blockObject.bigIcon.classList.add('faded-out', 'no-display');
     blockObject.mainIcon.classList.remove('no-display');
     blockObject.mainIcon.classList.remove('faded-out');
     blockObject.bodyContainer.classList.add('grid-block-body-container-tall');
 
+    // Show arguments if there are any
     if (blockObject.arguments.length > 0) {
         blockObject.reasonContainer.classList.remove('no-display');
         blockObject.reasonContainer.classList.remove('faded-out');
     }
 
+    // Update ShuffleJS with new positioning and re-ellipsize texts
     shuffleInstance.update();
     updateGridBlockText(blockObject.index);
 }
 
-// Handles the mouse entering a grid block
+/**
+ * Handles the mouse clicking on a grid block
+ * 
+ * Opens the grid block that the mouse clicked on and fades out all other grid blocks
+ * 
+ * @param {Object} blockObject The grid block that the mouse left
+ */
 function onBlockMouseClick(blockObject) {
     if (nrColumns == 1) {
         onBlockMouseClickMobile(blockObject);
@@ -799,6 +872,7 @@ function onBlockMouseClick(blockObject) {
         blockObject.footerIcons[i].style.marginTop = "33px";
     }
 
+    // Make heart bigger
     blockObject.likesText.style.fontSize = "21px";
     blockObject.heart.style.width = "50px";
     blockObject.heart.style.height = "50px";
@@ -813,7 +887,7 @@ function onBlockMouseClick(blockObject) {
     // Check if block is on the edge. If it is, it needs to be pushed
     //   one position to the left so it doesn't jump to the next row when it expands
     if ((colNr + 1) % nrColumns == 0) {
-        // Swap edge block and the one before it and resort all blocks
+        // Swap edge block and the one before it and re-sort all blocks
         gridBlocks[colNr - 1].block.setAttribute('grid-position', colNr);
         blockObject.block.setAttribute('grid-position', colNr - 1);
         shuffleInstance.sort({compare: sortGridByPosition});
@@ -826,6 +900,7 @@ function onBlockMouseClick(blockObject) {
 
     // Timeout so that the edge cases (above) get to update the sorting before they expand
     setTimeout(() => {
+        // Expand horizontally
         blockObject.block.classList.remove('m6', 'l4', 'xl4', 'xxl3');
         blockObject.block.classList.add('m12', 'l8', 'xl8', 'xxl6');
     });
@@ -844,7 +919,9 @@ function onBlockMouseClick(blockObject) {
         }, j);
     }
 
+    // Wait for opening animation
     setTimeout(() => {
+        // Show arguments only if there are any
         if (blockObject.arguments.length > 0) {
             blockObject.reasonContainer.classList.remove('no-display');
             setTimeout(() => {
@@ -859,59 +936,59 @@ function onBlockMouseClick(blockObject) {
  * 
  * Closes the grid block that the mouse left and fades back in all other grid blocks
  * 
- * @param {HTMLElement} blockObj The grid block that the mouse left
+ * @param {Object} blockObject The grid block that the mouse left
  */
-function onBlockMouseLeave(blockObj) {
+function onBlockMouseLeave(blockObject) {
     if (nrColumns == 1) return;
 
-    var gridPos = blockObj.index;
+    var gridPos = blockObject.index;
 
     // The timeout is here because sometimes when leaving the grid block,
     //   the mouse is still on the edge of the block, but it leaves for sure on the next frame.
     setTimeout(() => {
         // The mouseleave event sometimes fires when opening other elements inside the grid block
-        if (isMouseInElement(blockObj.blockContent) || !blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
+        if (isMouseInElement(blockObject.blockContent) || !blockObject.bodyContainer.classList.contains('grid-block-body-container-tall')) return;
 
         // Fade out needed elements
-        blockObj.mainIcon.classList.add('faded-out');
-        blockObj.reasonContainer.classList.add('faded-out');
+        blockObject.mainIcon.classList.add('faded-out');
+        blockObject.reasonContainer.classList.add('faded-out');
 
         // Store leave time to prevent new blocks from opening too fast and breaking the grid
-        if (blockObj.bodyContainer.classList.contains('grid-block-body-container-tall')) {
+        if (blockObject.bodyContainer.classList.contains('grid-block-body-container-tall')) {
             lastBlockLeaveTime = performance.now();
         }
 
         // Wait for fade animation
         setTimeout(() => {
             // Reset elements to initial states
-            blockObj.mainIcon.classList.add('no-display');
-            blockObj.reasonContainer.classList.add('no-display');
-            for (var i = 0; i < blockObj.footerIcons.length; i++) {
-                blockObj.footerIcons[i].style.marginTop = null;
+            blockObject.mainIcon.classList.add('no-display');
+            blockObject.reasonContainer.classList.add('no-display');
+            for (var i = 0; i < blockObject.footerIcons.length; i++) {
+                blockObject.footerIcons[i].style.marginTop = null;
             }
     
-            blockObj.likesText.style.fontSize = null;
-            blockObj.heart.style.width = null;
-            blockObj.heart.style.height = null;
-            blockObj.heartIcon.style.fontSize = null;
-            blockObj.iconsContainer.style.maxHeight = null;
+            blockObject.likesText.style.fontSize = null;
+            blockObject.heart.style.width = null;
+            blockObject.heart.style.height = null;
+            blockObject.heartIcon.style.fontSize = null;
+            blockObject.iconsContainer.style.maxHeight = null;
 
             // Shrink the width of the block
             if (nrColumns > 1) {
-                blockObj.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
-                blockObj.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
+                blockObject.block.classList.remove('m12', 'l8', 'xl8', 'xxl6');
+                blockObject.block.classList.add('m6', 'l4', 'xl4', 'xxl3');
             }
 
             // Shrink the height of the block
-            blockObj.bodyContainer.classList.remove('grid-block-body-container-tall');
-            updateGridBlockText(blockObj.index);
+            blockObject.bodyContainer.classList.remove('grid-block-body-container-tall');
+            updateGridBlockText(blockObject.index);
 
             if (nrColumns > 1) {
                 // Update block texts continuously while it closes for smooth-looking animation
                 for (var j = 0; j <= 200; j += 20) {
                     setTimeout(() => {
                         shuffleInstance.update();
-                        updateGridBlockText(blockObj.index);
+                        updateGridBlockText(blockObject.index);
                     }, j);
                 }
             }
@@ -919,7 +996,7 @@ function onBlockMouseLeave(blockObj) {
             // Wait for the block to close
             setTimeout(() => {
                 // Fade in all other grid blocks
-                fadeOtherGridBlockContents(1.0, blockObj);
+                fadeOtherGridBlockContents(1.0, blockObject);
                 
                 if (nrColumns == 1) {
                     // Update ShuffleJS to reposition blocks
@@ -930,13 +1007,13 @@ function onBlockMouseLeave(blockObj) {
                 // Re-sort blocks to preserve correct ordering
                 if (nrColumns > 1 && (gridPos + 1) % nrColumns == 0) {
                     gridBlocks[gridPos - 1].block.setAttribute('grid-position', gridPos - 1);
-                    blockObj.block.setAttribute('grid-position', gridPos);
+                    blockObject.block.setAttribute('grid-position', gridPos);
                     shuffleInstance.sort({compare: sortGridByPosition});
                 }
 
                 // Fade icon back in
-                blockObj.bigIcon.classList.remove('no-display');
-                blockObj.bigIcon.classList.remove('faded-out');
+                blockObject.bigIcon.classList.remove('no-display');
+                blockObject.bigIcon.classList.remove('faded-out');
             }, animationDurationsMS);
 
             // Disable timeouts on mobile
@@ -944,34 +1021,10 @@ function onBlockMouseLeave(blockObj) {
     }, (nrColumns == 1) ? 0 : 100);
 }
 
-// Initializes Materialize collapsibles
-function initMaterializeEvents() {
-    var collapsibleHeaders = document.getElementsByClassName('collapsible-header');
-
-    for (var i = 0; i < collapsibleHeaders.length; i++) {
-        (function() {
-            var idx = i;
-
-            // Setup click events on collapsibles to update arrows
-            collapsibleHeaders[idx].onclick = function() {
-                setTimeout(() => {
-                    for (var i = 0; i < collapsibleHeaders.length; i++) {
-                        if (collapsibleHeaders[i].parentElement.classList.contains('active')) {
-                            collapsibleHeaders[i].firstChild.innerHTML = "arrow_drop_up";
-                        } else {
-                            collapsibleHeaders[i].firstChild.innerHTML = "arrow_drop_down";
-                        }
-                    }
-                });
-            }
-        }());
-    }
-}
-
 /**
  * Fades the contents of all other grid blocks to a desired opacity
  * @param {Number} opacity The desired opacity of the content
- * @param {HTMLElement} blockObject The block object whose content should be faded
+ * @param {Object} blockObject The block object whose content should be faded
  */
 function fadeOtherGridBlockContents(opacity, blockObject) {
     if (nrColumns == 1) return;
@@ -992,7 +1045,7 @@ function fadeOtherGridBlockContents(opacity, blockObject) {
  * Ellipsizes texts inside a grid block
  * @param {HTMLElement} container Body element of the grid block
  * @param {HTMLElement} textElement Description text element of the block
- * @param {HTMLElement} blockObject The actual block element
+ * @param {Object} blockObject The actual block object
  * @param {Boolean} restrictTwoLines Whether to restrict the text element to only two (2) lines
  */
 function ellipsizeElement(container, textElement, blockObject, restrictTwoLines) {
