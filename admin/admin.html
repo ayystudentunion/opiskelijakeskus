@@ -1,3 +1,11 @@
+<!--
+         __   __     __        ___                        ___  __             __  
+        /  \ |__) | /__` |__/ |__  |    |    |  /\  |__/ |__  /__` |__/ |  | /__` 
+        \__/ |    | .__/ |  \ |___ |___ | \__/ /--\ |  \ |___ .__/ |  \ \__/ .__/ 
+                        
+        Admin front page of Opiskelijakeskus.
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +14,19 @@
     <title>Opiskelijakekus Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- MaterializeCSS for dropdowns -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/materialize.min.css" />
+
+    <!-- Global CSS styles and modules such as footer and buttons -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/globals.css" />
+
+    <!-- CSS for this page -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/admin.css" />
+
+    <!-- Styles for flag icons in header dropdown -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../flag_icon/css/flag-icon.min.css" />
 
+    <!-- Site icon -->
     <link rel="icon" type="image/png" href="../images/favicon/favicon.png">
 </head>
 <body>
@@ -30,15 +46,6 @@
                     English
                 </a>
             </li>
-            <!--
-            <li class="divider"></li>
-            <li>
-                <a class="set-language-se">
-                    <i class="left flag-icon flag-icon-se"></i>
-                    Svenska
-                </a>
-            </li>
-            -->
         </ul>
 
         <ul id="languages-dropdown-mobile" class="dropdown-content">
@@ -55,15 +62,6 @@
                     English
                 </a>
             </li>
-            <!--
-            <li class="divider"></li>
-            <li>
-                <a class="set-language-se">
-                    <i class="left flag-icon flag-icon-se"></i>
-                    Svenska
-                </a>
-            </li>
-            -->
         </ul>
 
         <div id="page-container">
@@ -82,7 +80,8 @@
                         <!-- Hamburger toggle for mobile nav -->
                         <a href="#" data-target="mobile-nav" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
 
-                        <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <!-- Desktop navbar -->
+                        <ul class="desktop-nav right hide-on-med-and-down">
                             <li>
                                 <a class="dropdown-trigger no-highlight" href="#" data-target="languages-dropdown">
                                     <span
@@ -116,7 +115,7 @@
                         </ul>
 
                         <!-- Mobile navbar -->
-                        <ul class="sidenav" id="mobile-nav">
+                        <ul id="mobile-nav" class="sidenav">
                             <li>
                                 <a href="review_ideas/"
                                    translation-en="Moderate Ideas">
@@ -153,8 +152,10 @@
                 </div>
             </nav>
     
+            <!-- ParticlesJS container -->
             <div id="particles-js" class="no-display"></div>
         
+            <!-- Footer -->
             <footer id="page-footer" class="page-footer">
                 <div class="row">
                     <div class="col xxxl10 xxl10 xl10 l10 m10 s12 offset-xxxl1 offset-xxl1 offset-xl1 offset-l1 offset-m1">
@@ -174,14 +175,34 @@
         </div>
     </div>
     
+    <!-- Script to check if Internet Explorer is being used -->
     <script src="../../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
+
+    <!-- Global JS modules and variables -->
     <script src="../../js/globals.js"></script>
+
+    <!-- ParticlesJS -->
     <script src="../../js/particles/particles.min.js"></script>
+
+    <!-- Script that initializes ParticlesJS-->
     <script src="../../js/init_particles.js"></script>
-    <script src="../../js/admin.js"></script>
     <script src="../../js/materialize/materialize.min.js"></script>
+
+    <!-- Script for page translation -->
     <script src="../../js/translate.js"></script>
-    <script src="../../js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
+
+    <!-- Cookie info script -->
+    <script src="../../js/cookie_info.js"
+            id="cookieinfo"
+            data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
+            data-linkmsg="Lisätietoa"
+            data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste">
+    </script>
+
+    <script>
+        // Initialize ParticleJS
+        initParticles();
+    </script>
 </body>
 </html>
