@@ -1,4 +1,5 @@
 <?php
+    // File used to save data to files on server
     if (isset($_POST['file_path']) && isset($_POST['data'])) {
         function save_data($file_path, $data) {
             $handle = fopen($file_path, 'w+');

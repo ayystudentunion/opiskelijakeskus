@@ -1,3 +1,11 @@
+<!--
+         __   __     __        ___                        ___  __             __  
+        /  \ |__) | /__` |__/ |__  |    |    |  /\  |__/ |__  /__` |__/ |  | /__` 
+        \__/ |    | .__/ |  \ |___ |___ | \__/ /--\ |  \ |___ .__/ |  \ \__/ .__/ 
+                        
+        Opiskelijakeskus admin login page
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,16 +14,25 @@
     <title>Opiskelijakekus Admin Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- MaterializeCSS for input fields -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/materialize.min.css" />
+
+    <!-- Global CSS modules and styles such as buttons and footer -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/globals.css" />
+
+    <!-- CSS for this page -->
     <link rel="stylesheet" type="text/css" media="screen" href="../../css/login.css" />
 
+    <!-- Site icon -->
     <link rel="icon" type="image/png" href="../../images/favicon/favicon.png">
 </head>
 <body>
     <div id="site-container">
+        <!-- Centered login form -->
         <div class="center-content full-site vertical-offset mobile-extra-offset row">
             <div class="form-container">
+
+                <!-- Actual login form -->
                 <form class="form col xxxl6 l8 s10 offset-xxxl3 offset-l2 offset-s1" method="POST" action="./dologin">
                     <h2 class="form-subtitle">Opiskelijakeskus Admin Login</h2>
                     <div class="row">
@@ -47,9 +64,17 @@
         </div>
     </div>
     
+    <!-- Script to check if the user is using Internet Explorer -->
     <script src="../js/check_for_ie.js"></script>
     <script src="../../js/jquery.js"></script>
     <script src="../../js/materialize/materialize.min.js"></script>
-    <script src="../../js/cookie_info.js" id="cookieinfo" data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön." data-linkmsg="Lisätietoa" data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste"></script>
+
+    <!-- Cookie info script -->
+    <script src="../../js/cookie_info.js"
+            id="cookieinfo"
+            data-message="Käytämme evästeitä parantaaksemme sivuston toiminnallisuutta. Käyttämällä sivustoamme hyväksyt evästeiden käytön."
+            data-linkmsg="Lisätietoa"
+            data-moreinfo="https://fi.wikipedia.org/wiki/Ev%C3%A4ste">
+    </script>
 </body>
 </html>
