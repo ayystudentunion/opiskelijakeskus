@@ -1,3 +1,8 @@
+/**
+ * @file Checks if the user is using Internet Explorer, and if they are, show an error message
+ * @author Zentryn <https://github.com/Zentryn>
+ */
+
 // Internet Explorer 6-11
 var isBrowserIE = /*@cc_on!@*/false || !!document.documentMode;
 
